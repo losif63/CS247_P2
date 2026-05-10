@@ -13,6 +13,13 @@ define FAULKNER_SOURCE = "—WILLIAM FAULKNER, Requiem for a Nun"
 define SHIRE_BODY = "\"I tried to leave you behind but I am made of everything you ever put me through.\""
 define SHIRE_SOURCE = "–WARSAN SHIRE"
 
+transform fit_screen:
+    xsize 1920
+    ysize 1080
+    fit "cover"
+    xalign 0.5
+    yalign 0.5
+
 style epigraph_quote:
     color "#ffffff"
     size 32
@@ -58,7 +65,7 @@ label start:
 
     $ quick_menu = True
 
-    scene intro
+    scene intro at fit_screen
 
     "An eerie atmosphere creeps in as I approach Pelau Siring."
 
@@ -137,7 +144,7 @@ screen village_map_screen():
 # ─────────────────────────────────────────────
 
 label village_map:
-    scene village_map
+    scene village_map at fit_screen
     with Dissolve(1.0)
 
     call screen village_map_screen
