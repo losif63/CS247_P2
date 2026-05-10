@@ -81,62 +81,81 @@ label start:
 
 
 # ─────────────────────────────────────────────
-# MAP BUTTON STYLES
-# ─────────────────────────────────────────────
-
-style map_button_button:
-    background Frame("#00000099", 8, 8)
-    hover_background Frame("#555555bb", 8, 8)
-    padding (14, 10)
-
-style map_button_button_text:
-    color "#ffffff"
-    hover_color "#ffdd88"
-    size 28
-
-
-# ─────────────────────────────────────────────
 # VILLAGE MAP SCREEN
 # ─────────────────────────────────────────────
 
 screen village_map_screen():
     modal True
-    style_prefix "map_button"
 
-    textbutton "Rubber Plantation":
-        xpos 50
-        ypos 820
-        action Return("rubber_plantation")
+    # Rubber Plantation — bottom-left cluster
+    button:
+        xpos 100
+        ypos 610
+        xsize 330
+        ysize 380
+        background None
+        hover_background "#ffffff22"
+        action Confirm("Do you really want to move to the Rubber Plantation?", yes=Return("rubber_plantation"))
 
-    textbutton "Town Hall":
-        xpos 320
-        ypos 390
-        action Return("town_hall")
+    # Town Hall — upper-left building
+    button:
+        xpos 540
+        ypos 276
+        xsize 192
+        ysize 254
+        background None
+        hover_background "#ffffff22"
+        action Confirm("Do you really want to move to the Town Hall?", yes=Return("town_hall"))
 
-    textbutton "Museum":
-        xpos 700
-        ypos 150
-        action Return("museum")
+    # Museum — upper-center columned building
+    button:
+        xpos 920
+        ypos 255
+        xsize 160
+        ysize 197
+        background None
+        hover_background "#ffffff22"
+        action Confirm("Do you really want to move to the Museum?", yes=Return("museum"))
 
-    textbutton "Graveyard":
-        xpos 1010
-        ypos 150
-        action Return("graveyard")
+    # Graveyard — upper-right-center gravestones
+    button:
+        xpos 1197
+        ypos 244
+        xsize 224
+        ysize 193
+        background None
+        hover_background "#ffffff22"
+        action Confirm("Do you really want to move to the Graveyard?", yes=Return("graveyard"))
 
-    textbutton "Church":
-        xpos 1330
-        ypos 330
-        action Return("church")
+    # Church — far-right steeple
+    button:
+        xpos 1420
+        ypos 244
+        xsize 182
+        ysize 330
+        background None
+        hover_background "#ffffff22"
+        action Confirm("Do you really want to move to the Church?", yes=Return("church"))
 
-    textbutton "Empty Home":
-        xpos 830
-        ypos 580
-        action Return("empty_home")
+    # Empty Home — center small house
+    button:
+        xpos 1045
+        ypos 646
+        xsize 231
+        ysize 192
+        background None
+        hover_background "#ffffff22"
+        action Confirm("Do you really want to move to the Empty Home?", yes=Return("empty_home"))
 
-    textbutton "Hospital":
-        xpos 1310
-        ypos 620
-        action Return("hospital")
+    # Hospital — right-lower cross building
+    button:
+        xpos 1450
+        ypos 674
+        xsize 180
+        ysize 200
+        background None
+        hover_background "#ffffff22"
+        action Confirm("Do you really want to move to the Hospital?", yes=Return("hospital"))
 
 
 # ─────────────────────────────────────────────
@@ -178,9 +197,16 @@ label rubber_plantation_scene:
     "You arrive at the rubber plantation at the edge of the village."
     "The smell of latex and jungle humidity hangs heavy in the air."
     "Rows of rubber trees stretch as far as the eye can see, their bark scarred with diagonal cuts."
-    menu:
-        "Finish Investigation":
-            pass
+    $ finish = False
+    while not finish:
+        menu:
+            "Finish Investigation":
+                menu: 
+                    "Are you sure you want to finish investigating here?"
+                    "Yes, return to the map.":
+                        $ finish = True
+                    "No, keep looking.":
+                        pass
     return
 
 label town_hall_scene:
@@ -189,9 +215,16 @@ label town_hall_scene:
     "You push open the heavy doors of the town hall."
     "Dusty portraits of colonial administrators line the walls, staring down with cold, flat eyes."
     "Old ledgers and records are scattered across the main desk."
-    menu:
-        "Finish Investigation":
-            pass
+    $ finish = False
+    while not finish:
+        menu:
+            "Finish Investigation":
+                menu:
+                    "Are you sure you want to finish investigating here?"
+                    "Yes, return to the map.":
+                        $ finish = True
+                    "No, keep looking.":
+                        pass
     return
 
 label museum_scene:
@@ -200,9 +233,16 @@ label museum_scene:
     "The village museum is small but unsettling."
     "Glass cases display artifacts — masks, farming tools, ceremonial objects — each stripped of their original meaning by sterile labels."
     "Something about this place feels wrong."
-    menu:
-        "Finish Investigation":
-            pass
+    $ finish = False
+    while not finish:
+        menu:
+            "Finish Investigation":
+                menu:
+                    "Are you sure you want to finish investigating here?"
+                    "Yes, return to the map.":
+                        $ finish = True
+                    "No, keep looking.":
+                        pass
     return
 
 label graveyard_scene:
@@ -211,9 +251,16 @@ label graveyard_scene:
     "The graveyard is older than the village itself, some say."
     "You walk between the crumbling headstones, many worn smooth — names erased by time."
     "A fresh wreath of flowers sits at one of the graves. Someone was here recently."
-    menu:
-        "Finish Investigation":
-            pass
+    $ finish = False
+    while not finish:
+        menu:
+            "Finish Investigation":
+                menu:
+                    "Are you sure you want to finish investigating here?"
+                    "Yes, return to the map.":
+                        $ finish = True
+                    "No, keep looking.":
+                        pass
     return
 
 label church_scene:
@@ -222,9 +269,16 @@ label church_scene:
     "The church looms at the edge of the square, its white walls stained by decades of rain."
     "Inside, rows of wooden pews face a simple altar."
     "Candles have been recently burned — the wax is still soft."
-    menu:
-        "Finish Investigation":
-            pass
+    $ finish = False
+    while not finish:
+        menu:
+            "Finish Investigation":
+                menu:
+                    "Are you sure you want to finish investigating here?"
+                    "Yes, return to the map.":
+                        $ finish = True
+                    "No, keep looking.":
+                        pass
     return
 
 label empty_home_scene:
@@ -233,9 +287,16 @@ label empty_home_scene:
     "The door to the empty home swings open at your touch — it wasn't locked."
     "A layer of dust coats everything. Furniture still in place, as if the occupants simply vanished."
     "A child's drawing is pinned to the wall. You don't want to look at it too long."
-    menu:
-        "Finish Investigation":
-            pass
+    $ finish = False
+    while not finish:
+        menu:
+            "Finish Investigation":
+                menu:
+                    "Are you sure you want to finish investigating here?"
+                    "Yes, return to the map.":
+                        $ finish = True
+                    "No, keep looking.":
+                        pass
     return
 
 label hospital_scene:
@@ -244,7 +305,14 @@ label hospital_scene:
     "The hospital is the newest building in the village, though that's not saying much."
     "The corridors are empty and the lights flicker. Supply cabinets hang open, half-emptied."
     "You find a patient log left on the front desk. The last entry is dated three weeks ago."
-    menu:
-        "Finish Investigation":
-            pass
+    $ finish = False
+    while not finish:
+        menu:
+            "Finish Investigation":
+                menu:
+                    "Are you sure you want to finish investigating here?"
+                    "Yes, return to the map.":
+                        $ finish = True
+                    "No, keep looking.":
+                        pass
     return
