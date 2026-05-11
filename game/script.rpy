@@ -1,6 +1,11 @@
 define m = Character('Me', color="#c8c8ff")
 image intro = "intro.png"
 image village_map = "images/village_map.png"
+image evelyn = "images/evelyn.png"
+image marcus = "images/marcus.png"
+image theo   = "images/theo.png"
+image yuna   = "images/yuna.png"
+image aanya  = "images/aanya.png"
 
 define FANON_BODY = ("\"Colonialism is not satisfied merely with holding a people in its grip "
     "and emptying the native's brain of all form and content. By a kind of perverted logic, "
@@ -71,13 +76,72 @@ label start:
 
     m "Well, here I am again. All alone, this time..."
 
-    "Last month, I visited this place for my summer vacation with 5 of my friends - Evelyn, Mark, Jessica, Darvin, and Stephen."
+    "Last month, I visited this place for my summer vacation with 5 of my friends - Evelyn, Marcus, Theo, Yuna, and Aanya."
 
     "After returning from the vacation, strange symptoms have appeared. I was the only one unaffected."
+
+    call friends_flashback
 
     "The doctors couldn't identify what's wrong with them. Something tells me that the secret lies in this village..."
 
     jump village_map
+
+
+# ─────────────────────────────────────────────
+# FRIENDS FLASHBACK
+# ─────────────────────────────────────────────
+
+label friends_flashback:
+
+    scene evelyn
+    with Dissolve(1.0)
+    "Evelyn."
+    "She feels like she's burning up all the time for no reason."
+    "She sleeps with multiple fans pointed at her and ice packs on her wrists."
+
+    scene marcus
+    with Dissolve(1.0)
+    "Marcus."
+    "He can't stop working. He shows up to work hours early and leaves late at night."
+    "At home, he can't sit down. He paces, cleans, organizes, anythiing to keep being productive."
+
+    scene theo
+    with Dissolve(1.0)
+    "Theo."
+    "He can't get rid of anything. The things he throws away appears on his bed."
+    "Receipts pile up in his pockets, food wrappers show up on his bed."
+
+    scene yuna
+    with Dissolve(1.0)
+    "Yuna."
+    "She says people can't see her anymore."
+    "Delivery drivers can't find her home. Her name disappears from email chains."
+    "At the doctor's office, the nurse walks into her room, frowns, and marks her as a no-show."
+
+    scene aanya
+    with Dissolve(1.0)
+    "Aanya."
+    "She can't speak her first language, Tamil, anymore."
+    "She can feel the words on her tongue, but they won't come out."
+
+    scene black
+    with Dissolve(1.0)
+    return
+
+
+# ─────────────────────────────────────────────
+# MAP BUTTON STYLES
+# ─────────────────────────────────────────────
+
+style map_button_button:
+    background Frame("#00000099", 8, 8)
+    hover_background Frame("#555555bb", 8, 8)
+    padding (14, 10)
+
+style map_button_button_text:
+    color "#ffffff"
+    hover_color "#ffdd88"
+    size 28
 
 
 # ─────────────────────────────────────────────
@@ -191,23 +255,7 @@ label village_map:
 # LOCATION SCENES
 # ─────────────────────────────────────────────
 
-label rubber_plantation_scene:
-    scene black
-    with Dissolve(0.5)
-    "You arrive at the rubber plantation at the edge of the village."
-    "The smell of latex and jungle humidity hangs heavy in the air."
-    "Rows of rubber trees stretch as far as the eye can see, their bark scarred with diagonal cuts."
-    $ finish = False
-    while not finish:
-        menu:
-            "Finish Investigation":
-                menu: 
-                    "Are you sure you want to finish investigating here?"
-                    "Yes, return to the map.":
-                        $ finish = True
-                    "No, keep looking.":
-                        pass
-    return
+# rubber_plantation_scene is defined in rubber_plantation.rpy
 
 label town_hall_scene:
     scene black
