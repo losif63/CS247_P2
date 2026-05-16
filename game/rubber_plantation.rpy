@@ -572,6 +572,26 @@ transform fullscreen:
 
 label rubber_plantation_solved:
 
+    # ── Journal entries ────────────────────────────────────────────────────────
+    $ journal_add_item(
+        "Colonial Ledger",
+        "Rubber Plantation",
+        "A numbered production ledger from the Pelau Siring Rubber Cultivation Authority. "
+        "Eight workers recorded by ID, residence block, and monthly rubber output — no names."
+    )
+    $ journal_add_item(
+        "Residential Census (1897)",
+        "Rubber Plantation",
+        "A residential survey of Pelau Siring inhabitants. Eight names with ages and family notes. "
+        "Someone had begun annotating it in a different ink, trying to match names to ledger numbers."
+    )
+    $ journal_add_clue(
+        "The colonial ledger stripped workers of their names, recording them only as numbers and outputs. "
+        "Someone was already working to restore those names before us.",
+        "Rubber Plantation"
+    )
+    $ journal_update_friend("marcus", note="His compulsion to work mirrors the colonial extraction of labor — the same erasure of rest and personhood recorded in the plantation ledger.", solved=True)
+
     # ── Flashback ──────────────────────────────────────────────────────────────
     scene marcus_haggling at fullscreen
     with Dissolve(1.0)

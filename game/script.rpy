@@ -80,7 +80,7 @@ label start:
 
     "After returning from the vacation, strange symptoms have appeared. I was the only one unaffected."
 
-    call friends_flashback
+    call friends_flashback from _call_friends_flashback
 
     "The doctors couldn't identify what's wrong with them. Something tells me that the secret lies in this village..."
 
@@ -234,19 +234,19 @@ label village_map:
     $ map_choice = _return
 
     if map_choice == "rubber_plantation":
-        call rubber_plantation_scene
+        call rubber_plantation_scene from _call_rubber_plantation_scene
     elif map_choice == "town_hall":
-        call town_hall_scene
+        call town_hall_scene from _call_town_hall_scene
     elif map_choice == "museum":
-        call museum_scene
+        call museum_scene from _call_museum_scene
     elif map_choice == "graveyard":
-        call graveyard_scene
+        call graveyard_scene from _call_graveyard_scene
     elif map_choice == "church":
-        call church_scene
+        call church_scene from _call_church_scene
     elif map_choice == "empty_home":
-        call empty_home_scene
+        call empty_home_scene from _call_empty_home_scene
     elif map_choice == "hospital":
-        call hospital_scene
+        call hospital_scene from _call_hospital_scene
 
     jump village_map
 
