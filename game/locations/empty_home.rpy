@@ -92,12 +92,22 @@ init python:
             "locked_msg": None,
         },
 
+        # TODO: Add Puzzle
         "empty_home.living_room.table": {
             "name":       "Table",
             "parent":     "empty_home.living_room",
             "intro":      "empty_home_living_room_table_intro",
             "children":   [],
-            "objects":    [],
+            "objects":    [
+                {
+                    "id":        "empty_home.living_room.table.picture",
+                    "name":      "Family Photo",
+                    "item":      None,
+                    "action":    None,
+                    "msg_first": "There is a photo frame lying on top of the table. The photo seems to be torn up - only a single piece remains. Perhaps something may happen if I find the other pieces and reassemble it?",
+                    "msg_done":  "There is a photo frame lying on top of the table. The photo seems to be torn up - only a single piece remains. Perhaps something may happen if I find the other pieces and reassemble it?",
+                },
+            ],
             "puzzle":     None,
             "requires":   None,
             "unlock":     None,
@@ -108,6 +118,47 @@ init python:
             "name":       "Backyard",
             "parent":     "empty_home",
             "intro":      "empty_home_backyard_intro",
+            "children":   ["empty_home.backyard.swing", "empty_home.backyard.garden"],
+            "objects":    [],
+            "puzzle":     None,
+            "requires":   None,
+            "unlock":     None,
+            "locked_msg": None,
+        },
+
+        "empty_home.backyard.swing": {
+            "name":       "Swing",
+            "parent":     "empty_home.backyard",
+            "intro":      "empty_home_backyard_swing_intro",
+            "children":   [],
+            "objects":    [
+                {
+                    "id":        "empty_home.backyard.left_swing",
+                    "name":      "Left Swing",
+                    "item":      "empty_home.backyard.swing.photo",
+                    "action":    None,
+                    "msg_first": "There seems to be a piece of a photo lying on top of the seat. The piece shows a young girl smiling.",
+                    "msg_done":  "There is nothing on the swing.",
+                },
+                {
+                    "id":        "empty_home.backyard.right_swing",
+                    "name":      "Right Swing",
+                    "item":      None,
+                    "action":    None,
+                    "msg_first": "There is nothing on the swing.",
+                    "msg_done":  "There is nothing on the swing.",
+                },
+            ],
+            "puzzle":     None,
+            "requires":   None,
+            "unlock":     None,
+            "locked_msg": None,
+        },
+
+        "empty_home.backyard.garden": {
+            "name":       "Garden",
+            "parent":     "empty_home.backyard",
+            "intro":      "empty_home_backyard_garden_intro",
             "children":   [],
             "objects":    [],
             "puzzle":     None,
@@ -115,6 +166,7 @@ init python:
             "unlock":     None,
             "locked_msg": None,
         },
+
 
         "empty_home.basement_door": {
             "name":       "Basement Door",
@@ -133,8 +185,14 @@ init python:
     ITEM_CATALOG.update({
         "empty_home.basement_door.key": {
             "name": "Basement Key",
-            "location": "Empty Home",
+            "location": "Empty Home - Living Room",
             "description": "Key that opens the basement door of the empty home."
+        },
+
+        "empty_home.backyard.swing.photo": {
+            "name": "Photo Piece 3",
+            "location": "Empty Home - Backyard",
+            "description": "A piece of a torn photo. The piece shows a young girl smiling."
         }
     })
 
@@ -161,7 +219,6 @@ label empty_home_living_room_intro:
     "A child's drawing is pinned to the wall. You don't want to look at it too long."
     return
 
-
 label empty_home_living_room_drawer_intro:
     "You investigate the drawer at the corner of the living room."
     return
@@ -178,6 +235,15 @@ label empty_home_living_room_table_intro:
 label empty_home_backyard_intro:
     "The backyard is overgrown, weeds swallowing what was once a tended vegetable garden."
     "A rusted watering can lies on its side by the door. The soil around it is dry and cracked."
+    return
+
+label empty_home_backyard_swing_intro:
+    "There is an empty swing in the middle of the vegetable garden. You make your way through the weeds toward the swing."
+    return
+
+label empty_home_backyard_garden_intro:
+    "There is a garden in the middle of the backyard - it seems that it hasn't been tended for years."
+    "You notice weeds and all sorts of wild plants growing in the garden."
     return
 
 label empty_home_basement_door_intro:
