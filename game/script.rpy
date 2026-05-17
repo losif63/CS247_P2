@@ -50,6 +50,7 @@ screen epigraph(body, source=""):
             text source style "epigraph_attribution"
 
 label start:
+    ################ Starting Sequence #################
     $ quick_menu = True
     scene black
 
@@ -329,23 +330,6 @@ label church_scene:
                         pass
     return
 
-label empty_home_scene:
-    scene black
-    with Dissolve(0.5)
-    "The door to the empty home swings open at your touch — it wasn't locked."
-    "A layer of dust coats everything. Furniture still in place, as if the occupants simply vanished."
-    "A child's drawing is pinned to the wall. You don't want to look at it too long."
-    $ finish = False
-    while not finish:
-        menu:
-            "Finish Investigation":
-                menu:
-                    "Are you sure you want to finish investigating here?"
-                    "Yes, return to the map.":
-                        $ finish = True
-                    "No, keep looking.":
-                        pass
-    return
 
 label hospital_scene:
     scene black
