@@ -167,13 +167,35 @@ init python:
             "locked_msg": None,
         },
 
-
         "empty_home.basement_door": {
-            "name":       "Basement Door",
+            "name":       "Basement",
             "parent":     "empty_home",
             "intro":      "empty_home_basement_door_intro",
             "children":   [],
-            "objects":    [],
+            "objects":    [
+                {
+                    "id":        "empty_home.basement.bookshelf",
+                    "name":      "Bookshelf",
+                    "item":      "empty_home.basement.diary",
+                    "action":    None,
+                    "msg_first": [
+                        "There seems to be a bookshelf alongside the back wall of the basement.",
+                        "An uncanny book immediately catches your eye - it says Sonia's Diary on the front cover.",
+                        "You reach out your hand and turn the pages. It seems like this belonged to a girl a long time ago.",
+                        '"April 15th, 1925."',
+                        '"It was rainy today. Mommy also looked really sad. Maybe she doesn\'t like rain."',
+                        '"I wanted to cheer mommy up, so we played hide and seek together!"',
+                        '"Mommy played it. She told me to stay hidden in the basement - and that I should never come out no matter what, even if mommy calls me."',
+                        '"So I hid in the basement and stayed there forever! Mommy never found me."',
+                        '"I heard a lot of footsteps and shouting upstairs - it seems like mommy invited neighbors to play as well."',
+                        '"After a few hours I became hungry, so I came out of the basement. Mommy was missing - and there were policemen around my house."',
+                        '"I asked the policement where mommy and daddy is. He told me that daddy is at the city hall, and mommy went to the hospital because she was sick."',
+                        '"I am starving. I hope she comes back soon."',
+                        "You close the book. Seems like something nasty happened to her parents."
+                    ],
+                    "msg_done":  "There is nothing on the swing.",
+                },
+            ],
             "puzzle":     None,
             "requires":   "empty_home.basement_door.key",
             "unlock":     "empty_home_basement_unlock",
@@ -189,11 +211,18 @@ init python:
             "description": "Key that opens the basement door of the empty home."
         },
 
+        "empty_home.basement.diary": {
+            "name": "Sonia's Diary",
+            "location": "Empty Home - Basement",
+            "description": "Diary of a girl named Sonia. It states that her dad is at the city hall, and her mom is at the hospital."
+        },
+
         "empty_home.backyard.swing.photo": {
             "name": "Photo Piece 3",
             "location": "Empty Home - Backyard",
             "description": "A piece of a torn photo. The piece shows a young girl smiling."
-        }
+        },
+
     })
 
 

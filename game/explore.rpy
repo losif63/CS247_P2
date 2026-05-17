@@ -214,9 +214,17 @@ label explore_node(node_id):
                     $ journal_add_item(_obj["item"], _item["name"], _item["location"], _item["description"])
                 if _obj["action"] is not None:
                     call expression _obj["action"] from _call_explore_object
+                
+                # msg_first can be either a single string or a list of strings
                 else:
                     $ _obj_msg = _obj["msg_first"]
-                    "[_obj_msg]"
+                    if isinstance(_obj_msg, list):
+                        $ i = 0
+                        while i < len(_obj_msg):
+                            "[_obj_msg[i]]" 
+                            $ i += 1
+                    else:
+                        "[_obj_msg]"
             elif _return == "Back":
                 call explore_node(_node["parent"]) from _call_explore_parent
             elif _return == "Leave":
