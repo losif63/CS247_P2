@@ -130,6 +130,14 @@ init python:
 
     })
 
+    ITEM_CATALOG.update({
+        "empty_home.basement_door.key": {
+            "name": "Basement Key",
+            "location": "Empty Home",
+            "description": "Key that opens the basement door of the empty home."
+        }
+    })
+
 
 # ── Entry point (called from the village map loop) ────────────────────────────
 

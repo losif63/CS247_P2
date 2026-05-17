@@ -8,7 +8,7 @@
 # ─── Game-state variables ─────────────────────────────────────────────────────
 
 default inventory_items = []
-# Each entry: {"name": str, "location": str, "description": str}
+# Each entry: {"id": str, "name": str, "location": str, "description": str}
 
 default inventory_clues = []
 # Each entry: {"text": str, "location": str}
@@ -44,9 +44,10 @@ default friend_notes = {
 
 init python:
 
-    def journal_add_item(name, location, description):
-        if not any(i["name"] == name for i in inventory_items):
+    def journal_add_item(id, name, location, description):
+        if not any(i["id"] == id for i in inventory_items):
             inventory_items.append({
+                "id": id,
                 "name": name,
                 "location": location,
                 "description": description,

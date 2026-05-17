@@ -209,7 +209,9 @@ label explore_node(node_id):
                 $ _obj = next(o for o in _node["objects"] if o["id"] == _return[1])
                 $ interacted_objects.add(_obj["id"])
                 if _obj["item"] is not None:
+                    $ _item = ITEM_CATALOG[_obj["item"]]
                     $ collected_items.add(_obj["item"])
+                    $ journal_add_item(_obj["item"], _item["name"], _item["location"], _item["description"])
                 if _obj["action"] is not None:
                     call expression _obj["action"] from _call_explore_object
                 else:
