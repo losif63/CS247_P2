@@ -1,6 +1,6 @@
 ##############################################################################
 ## Investigation Journal
-## Three tabs: Evidence | Friends | Clues
+## Three tabs: Inventory | Friends | Clues
 ## Open via the "Journal" button in the quick menu.
 ##############################################################################
 
@@ -120,7 +120,7 @@ screen journal_screen():
     modal True
     zorder 100
 
-    default tab = "evidence"
+    default tab = "inventory"
 
     add "#000000bb"
 
@@ -173,8 +173,8 @@ screen journal_screen():
                 ysize 46
                 spacing 2
 
-                textbutton "Evidence":
-                    style ("jnl_tab_active" if tab == "evidence" else "jnl_tab_idle")
+                textbutton "Inventory":
+                    style ("jnl_tab_active" if tab == "inventory" else "jnl_tab_idle")
                     action SetScreenVariable("tab", "evidence")
 
                 textbutton "Friends":
@@ -194,8 +194,8 @@ screen journal_screen():
                 background "#1e1b17"
                 padding (20, 16, 20, 16)
 
-                if tab == "evidence":
-                    use journal_tab_evidence
+                if tab == "inventory":
+                    use journal_tab_inventory
                 elif tab == "friends":
                     use journal_tab_friends
                 elif tab == "clues":
@@ -204,7 +204,7 @@ screen journal_screen():
 
 # ─── Evidence tab ─────────────────────────────────────────────────────────────
 
-screen journal_tab_evidence():
+screen journal_tab_inventory():
     if inventory_items:
         viewport:
             xfill True
