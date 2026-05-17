@@ -173,8 +173,7 @@ label empty_home_backyard_intro:
     return
 
 label empty_home_basement_door_intro:
-    "A low door at the back of the kitchen. The handle is cold."
-    "It doesn't budge. Locked from the other side, or jammed shut by something you can't see."
+    "The basement is eerie and cold."
     return
 
 label empty_home_basement_unlock:

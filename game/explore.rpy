@@ -198,12 +198,13 @@ label explore_node(node_id):
             call screen explore_nav_screen(_node["name"], _node["children"], _node.get("objects", []), _node["parent"] is not None)
             if isinstance(_return, tuple) and _return[0] == "unlock":
                 $ _unlock_node = EXPLORE_NODES[_return[1]]
+                $ _unlock_node_name = _return[1]
                 if _unlock_node["unlock"] is not None:
                     call expression _unlock_node["unlock"] from _call_explore_unlock
                 else:
                     $ _unlock_name = _unlock_node["name"]
                     "[_unlock_name] is now accessible."
-                $ unlocked_nodes.add(_return[1])
+                $ unlocked_nodes.add(_unlock_node_name)
             elif isinstance(_return, tuple) and _return[0] == "object":
                 $ _obj = next(o for o in _node["objects"] if o["id"] == _return[1])
                 $ interacted_objects.add(_obj["id"])
