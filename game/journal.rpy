@@ -164,7 +164,7 @@ screen journal_screen():
                         text_color "#7a6a50"
                         text_hover_color "#e8d5a0"
                         text_font "fonts/Typewriter.ttf"
-                        text_size 16
+                        text_size 24
                         text_xalign 0.5
                         text_yalign 0.5
 
@@ -176,7 +176,7 @@ screen journal_screen():
 
                 textbutton "Inventory":
                     style ("jnl_tab_active" if tab == "inventory" else "jnl_tab_idle")
-                    action SetScreenVariable("tab", "evidence")
+                    action SetScreenVariable("tab", "inventory")
 
                 textbutton "Friends":
                     style ("jnl_tab_active" if tab == "friends" else "jnl_tab_idle")
