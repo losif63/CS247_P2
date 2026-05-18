@@ -181,7 +181,7 @@ screen church_box_lock_screen():
                     background "#1a1714"
                     hover_background "#2d2720"
                     padding (24, 10)
-                    action Return(None)
+                    action Return("Leave")
                     text_color "#7a6a50"
                     text_hover_color "#c4b090"
                     text_font "fonts/Typewriter.ttf"
@@ -201,11 +201,12 @@ label church_backyard_box_puzzle:
     $ _box_solved = False
     while not _box_solved:
         call screen church_box_lock_screen()
-        if _return is None:
+        $ _asdf = _return
+        if _asdf == "Leave":
             # Player left — remove from interacted_objects so the box stays clickable
             $ interacted_objects = set(x for x in interacted_objects if x != "church.backyard.lawn.box")
             return
-        $ _d1, _d2, _d3, _d4 = _return
+        $ _d1, _d2, _d3, _d4 = _asdf
         if (_d1, _d2, _d3, _d4) == (1, 9, 3, 8):
             $ _photo = ITEM_CATALOG["church.backyard.lawn.photo_piece"]
             $ collected_items.add("church.backyard.lawn.photo_piece")
