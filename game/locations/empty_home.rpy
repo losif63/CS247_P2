@@ -103,9 +103,9 @@ init python:
                     "id":        "empty_home.living_room.table.picture",
                     "name":      "Family Photo",
                     "item":      None,
-                    "action":    None,
-                    "msg_first": "There is a photo frame lying on top of the table. The photo seems to be torn up - only a single piece remains. Perhaps something may happen if I find the other pieces and reassemble it?",
-                    "msg_done":  "There is a photo frame lying on top of the table. The photo seems to be torn up - only a single piece remains. Perhaps something may happen if I find the other pieces and reassemble it?",
+                    "action":    "empty_home_photo_assemble",
+                    "msg_first": "",
+                    "msg_done":  "The reassembled photo sits in its frame.",
                 },
             ],
             "puzzle":     None,
@@ -296,4 +296,97 @@ label empty_home_basement_door_intro:
 label empty_home_basement_unlock:
     "You fit the key into the lock. It turns with a heavy click."
     "The door swings inward. Cold air rises from below."
+    return
+
+
+# ── Photo assembly puzzle ─────────────────────────────────────────────────────
+
+label empty_home_photo_assemble:
+    $ _pieces_needed = [
+        "church.backyard.lawn.photo_piece",
+        "hospital.basement.morgue.emilia.photo",
+        "empty_home.backyard.swing.photo",
+    ]
+    $ _missing = sum(1 for p in _pieces_needed if p not in collected_items)
+    if _missing > 0:
+        $ _piece_word = "piece" if _missing == 1 else "pieces"
+        "You need to collect [_missing] more [_piece_word] to assemble the photo."
+        $ interacted_objects = set(x for x in interacted_objects if x != "empty_home.living_room.table.picture")
+    else:
+        call empty_home_photo_flashback from _call_empty_home_photo_flashback
+        call empty_home_photo_present from _call_empty_home_photo_present
+    return
+
+
+label empty_home_photo_flashback:
+    $ Yuna = Character("Yuna", color="#aad4f5")
+
+    scene yuna
+    with Dissolve(1.0)
+
+    "A memory surfaces — early in the trip, before anything felt wrong."
+    "The group had wandered into a quieter part of the village, past the market stalls and down a dirt road lined with overgrown hedges."
+    "A cluster of children appeared from behind a gate, small hands outstretched, voices overlapping."
+
+    "One of them tugged at Yuna's sleeve."
+    Yuna "Don't touch me."
+
+    "The child flinched but didn't step back. The others kept asking — for coins, for food, for anything."
+    "A woman came rushing out from further down the road, breathless, bowing her head."
+    "\"I'm so sorry — I'm so sorry, please forgive them, they don't mean any harm—\""
+
+    Yuna "Then teach them some manners. Children who beg from strangers are an embarrassment to whoever is supposed to be raising them."
+    Yuna "If you can't manage them, perhaps you shouldn't be."
+
+    "The nanny went quiet. The children stared."
+    "You remember how the smallest one slowly lowered her hand."
+    "No one said anything after that. The group kept walking."
+
+    scene black
+    with Dissolve(1.0)
+    return
+
+
+label empty_home_photo_present:
+    "The three pieces fit together perfectly."
+    "A family portrait — a man, a woman, a little girl. All smiling."
+    "You set it back in the frame and look at it for a long time."
+
+    m "Joaquin Gonzalez."
+    "The name from the city hall archive. Arrested for instigating independence riots. Interrogation Method 3A. Executed in 1938. Buried in the church backyard."
+    m "He's the father."
+
+    m "Emilia Gonzalez."
+    "The name tag in the hospital morgue. A unit with a photo piece inside — someone put it there deliberately, or it was left behind when she was taken."
+    m "She's the mother. Taken for experimentation. She didn't survive either."
+
+    m "And Sonia."
+    "The handwriting in the diary. A little girl hiding in the basement, waiting for a mother who was never going to come home."
+    "She waited. She came upstairs to find policemen. She asked where her parents were."
+    "She was told her father was at city hall. Her mother was at the hospital."
+    "Both were already gone."
+
+    m "She grew up without them. In this house, or somewhere after it — she grew up alone."
+
+    "You think about the children on the road."
+    "The small hand reaching out. Yuna's voice cutting it down."
+    "Those children at the orphanage — they had the same look Sonia must have had."
+    "Waiting for someone. Not understanding why no one came."
+
+    m "Yuna didn't see them. She saw an inconvenience."
+    m "But I wonder if somewhere, underneath all of that — she already knew what it felt like to lose them."
+    m "She just hadn't admitted it yet."
+
+    # $ journal_add_clue(
+    #     "The torn family photo belonged to the Gonzalez family — Joaquin (father), Emilia (mother), and Sonia (daughter). "
+    #     "Joaquin was executed as an independence activist. Emilia died as a subject of medical experimentation. "
+    #     "Sonia was left orphaned in this house.",
+    #     "Empty Home"
+    # )
+    # $ _yuna_note = (
+    #     "Her coldness toward the orphaned children mirrors the colonial erasure of families like Sonia's. "
+    #     "Her recurring dreams of losing her parents may be an echo of the real terror those children lived through."
+    # )
+    # $ journal_update_friend("yuna", note=_yuna_note, solved=True)
+
     return
