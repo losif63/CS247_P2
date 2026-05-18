@@ -195,6 +195,14 @@ init python:
                     ],
                     "msg_done":  "There is nothing on the swing.",
                 },
+                {
+                    "id":        "empty_home.basement.rack",
+                    "name":      "Rack",
+                    "item":      "empty_home.basement.shovel",
+                    "action":    None,
+                    "msg_first": "A wooden rack leans against the wall, holding a few old tools. A shovel hangs from one of the pegs — you take it.",
+                    "msg_done":  "The rack is empty now.",
+                },
             ],
             "puzzle":     None,
             "requires":   "empty_home.basement_door.key",
@@ -221,6 +229,12 @@ init python:
             "name": "Photo Piece 3",
             "location": "Empty Home - Backyard",
             "description": "A piece of a torn photo. The piece shows a young girl smiling."
+        },
+
+        "empty_home.basement.shovel": {
+            "name": "Shovel",
+            "location": "Empty Home - Basement",
+            "description": "An old shovel taken from a rack in the basement."
         },
 
     })

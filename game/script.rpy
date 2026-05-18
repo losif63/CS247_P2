@@ -296,23 +296,7 @@ label graveyard_scene:
                         pass
     return
 
-label church_scene:
-    scene black
-    with Dissolve(0.5)
-    "The church looms at the edge of the square, its white walls stained by decades of rain."
-    "Inside, rows of wooden pews face a simple altar."
-    "Candles have been recently burned — the wax is still soft."
-    $ finish = False
-    while not finish:
-        menu:
-            "Finish Investigation":
-                menu:
-                    "Are you sure you want to finish investigating here?"
-                    "Yes, return to the map.":
-                        $ finish = True
-                    "No, keep looking.":
-                        pass
-    return
+# church_scene is defined in locations/church.rpy
 
 
 # hospital_scene is defined in locations/hospital.rpy
