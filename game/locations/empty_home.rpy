@@ -353,7 +353,7 @@ label empty_home_photo_present:
     "You set it back in the frame and look at it for a long time."
 
     m "Joaquin Gonzalez."
-    "The name from the city hall archive. Arrested for instigating independence riots. Interrogation Method 3A. Executed in 1938. Buried in the church backyard."
+    "The name from the city hall archive. Arrested for instigating independence riots. Interrogation Method 3A. Executed and buried in the church backyard."
     m "He's the father."
 
     m "Emilia Gonzalez."
