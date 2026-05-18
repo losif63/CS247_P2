@@ -71,12 +71,12 @@ init python:
             "children":   [],
             "objects":    [
                 {
-                    "id":        "church.backyard.lawn.photo",
-                    "name":      "Something Buried",
-                    "item":      "church.backyard.lawn.photo_piece",
-                    "action":    None,
-                    "msg_first": "You dig into the loose soil. The shovel strikes something hard — a small tin box. Inside is a torn piece of a photo. The piece shows a man smiling.",
-                    "msg_done":  "There is nothing else buried here.",
+                    "id":        "church.backyard.lawn.box",
+                    "name":      "Wooden Box",
+                    "item":      None,
+                    "action":    "church_backyard_box_puzzle",
+                    "msg_first": "",
+                    "msg_done":  "You already retrieved what was inside the box.",
                 },
             ],
             "puzzle":     None,
@@ -96,6 +96,98 @@ init python:
     })
 
 
+# ── Lock screen ───────────────────────────────────────────────────────────────
+
+screen church_box_lock_screen():
+    modal True
+
+    default d1 = 0
+    default d2 = 0
+    default d3 = 0
+    default d4 = 0
+
+    add "#000000bb"
+
+    frame:
+        xalign 0.5
+        yalign 0.5
+        xysize (520, 340)
+        background "#161412"
+        padding (40, 36, 40, 36)
+
+        vbox:
+            xfill True
+            spacing 24
+
+            text "A wooden box with a 4-digit combination lock.":
+                font "fonts/Typewriter.ttf"
+                color "#c4b090"
+                size 18
+                text_align 0.5
+                xalign 0.5
+
+            hbox:
+                xalign 0.5
+                spacing 20
+
+                for _digit_var, _digit_name in [
+                    (d1, "d1"), (d2, "d2"), (d3, "d3"), (d4, "d4")
+                ]:
+                    vbox:
+                        xsize 72
+                        spacing 6
+
+                        textbutton "▲":
+                            xalign 0.5
+                            background "#2d2720"
+                            hover_background "#4a3c28"
+                            padding (16, 8)
+                            action SetScreenVariable(_digit_name, (_digit_var + 1) % 10)
+                            text_color "#e8d5a0"
+                            text_hover_color "#ffffff"
+                            text_xalign 0.5
+
+                        text "[_digit_var]":
+                            font "fonts/OldLondon.ttf"
+                            color "#e8d5a0"
+                            size 36
+                            xalign 0.5
+
+                        textbutton "▼":
+                            xalign 0.5
+                            background "#2d2720"
+                            hover_background "#4a3c28"
+                            padding (16, 8)
+                            action SetScreenVariable(_digit_name, (_digit_var - 1) % 10)
+                            text_color "#e8d5a0"
+                            text_hover_color "#ffffff"
+                            text_xalign 0.5
+
+            hbox:
+                xalign 0.5
+                spacing 16
+
+                textbutton "Submit":
+                    background "#2d2720"
+                    hover_background "#4a3c28"
+                    padding (24, 10)
+                    action Return((d1, d2, d3, d4))
+                    text_color "#e8d5a0"
+                    text_hover_color "#ffffff"
+                    text_font "fonts/Typewriter.ttf"
+                    text_size 17
+
+                textbutton "Leave":
+                    background "#1a1714"
+                    hover_background "#2d2720"
+                    padding (24, 10)
+                    action Return(None)
+                    text_color "#7a6a50"
+                    text_hover_color "#c4b090"
+                    text_font "fonts/Typewriter.ttf"
+                    text_size 17
+
+
 # ── Entry point (called from the village map loop) ────────────────────────────
 
 label church_scene:
@@ -103,7 +195,30 @@ label church_scene:
     return
 
 
-# ── Intro labels (called once per node on first visit) ────────────────────────
+# ── Puzzle labels ─────────────────────────────────────────────────────────────
+
+label church_backyard_box_puzzle:
+    $ _box_solved = False
+    while not _box_solved:
+        call screen church_box_lock_screen()
+        if _return is None:
+            # Player left — remove from interacted_objects so the box stays clickable
+            $ interacted_objects = set(x for x in interacted_objects if x != "church.backyard.lawn.box")
+            return
+        $ _d1, _d2, _d3, _d4 = _return
+        if (_d1, _d2, _d3, _d4) == (1, 9, 3, 8):
+            $ _photo = ITEM_CATALOG["church.backyard.lawn.photo_piece"]
+            $ collected_items.add("church.backyard.lawn.photo_piece")
+            $ journal_add_item("church.backyard.lawn.photo_piece", _photo["name"], _photo["location"], _photo["description"])
+            "The lock clicks open."
+            "Inside the box is a torn piece of a photo — it shows a man smiling."
+            $ _box_solved = True
+        else:
+            "The lock doesn't budge. That's not the right combination."
+    return
+
+
+# ── Intro / unlock labels ─────────────────────────────────────────────────────
 
 label church_intro:
     scene black
@@ -125,8 +240,9 @@ label church_backyard_intro:
 
 label church_backyard_lawn_unlock:
     "You drive the shovel into the soil. The ground here is softer than it looks."
+    "After a few scoops, the blade strikes something solid."
     return
 
 label church_backyard_lawn_intro:
-    "A patch of lawn sits in the corner of the backyard, the soil visibly disturbed."
+    "A patch of freshly turned soil. Half-buried in the dirt is a small wooden box."
     return
