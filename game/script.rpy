@@ -258,23 +258,7 @@ label village_map:
 
 # rubber_plantation_scene is defined in rubber_plantation.rpy
 
-label town_hall_scene:
-    scene black
-    with Dissolve(0.5)
-    "You push open the heavy doors of the town hall."
-    "Dusty portraits of colonial administrators line the walls, staring down with cold, flat eyes."
-    "Old ledgers and records are scattered across the main desk."
-    $ finish = False
-    while not finish:
-        menu:
-            "Finish Investigation":
-                menu:
-                    "Are you sure you want to finish investigating here?"
-                    "Yes, return to the map.":
-                        $ finish = True
-                    "No, keep looking.":
-                        pass
-    return
+# town_hall_scene is defined in locations/city_hall.rpy
 
 label museum_scene:
     scene black
@@ -331,20 +315,4 @@ label church_scene:
     return
 
 
-label hospital_scene:
-    scene black
-    with Dissolve(0.5)
-    "The hospital is the newest building in the village, though that's not saying much."
-    "The corridors are empty and the lights flicker. Supply cabinets hang open, half-emptied."
-    "You find a patient log left on the front desk. The last entry is dated three weeks ago."
-    $ finish = False
-    while not finish:
-        menu:
-            "Finish Investigation":
-                menu:
-                    "Are you sure you want to finish investigating here?"
-                    "Yes, return to the map.":
-                        $ finish = True
-                    "No, keep looking.":
-                        pass
-    return
+# hospital_scene is defined in locations/hospital.rpy
