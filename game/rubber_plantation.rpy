@@ -4,32 +4,92 @@
 
 init python:
 
+    import pygame
+
+    def _match_hex_to_rgba(hex_color, alpha=210):
+        h = hex_color.lstrip('#')
+        return (int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16), alpha)
+
+    class MatchLineOverlay(renpy.Displayable):
+        # ── Layout constants (pixels at 1920-wide screen) ──────────────────────
+        HBOX_X       = 90     # (1920 - (840+20+880)) / 2
+        HBOX_Y       = 90     # ypos of the two-panel hbox
+        LEFT_W       = 840    # width of the ledger panel
+        GAP          = 20     # spacing between panels
+
+        # Approximate rendered heights of each panel's header frame.
+        # If lines are visibly misaligned, tweak these two values.
+        LEDGER_HDR_H = 130
+        CENSUS_HDR_H = 130
+
+        ROW_H        = 20     # ysize of each data row
+        ROW_GAP      = 15     # vbox spacing between rows
+        # Y of first data row inside the viewport
+        # = header-row height (20) + one spacing gap (15)
+        FIRST_ROW_Y  = 35
+
+        def __init__(self, matches, **kwargs):
+            super(MatchLineOverlay, self).__init__(**kwargs)
+            self.matches = tuple(matches)
+
+        def _ledger_y(self, i):
+            vp_top = self.HBOX_Y + self.LEDGER_HDR_H
+            return vp_top + self.FIRST_ROW_Y + i * (self.ROW_H + self.ROW_GAP) + self.ROW_H // 2
+
+        def _census_y(self, j):
+            vp_top = self.HBOX_Y + self.CENSUS_HDR_H
+            return vp_top + self.FIRST_ROW_Y + j * (self.ROW_H + self.ROW_GAP) + self.ROW_H // 2
+
+        def render(self, width, height, st, at):
+            rv   = renpy.Render(width, height)
+            surf = pygame.Surface((width, height), pygame.SRCALPHA)
+            surf.fill((0, 0, 0, 0))
+
+            x0 = self.HBOX_X + self.LEFT_W      # right edge of ledger panel
+            x1 = x0 + self.GAP                  # left edge of census panel
+
+            for li, ci in enumerate(self.matches):
+                if ci is None:
+                    continue
+                rgba = _match_hex_to_rgba(MATCH_COLOR_ASSIGNED)
+                y0   = self._ledger_y(li)
+                y1   = self._census_y(ci)
+                pygame.draw.line(surf, rgba, (x0, y0), (x1, y1), 3)
+                pygame.draw.circle(surf, rgba, (x0, y0), 5)
+                pygame.draw.circle(surf, rgba, (x1, y1), 5)
+
+            rv.blit(surf, (0, 0))
+            return rv
+
+        def visit(self):
+            return []
+
     # ── Ledger entries (workers listed without names) ─────────────────────────
 
     LEDGER_ENTRIES = [
-        {"id": "100329", "residence": "Northern Rows", "outputs": (12, 8, 0),
+        {"id": "100329", "residence": "Tapper", "outputs": (12, 8, 0),
         "note": "Unfit for labor."},
 
-        {"id": "100330", "residence": "Southern Rows", "outputs": (55, 0, 0),
+        {"id": "100330", "residence": "Grove B", "outputs": (55, 0, 0),
         "note": ""},
 
-        {"id": "100331", "residence": "Western Rows", "outputs": (52, 37, 32),
-        "note": "Takes frequent breaks to nurse baby."},
+        {"id": "100331", "residence": "Grove A", "outputs": (52, 37, 32),
+        "note": "Pay adjusted — nursing"},
 
-        {"id": "100332", "residence": "Southern Rows", "outputs": (66, 34, 32),
-        "note": "Decreasing outputs."},
+        {"id": "100332", "residence": "Field Rotation", "outputs": (66, 24, 22),
+        "note": "Quotas unmet."},
 
-        {"id": "100333", "residence": "Eastern Rows", "outputs": (75, 77, 77),
-        "note": "Often paired with other workers during collection rounds."},
+        {"id": "100333", "residence": "Transport", "outputs": (75, 77, 77),
+        "note": ""},
 
-        {"id": "100334", "residence": "Eastern Rows", "outputs": (88, 86, 90),
-        "note": "Consistently highest output in eastern block. Frequently assigned oversight of adjacent rows."},
+        {"id": "100334", "residence": "Transport", "outputs": (88, 86, 90),
+        "note": "Tall."},
 
-        {"id": "100335", "residence": "Western Rows", "outputs": (76, 76, 77),
-        "note": "Taken care of by other workers."},
+        {"id": "100335", "residence": "Grove A", "outputs": (26, 26, 27),
+        "note": "Guardian: 100331."},
 
-        {"id": "100336", "residence": "Eastern Rows", "outputs": (70, 73, 70),
-        "note": "Regular reassignment to lighter tapping rows recorded."},
+        {"id": "100336", "residence": "Grove A", "outputs": (70, 73, 70),
+        "note": "Contract revised - week 18."},
     ]
 
     # ── Census entries (shuffled so matching isn't trivially 1-to-1) ──────────
@@ -62,18 +122,18 @@ init python:
         "sex": "M",
         "race": "Non-White",
         "marital": "Widowed",
-        "family": "Unspecified / Extended household not recorded",
+        "family": "Unspecified",
         "labor_status": "Unfit"
     },
 
     {
         "name": "Kovi Sela",
-        "age": 10,
+        "age": 8,
         "sex": "M",
         "race": "Non-White",
         "marital": "Unmarried",
-        "family": "Unspecified / Dependent",
-        "labor_status": "Fit (Light Duty)"
+        "family": "Unspecified",
+        "labor_status": "Fit"
     },
 
     {
@@ -89,7 +149,7 @@ init python:
     {
         "name": "Mira Sotan",
         "age": 20,
-        "sex": "F",
+        "sex": "M",
         "race": "Non-White",
         "marital": "Unmarried",
         "family": "Has 2 siblings",
@@ -97,12 +157,12 @@ init python:
     },
 
     {
-        "name": "Nesa Sotan",
-        "age": 18,
+        "name": "Nes Tavar",
+        "age": 28,
         "sex": "M",
         "race": "Non-White",
-        "marital": "Unmarried",
-        "family": "Youngest of 3 sons",
+        "marital": "Married",
+        "family": "Infant child",
         "labor_status": "Fit"
     },
 
@@ -115,6 +175,7 @@ init python:
         "family": "Husband, infant daughter",
         "labor_status": "Fit"
     },
+    
 
     ]
 
@@ -126,25 +187,23 @@ init python:
     #   100333 [4] → Mira Sotan   [5]  (paired with workers → has siblings)
     #   100334 [5] → Aran Sotan   [4]  (highest output, oversight → eldest son)
     #   100335 [6] → Kovi Sela    [3]  ("taken care of" → Light Duty, age 10)
-    #   100336 [7] → Nesa Sotan   [6]  (lighter rows → youngest son)
+    #   100336 [7] → Nesa Tavar   [6]  (lighter rows → youngest son)
 
     CORRECT_MATCHES = {
         0: 2,  1: 0,  2: 7,  3: 1,
         4: 5,  5: 4,  6: 3,  7: 6,
     }
 
-    # One distinct colour per matched pair
-    MATCH_COLORS = [
-        "#e74c3c", "#e67e22", "#f0c040", "#2ecc71",
-        "#1abc9c", "#3498db", "#9b59b6", "#e91e63",
-        "#ff5722", "#a0522d", "#607d8b", "#8bc34a",
-        "#00bcd4", "#ff9800",
-    ]
+    MATCH_COLOR_CORRECT  = "#1a6b3a"   # dark green — correct pair
+    MATCH_COLOR_WRONG    = "#c8913a"   # amber  — wrong pair (unused during puzzle)
+    MATCH_COLOR_ASSIGNED = "#c8913a"   # neutral amber — any active connection
 
     # ── Puzzle state (globals reset at scene start) ───────────────────────────
 
-    plantation_matches  = [None] * 8    # matches[ledger_idx] = census_idx | None
+    plantation_matches  = [None] * 8   # matches[ledger_idx] = census_idx | None
     plantation_selected = None          # ledger index currently highlighted
+    plantation_names    = [""] * 8      # auto-filled from match; shown under worker ID
+    plantation_struck   = set()         # ledger indices marked wrong on last submit
 
     def plantation_select_ledger(idx):
         global plantation_selected
@@ -152,12 +211,13 @@ init python:
         renpy.restart_interaction()
 
     def plantation_assign(census_idx):
-        global plantation_matches, plantation_selected
+        global plantation_matches, plantation_selected, plantation_names, plantation_struck
         if plantation_selected is None:
             return
-        # Toggle off if re-clicking the currently assigned census entry
+        # Toggle off if re-clicking the already-assigned census entry
         if plantation_matches[plantation_selected] == census_idx:
             plantation_matches[plantation_selected] = None
+            plantation_names[plantation_selected] = ""
             plantation_selected = None
             renpy.restart_interaction()
             return
@@ -165,24 +225,31 @@ init python:
         for i in range(8):
             if plantation_matches[i] == census_idx:
                 plantation_matches[i] = None
+                plantation_names[i] = ""
         plantation_matches[plantation_selected] = census_idx
+        plantation_names[plantation_selected] = CENSUS_ENTRIES[census_idx]["name"]
+        plantation_struck.discard(plantation_selected)
         plantation_selected = None
         renpy.restart_interaction()
 
     def plantation_reset():
-        global plantation_matches, plantation_selected
+        global plantation_matches, plantation_selected, plantation_names, plantation_struck
         plantation_matches  = [None] * 8
         plantation_selected = None
+        plantation_names    = [""] * 8
+        plantation_struck   = set()
         renpy.restart_interaction()
 
     def plantation_check_answers():
         return all(plantation_matches[li] == ci for li, ci in CORRECT_MATCHES.items())
 
-    def plantation_all_matched():
-        return all(m is not None for m in plantation_matches)
-
-    def plantation_matched_count():
-        return sum(1 for m in plantation_matches if m is not None)
+    def plantation_mark_wrong():
+        global plantation_struck
+        plantation_struck = set(
+            li for li, ci in CORRECT_MATCHES.items()
+            if plantation_matches[li] != ci
+        )
+        renpy.restart_interaction()
 
 
 ################################################################################
@@ -199,9 +266,9 @@ style plantation_header_frame:
     padding (16, 18, 16, 18)
 
 style plantation_header_text:
-    font "fonts/MonsieurLaDoulaise-Regular.ttf"
+    font "fonts/Blackrush.ttf"
     color "#1a0d00"
-    size 60
+    size 75
     text_align 0.5
 
 style plantation_entry_button:
@@ -212,33 +279,83 @@ style plantation_entry_button:
 
 style plantation_dim_text:
     color "#1a0d00"
-    font "fonts/Runethia.otf"
-    size 18
+    font "fonts/Kopi.otf"
+    size 26
 
 style plantation_col_header_text:
-    font "fonts/Runethia.otf"
+    font "fonts/Kopi.otf"
     color "#1a0d00"
     size 26
 
 style census_header_text:
     font "fonts/OldLondon.ttf"
     color "#1a0d00"
-    size 50
+    size 65
     text_align 0.5
 
 style census_dim_text:
     color "#1a0d00"
-    font "fonts/Typewriter.ttf"
+    font "fonts/mom.ttf"
     size 20
 
 style census_col_header_text:
     font "fonts/OldLondon.ttf"
     color "#1a0d00"
+    size 28
+
+style ledger_notes_text:
+    font "fonts/Kopi.otf"
+    color "#1a0d00"
+    size 24
+
+style ledger_name_text:
+    font "fonts/handwriting.ttf"
+    color "#b50000"
+    size 30
+
+style ledger_name_placeholder_text:
+    font "fonts/handwriting.ttf"
+    color "#000000"
     size 30
 
 ################################################################################
-## Screen
+## Screens
 ################################################################################
+
+screen plantation_name_input(idx):
+    default typed_name = plantation_names[idx]
+
+    # Blocks all interaction with the puzzle screen below
+    modal True
+
+    # Barely-there tint so the documents stay readable
+    add "#00000033"
+
+    frame:
+        xalign 0.5
+        yalign 0.93
+        background "#1e160aee"
+        padding (30, 18)
+        vbox:
+            spacing 10
+            text "Who is worker [LEDGER_ENTRIES[idx]['id']]?":
+                font "fonts/Kopi.otf"
+                color "#c8a060"
+                size 50
+            input:
+                value ScreenVariableInputValue("typed_name")
+                length 100
+                pixel_width 500
+                font "fonts/handwriting.ttf"
+                color "#e8dcc8"
+                size 40
+            textbutton "Confirm":
+                xalign 0.5
+            
+                action [Function(plantation_set_name, idx, typed_name), Hide("plantation_name_input")]
+
+    key "K_RETURN" action [Function(plantation_set_name, idx, typed_name), Hide("plantation_name_input")]
+
 
 screen plantation_puzzle():
 
@@ -251,9 +368,6 @@ screen plantation_puzzle():
         xsize 1760
         background "#1e160a"
         padding (20, 10)
-        text "Pelau Siring Rubber Cultivation Authority" xalign 0.5 color "#c8a040" size 24 bold True
-
-    text "Select a ledger entry, then select the matching census name. Click a matched pair again to undo." xalign 0.5 ypos 62 color "#666666" size 15
 
     # ── Two panels ────────────────────────────────────────────────────────────
     hbox:
@@ -295,7 +409,7 @@ screen plantation_puzzle():
                                 ysize 20
                                 background None
                                 padding (0, 0)
-                                text "Residence" style "plantation_col_header_text"
+                                text "Assignment" style "plantation_col_header_text"
                             frame:
                                 xsize 100
                                 ysize 20
@@ -325,61 +439,69 @@ screen plantation_puzzle():
 
                         # Data rows
                         for i in range(8):
-                            $ _e = LEDGER_ENTRIES[i]
-                            $ _eid = _e["id"]
+                            $ _e      = LEDGER_ENTRIES[i]
+                            $ _eid    = _e["id"]
                             $ _out1, _out2, _out3 = _e["outputs"]
-                            $ _eres  = _e["residence"]
-                            $ _enote = _e["note"]
-                            $ _matched = plantation_matches[i]
-                            $ _sel = (plantation_selected == i)
-                            $ _col = MATCH_COLORS[_matched] if _matched is not None else ("#8b4513" if _sel else "#3a2010")
-                            $ _bg = (MATCH_COLORS[_matched] + "2a") if _matched is not None else ("#8b45132a" if _sel else "#00000000")
+                            $ _eres   = _e["residence"]
+                            $ _enote  = _e["note"]
+                            $ _matched    = plantation_matches[i]
+                            $ _sel        = (plantation_selected == i)
+                            $ _wname      = plantation_names[i]
+                            $ _is_struck  = (i in plantation_struck)
 
-                            hbox:
-                                spacing 12
-                                button:
-                                    background _bg
-                                    xsize 120
-                                    ysize 20
-                                    hover_background "#00000011"
-                                    padding (0, 0)
-                                    action Function(plantation_select_ledger, i)
-                                    text "[_eid]" style "plantation_dim_text"
-                                button:
-                                    background _bg
-                                    xsize 120
-                                    hover_background "#00000011"
-                                    padding (0, 0)
-                                    action Function(plantation_select_ledger, i)
-                                    text "[_eres]" style "plantation_dim_text"
-                                button:
-                                    background _bg
-                                    xsize 100
-                                    hover_background "#00000011"
-                                    padding (0, 0)
-                                    action Function(plantation_select_ledger, i)
-                                    text "[_out1]kg" style "plantation_dim_text"
-                                button:
-                                    background _bg
-                                    xsize 100
-                                    hover_background "#00000011"
-                                    padding (0, 0)
-                                    action Function(plantation_select_ledger, i)
-                                    text "[_out2]kg" style "plantation_dim_text"
-                                button:
-                                    background _bg
-                                    xsize 100
-                                    hover_background "#00000011"
-                                    padding (0, 0)
-                                    action Function(plantation_select_ledger, i)
-                                    text "[_out3]kg" style "plantation_dim_text"
-                                button:
-                                    background _bg
-                                    xsize 160
-                                    hover_background "#00000011"
-                                    padding (0, 0)
-                                    action Function(plantation_select_ledger, i)
-                                    text "[_enote]" style "plantation_dim_text"
+                            frame:
+                                background ("#fac268ff" if _sel else "#00000000")
+                                xfill True
+                                padding (4, 2)
+                                vbox:
+                                    spacing 2
+                                    hbox:
+                                        spacing 12
+                                        button:
+                                            xsize 120
+                                            ysize 20
+                                            background "#00000000"
+                                            hover_background "#00000022"
+                                            padding (0, 0)
+                                            action Function(plantation_select_ledger, i)
+                                            text "[_eid]" style "plantation_dim_text"
+                                        frame:
+                                            xsize 120
+                                            background None
+                                            padding (0, 0)
+                                            text "[_eres]" style "plantation_dim_text"
+                                        frame:
+                                            xsize 100
+                                            background None
+                                            padding (0, 0)
+                                            text "[_out1]kg" style "plantation_dim_text"
+                                        frame:
+                                            xsize 100
+                                            background None
+                                            padding (0, 0)
+                                            text "[_out2]kg" style "plantation_dim_text"
+                                        frame:
+                                            xsize 100
+                                            background None
+                                            padding (0, 0)
+                                            text "[_out3]kg" style "plantation_dim_text"
+                                        frame:
+                                            xsize 160
+                                            background None
+                                            padding (0, 0)
+                                            text "[_enote]" style "ledger_notes_text"
+
+                                    # Name — auto-filled when matched; strikethrough only after failed submit
+                                    frame:
+                                        xsize 700
+                                        background None
+                                        padding (4, 0)
+                                        if _wname and _is_struck:
+                                            text "{s}[_wname]{/s}" style "ledger_name_text"
+                                        elif _wname:
+                                            text "[_wname]" style "ledger_name_text"
+                                        else:
+                                            null
 
         # RIGHT — Census
         frame:
@@ -420,23 +542,23 @@ screen plantation_puzzle():
                                 padding (0, 0)
                                 text "Sex" style "census_col_header_text"
                             frame:
-                                xsize 55
+                                xsize 75
                                 ysize 20
                                 background None
                                 padding (0, 0)
                                 text "Race" style "census_col_header_text"
                             frame:
-                                xsize 75
+                                xsize 150
                                 ysize 20
                                 background None
                                 padding (0, 0)
                                 text "Marital" style "census_col_header_text"
                             frame:
-                                xsize 280
+                                xsize 210
                                 ysize 20
                                 background None
                                 padding (0, 0)
-                                text "Notes" style "census_col_header_text"
+                                text "Family" style "census_col_header_text"
                             frame:
                                 xsize 120
                                 ysize 20
@@ -454,61 +576,51 @@ screen plantation_puzzle():
                             $ _pmarital = _p["marital"]
                             $ _pnotes   = _p["family"]
                             $ _plabor   = _p["labor_status"]
-                            $ _asgn  = next((ii for ii in range(8) if plantation_matches[ii] == j), None)
-                            $ _pcol  = MATCH_COLORS[_asgn] if _asgn is not None else ("#2a1500" if plantation_selected is not None else "#6a5040")
-                            $ _pbg   = (MATCH_COLORS[_asgn] + "2a") if _asgn is not None else "#00000000"
-                            $ _act   = Function(plantation_assign, j) if plantation_selected is not None else NullAction()
+                            $ _casgn       = next((ii for ii in range(8) if plantation_matches[ii] == j), None)
+                            $ _cis_correct = (_casgn is not None and CORRECT_MATCHES[_casgn] == j)
+                            $ _cact        = Function(plantation_assign, j)
 
                             hbox:
                                 spacing 15
                                 button:
-                                    background _pbg
                                     xsize 160
-                                    hover_background "#00000011"
+                                    background "#00000000"
+                                    hover_background "#00000022"
                                     padding (0, 0)
-                                    action _act
-                                    text "[_pname]" style "census_dim_text"
-                                button:
-                                    background _pbg
+                                    action _cact
+                                    if _cis_correct:
+                                        text "{s}[_pname]{/s}" style "census_dim_text" color "#1a0d00"
+                                    else:
+                                        text "[_pname]" style "census_dim_text" color "#1a0d00"
+                                frame:
                                     xsize 35
-                                    hover_background "#00000011"
+                                    background None
                                     padding (0, 0)
-                                    action _act
                                     text "[_page]" style "census_dim_text"
-                                button:
-                                    background _pbg
+                                frame:
                                     xsize 30
-                                    hover_background "#00000011"
+                                    background None
                                     padding (0, 0)
-                                    action _act
                                     text "[_psex]" style "census_dim_text"
-                                button:
-                                    background _pbg
-                                    xsize 55
-                                    hover_background "#00000011"
-                                    padding (0, 0)
-                                    action _act
-                                    text "[_prace]" style "census_dim_text"
-                                button:
-                                    background _pbg
+                                frame:
                                     xsize 75
-                                    hover_background "#00000011"
+                                    background None
                                     padding (0, 0)
-                                    action _act
+                                    text "[_prace]" style "census_dim_text"
+                                frame:
+                                    xsize 150
+                                    background None
+                                    padding (0, 0)
                                     text "[_pmarital]" style "census_dim_text"
-                                button:
-                                    background _pbg
-                                    xsize 280
-                                    hover_background "#00000011"
+                                frame:
+                                    xsize 210
+                                    background None
                                     padding (0, 0)
-                                    action _act
                                     text "[_pnotes]" style "census_dim_text"
-                                button:
-                                    background _pbg
+                                frame:
                                     xsize 120
-                                    hover_background "#00000011"
+                                    background None
                                     padding (0, 0)
-                                    action _act
                                     text "[_plabor]" style "census_dim_text"
 
     # ── Footer ────────────────────────────────────────────────────────────────
@@ -517,15 +629,9 @@ screen plantation_puzzle():
         ypos 974
         spacing 40
 
-        $ _count = plantation_matched_count()
-        text "[_count]/8 matched" color "#666666" size 17 yalign 0.5
-
-        if plantation_all_matched():
-            textbutton "Submit Answers":
-                style "map_button_button"
-                action Return("check")
-        else:
-            null width 180
+        textbutton "Submit":
+            style "map_button_button"
+            action Return("check")
 
         textbutton "Reset All":
             style "map_button_button"
@@ -552,6 +658,8 @@ label rubber_plantation_scene:
     m "Let me finish what they started."
 
     $ plantation_reset()
+    $ plantation_matches[4] = 5
+    $ plantation_names[4] = "Mira Sotan"
 
     label .puzzle_loop:
         call screen plantation_puzzle
@@ -559,8 +667,8 @@ label rubber_plantation_scene:
             if plantation_check_answers():
                 jump rubber_plantation_solved
             else:
-                m "Some of these don't add up. I need to look more carefully."
-                jump .puzzle_loop
+                $ plantation_mark_wrong()
+                jump rubber_plantation_failed
 
 image marcus_haggling = "images/marcus-haggling.png"
 
@@ -620,3 +728,17 @@ label rubber_plantation_solved:
         "Leave the plantation":
             pass
     return
+
+label rubber_plantation_failed:
+    scene black
+    with Dissolve(0.5)
+
+    m "These don't add up."
+    m "I'm matching numbers to names, but I'm missing something."
+    m "I need to look more carefully."
+
+    menu:
+        "Try again":
+            jump rubber_plantation_scene.puzzle_loop
+        "Leave the plantation":
+            return
