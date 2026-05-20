@@ -50,6 +50,7 @@ screen epigraph(body, source=""):
             text source style "epigraph_attribution"
 
 label start:
+    ################ Starting Sequence #################
     $ quick_menu = True
     scene black
 
@@ -80,7 +81,7 @@ label start:
 
     "After returning from the vacation, strange symptoms have appeared. I was the only one unaffected."
 
-    call friends_flashback
+    call friends_flashback from _call_friends_flashback
 
     "The doctors couldn't identify what's wrong with them. Something tells me that the secret lies in this village..."
 
@@ -234,19 +235,19 @@ label village_map:
     $ map_choice = _return
 
     if map_choice == "rubber_plantation":
-        call rubber_plantation_scene
+        call rubber_plantation_scene from _call_rubber_plantation_scene
     elif map_choice == "town_hall":
-        call town_hall_scene
+        call town_hall_scene from _call_town_hall_scene
     elif map_choice == "museum":
-        call museum_scene
+        call museum_scene from _call_museum_scene
     elif map_choice == "graveyard":
-        call graveyard_scene
+        call graveyard_scene from _call_graveyard_scene
     elif map_choice == "church":
-        call church_scene
+        call church_scene from _call_church_scene
     elif map_choice == "empty_home":
-        call empty_home_scene
+        call empty_home_scene from _call_empty_home_scene
     elif map_choice == "hospital":
-        call hospital_scene
+        call hospital_scene from _call_hospital_scene
 
     jump village_map
 
@@ -257,23 +258,7 @@ label village_map:
 
 # rubber_plantation_scene is defined in rubber_plantation.rpy
 
-label town_hall_scene:
-    scene black
-    with Dissolve(0.5)
-    "You push open the heavy doors of the town hall."
-    "Dusty portraits of colonial administrators line the walls, staring down with cold, flat eyes."
-    "Old ledgers and records are scattered across the main desk."
-    $ finish = False
-    while not finish:
-        menu:
-            "Finish Investigation":
-                menu:
-                    "Are you sure you want to finish investigating here?"
-                    "Yes, return to the map.":
-                        $ finish = True
-                    "No, keep looking.":
-                        pass
-    return
+# town_hall_scene is defined in locations/city_hall.rpy
 
 label museum_scene:
     scene black
@@ -311,56 +296,7 @@ label graveyard_scene:
                         pass
     return
 
-label church_scene:
-    scene black
-    with Dissolve(0.5)
-    "The church looms at the edge of the square, its white walls stained by decades of rain."
-    "Inside, rows of wooden pews face a simple altar."
-    "Candles have been recently burned — the wax is still soft."
-    $ finish = False
-    while not finish:
-        menu:
-            "Finish Investigation":
-                menu:
-                    "Are you sure you want to finish investigating here?"
-                    "Yes, return to the map.":
-                        $ finish = True
-                    "No, keep looking.":
-                        pass
-    return
+# church_scene is defined in locations/church.rpy
 
-label empty_home_scene:
-    scene black
-    with Dissolve(0.5)
-    "The door to the empty home swings open at your touch — it wasn't locked."
-    "A layer of dust coats everything. Furniture still in place, as if the occupants simply vanished."
-    "A child's drawing is pinned to the wall. You don't want to look at it too long."
-    $ finish = False
-    while not finish:
-        menu:
-            "Finish Investigation":
-                menu:
-                    "Are you sure you want to finish investigating here?"
-                    "Yes, return to the map.":
-                        $ finish = True
-                    "No, keep looking.":
-                        pass
-    return
 
-label hospital_scene:
-    scene black
-    with Dissolve(0.5)
-    "The hospital is the newest building in the village, though that's not saying much."
-    "The corridors are empty and the lights flicker. Supply cabinets hang open, half-emptied."
-    "You find a patient log left on the front desk. The last entry is dated three weeks ago."
-    $ finish = False
-    while not finish:
-        menu:
-            "Finish Investigation":
-                menu:
-                    "Are you sure you want to finish investigating here?"
-                    "Yes, return to the map.":
-                        $ finish = True
-                    "No, keep looking.":
-                        pass
-    return
+# hospital_scene is defined in locations/hospital.rpy
