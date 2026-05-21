@@ -1,8 +1,8 @@
 define m = Character('Me', color="#c8c8ff")
-image intro = "intro.png"
+image intro = "Enter.png"
 image village_map = "images/Map.jpg"
 image evelyn = "images/evelyn.png"
-image marcus = "images/marcus.png"
+image marcus = "images/marcus_affliction.png"
 image theo   = "images/theo.png"
 image yuna   = "images/yuna.png"
 image aanya  = "images/aanya.png"
@@ -85,7 +85,7 @@ label friends_flashback:
     "She feels like she's burning up all the time for no reason."
     "She sleeps with multiple fans pointed at her and ice packs on her wrists."
 
-    scene marcus
+    scene marcus at fit_screen
     with Dissolve(1.0)
     "Marcus."
     "He can't stop working. He shows up to work hours early and leaves late at night."
