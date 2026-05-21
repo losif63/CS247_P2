@@ -11,8 +11,20 @@ image spring_bg_without_bottle = "images/SpringBackgroundWithoutBottle.png"
 image spring_bg_with_bottle = "images/SpringBackgroundWithBottle.png"
 image sign_view_bg = "images/BackgroundViewWhenViewingSign.png"
 image sign_before_change = "images/SignBeforeChange.png"
+# sign_after_correct_change image
 image sign_after_correct_change = "images/SignAfterCorrectChange.png"
+# Thia sprite used for the final message
+image thia_sprite = "images/ThiaTransparentBG.png"
 
+transform thia_left_speaker:
+    # Anchor the sprite by its bottom edge and place it above the dialogue box
+    xalign 0.08
+    # lowered to sit closer to the dialogue box
+    yalign 0.70
+    xalign 0.12
+    xanchor 0.5
+    yanchor 1.0
+    zoom 0.65
 transform sign_full_view:
     xalign 0.5
     yalign 0.20
@@ -302,10 +314,12 @@ label mirror_pool_sign_restored:
 
 label mirror_pool_thia_message:
     "Message from Thia:"
+    show thia_sprite onlayer master at thia_left_speaker zorder 2000
     "“I threw something away today and it stayed gone."
     "I don’t think that means I fixed anything."
     "But I think I understand why it kept coming back.”"
     "Thia’s affliction has eased."
+    hide thia_sprite onlayer master
 
     menu:
         "Return to Map":
