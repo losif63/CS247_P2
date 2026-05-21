@@ -642,7 +642,7 @@ screen plantation_puzzle():
 ################################################################################
 
 label rubber_plantation_scene:
-    scene rubber_plantation_bg
+    scene rubber_plantation_bg at fit_screen
     with Dissolve(0.5)
 
     "You arrive at the rubber plantation at the edge of the village."

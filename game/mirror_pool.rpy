@@ -27,50 +27,35 @@ screen mirror_pool_screen():
     else:
         add "SpringBackgroundWithBottle.png" at fit_screen
 
-    default hovered_object = None
-
-    if hovered_object == "bottle":
-        add Solid("#ffffff22") xpos 550 ypos 730 xsize 110 ysize 145
-    elif hovered_object == "pipe":
-        add Solid("#ffffff22") xpos 440 ypos 575 xsize 285 ysize 135
-    elif hovered_object == "sign":
-        add Solid("#ffffff22") xpos 1490 ypos 470 xsize 280 ysize 260
-
     # Drainage pipe/grate hotspot
     button:
-        xpos 432
-        ypos 566
+        xpos 525
+        ypos 650
         xsize 303
         ysize 147
         background None
-        hover_background None
-        hovered SetScreenVariable("hovered_object", "pipe")
-        unhovered SetScreenVariable("hovered_object", None)
+        hover_background Solid("#ffffff22")
         action Return("drain")
 
     # Bottle hotspot (only present when the bottle is unresolved)
     if not bottleResolved:
         button:
-            xpos 542
-            ypos 726
+            xpos 590
+            ypos 840
             xsize 114
-            ysize 152
+            ysize 180
             background None
-            hover_background None
-            hovered SetScreenVariable("hovered_object", "bottle")
-            unhovered SetScreenVariable("hovered_object", None)
+            hover_background Solid("#ffffff22")
             action Return("bottle")
 
     # Tourist sign hotspot
     button:
-        xpos 1491
-        ypos 471
+        xpos 1630
+        ypos 550
         xsize 281
         ysize 270
         background None
-        hover_background None
-        hovered SetScreenVariable("hovered_object", "sign")
-        unhovered SetScreenVariable("hovered_object", None)
+        hover_background Solid("#ffffff22")
         action Return("sign")
 
     textbutton "Return to Map":
