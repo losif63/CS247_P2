@@ -1,6 +1,6 @@
 define m = Character('Me', color="#c8c8ff")
 image intro = "intro.png"
-image village_map = "images/village_map.png"
+image village_map = "images/Map.jpg"
 image evelyn = "images/evelyn.png"
 image marcus = "images/marcus.png"
 image theo   = "images/theo.png"
@@ -12,11 +12,6 @@ define FANON_BODY = ("\"Colonialism is not satisfied merely with holding a peopl
     "it turns to the past of the oppressed people, and distorts, disfigures, and destroys it.\"")
 define FANON_SOURCE = "—FRANTZ FANON, The Wretched of the Earth"
 
-define FAULKNER_BODY = "\"The past is never dead. It's not even past.\""
-define FAULKNER_SOURCE = "—WILLIAM FAULKNER, Requiem for a Nun"
-
-define SHIRE_BODY = "\"I tried to leave you behind but I am made of everything you ever put me through.\""
-define SHIRE_SOURCE = "–WARSAN SHIRE"
 
 transform fit_screen:
     xsize 1920
@@ -55,16 +50,6 @@ label start:
     scene black
 
     show screen epigraph(FANON_BODY, FANON_SOURCE)
-    with Dissolve(2.0)
-    $ renpy.pause(5.0, hard=False)
-    hide screen epigraph with Dissolve(2.0)
-
-    show screen epigraph(FAULKNER_BODY, FAULKNER_SOURCE)
-    with Dissolve(2.0)
-    $ renpy.pause(5.0, hard=False)
-    hide screen epigraph with Dissolve(2.0)
-
-    show screen epigraph(SHIRE_BODY, SHIRE_SOURCE)
     with Dissolve(2.0)
     $ renpy.pause(5.0, hard=False)
     hide screen epigraph with Dissolve(2.0)
@@ -144,6 +129,17 @@ style map_button_button_text:
     hover_color "#ffdd88"
     size 28
 
+style return_map_button:
+    background Frame("#00000099", 2, 2)
+    hover_background Frame("#ffffff33", 2, 2)
+    padding (12, 8)
+    xminimum 170
+
+style return_map_button_text:
+    color "#ffffff"
+    hover_color "#ffffcc"
+    size 22
+
 
 # ─────────────────────────────────────────────
 # VILLAGE MAP SCREEN
@@ -154,33 +150,33 @@ screen village_map_screen():
 
     # Rubber Plantation — bottom-left cluster
     button:
-        xpos 100
-        ypos 610
-        xsize 330
-        ysize 380
+        xpos 95
+        ypos 619
+        xsize 267
+        ysize 270
         background None
         hover_background "#ffffff22"
-        action Confirm("Do you really want to move to the Rubber Plantation?", yes=Return("rubber_plantation"))
+        action Confirm("Do you want to move to the Rubber Plantation?", yes=Return("rubber_plantation"))
 
     # Town Hall — upper-left building
     button:
-        xpos 540
-        ypos 276
-        xsize 192
-        ysize 254
+        xpos 553
+        ypos 286
+        xsize 178
+        ysize 183
         background None
         hover_background "#ffffff22"
-        action Confirm("Do you really want to move to the Town Hall?", yes=Return("town_hall"))
+        action Confirm("Do you want to move to the Town Hall?", yes=Return("town_hall"))
 
     # Museum — upper-center columned building
     button:
-        xpos 920
-        ypos 255
-        xsize 160
-        ysize 197
+        xpos 937
+        ypos 250
+        xsize 151
+        ysize 139
         background None
         hover_background "#ffffff22"
-        action Confirm("Do you really want to move to the Museum?", yes=Return("museum"))
+        action Confirm("Do you want to move to the Museum?", yes=Return("museum"))
 
     # Graveyard — upper-right-center gravestones
     button:
@@ -190,37 +186,47 @@ screen village_map_screen():
         ysize 193
         background None
         hover_background "#ffffff22"
-        action Confirm("Do you really want to move to the Graveyard?", yes=Return("graveyard"))
+        action Confirm("Do you want to move to the Graveyard?", yes=Return("graveyard"))
 
     # Church — far-right steeple
     button:
-        xpos 1420
-        ypos 244
-        xsize 182
-        ysize 330
+        xpos 1462
+        ypos 243
+        xsize 165
+        ysize 274
         background None
         hover_background "#ffffff22"
-        action Confirm("Do you really want to move to the Church?", yes=Return("church"))
+        action Confirm("Do you want to move to the Church?", yes=Return("church"))
 
     # Empty Home — center small house
     button:
-        xpos 1045
-        ypos 646
-        xsize 231
-        ysize 192
+        xpos 1100
+        ypos 657
+        xsize 161
+        ysize 128
         background None
         hover_background "#ffffff22"
-        action Confirm("Do you really want to move to the Empty Home?", yes=Return("empty_home"))
+        action Confirm("Do you want to move to the Empty Home?", yes=Return("empty_home"))
 
     # Hospital — right-lower cross building
     button:
-        xpos 1450
-        ypos 674
-        xsize 180
-        ysize 200
+        xpos 1494
+        ypos 634
+        xsize 183
+        ysize 229
         background None
         hover_background "#ffffff22"
-        action Confirm("Do you really want to move to the Hospital?", yes=Return("hospital"))
+        action Confirm("Do you want to move to the Hospital?", yes=Return("hospital"))
+
+    # Mangrove Spring — far right tourist stop
+    button:
+        xpos 1685
+        ypos 250
+        xsize 223
+        ysize 455
+        background None
+        hover_background "#ffffff22"
+        action Confirm("Do you want to move to the Mangrove Spring?", yes=Return("mirror_pool"))
 
 
 # ─────────────────────────────────────────────
@@ -248,6 +254,8 @@ label village_map:
         call empty_home_scene from _call_empty_home_scene
     elif map_choice == "hospital":
         call hospital_scene from _call_hospital_scene
+    elif map_choice == "mirror_pool":
+        call mirror_pool_scene from _call_mirror_pool_scene
 
     jump village_map
 

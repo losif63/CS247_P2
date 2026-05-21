@@ -175,6 +175,13 @@ screen explore_nav_screen(node_name, children, objects, has_parent):
                 action Return("Leave")
                 xalign 0.5
 
+    textbutton "Return to Map":
+        style "return_map_button"
+        text_style "return_map_button_text"
+        xalign 0.97
+        yalign 0.04
+        action Return("Leave")
+
 # ── Generic exploration label ─────────────────────────────────────────────────
 
 label explore_node(node_id):
