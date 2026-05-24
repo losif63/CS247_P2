@@ -62,7 +62,7 @@ init python:
                     "name":      "Middle Drawer",
                     "item":      "empty_home.basement_door.key",
                     "action":    None,
-                    "msg_first": "You find a small key taped to the back of the drawer.",
+                    "msg_first": "You find a {color=#ff0000}{b}small key{/b}{/color} taped to the back of the drawer.",
                     "msg_done":  "The middle drawer is empty.",
                 },
                 {
@@ -92,7 +92,6 @@ init python:
             "locked_msg": None,
         },
 
-        # TODO: Add Puzzle
         "empty_home.living_room.table": {
             "name":       "Table",
             "parent":     "empty_home.living_room",
@@ -137,7 +136,7 @@ init python:
                     "name":      "Left Swing",
                     "item":      "empty_home.backyard.swing.photo",
                     "action":    None,
-                    "msg_first": "There seems to be a piece of a photo lying on top of the seat. The piece shows a young girl smiling.",
+                    "msg_first": "There seems to be a {color=#ff0000}{b}piece of a photo{/b}{/color} lying on top of the seat. The piece shows a young girl smiling.",
                     "msg_done":  "There is nothing on the swing.",
                 },
                 {
@@ -180,7 +179,7 @@ init python:
                     "action":    None,
                     "msg_first": [
                         "There seems to be a bookshelf alongside the back wall of the basement.",
-                        "An uncanny book immediately catches your eye - it says Sonia's Diary on the front cover.",
+                        "An uncanny book immediately catches your eye - it says {color=#ff0000}{b}Sonia's Diary{/b}{/color} on the front cover.",
                         "You reach out your hand and turn the pages. It seems like this belonged to a girl a long time ago.",
                         '"April 15th, 1925."',
                         '"It was rainy today. Mommy also looked really sad. Maybe she doesn\'t like rain."',
@@ -189,7 +188,7 @@ init python:
                         '"So I hid in the basement and stayed there forever! Mommy never found me."',
                         '"I heard a lot of footsteps and shouting upstairs - it seems like mommy invited neighbors to play as well."',
                         '"After a few hours I became hungry, so I came out of the basement. Mommy was missing - and there were policemen around my house."',
-                        '"I asked the policemen where mommy and daddy is. He told me that daddy is at the city hall, and mommy went to the hospital because she was sick."',
+                        '"I asked the policemen where mommy and daddy is. He told me that daddy is at the {color=#ffff00}{b}city hall{/b}{/color}, and mommy went to the {color=#ffff00}{b}hospital{/b}{/color} because she was sick."',
                         '"I am starving. I hope she comes back soon."',
                         "You close the book."
                     ],
@@ -200,7 +199,7 @@ init python:
                     "name":      "Rack",
                     "item":      "empty_home.basement.shovel",
                     "action":    None,
-                    "msg_first": "A wooden rack leans against the wall, holding a few old tools. A shovel hangs from one of the pegs — you take it.",
+                    "msg_first": "A wooden rack leans against the wall, holding a few old tools. A {color=#ff0000}{b}shovel{/b}{/color} hangs from one of the pegs — you take it.",
                     "msg_done":  "The rack is empty now.",
                 },
             ],
@@ -222,7 +221,7 @@ init python:
         "empty_home.basement.diary": {
             "name": "Sonia's Diary",
             "location": "Empty Home - Basement",
-            "description": "Diary of a girl named Sonia. It states that her dad is at the city hall, and her mom is at the hospital."
+            "description": "Diary of a girl named Sonia. It states that her dad is at the {color=#ffff00}{b}city hall{/b}{/color}, and her mom is at the {color=#ffff00}{b}hospital{/b}{/color}."
         },
 
         "empty_home.backyard.swing.photo": {

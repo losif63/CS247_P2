@@ -687,14 +687,10 @@ label rubber_plantation_solved:
         description="A numbered production ledger from the Pelau Siring Rubber Cultivation Authority. Eight workers recorded by ID, residence block, and monthly rubber output, but no names."
     )
     $ journal_add_item(
-        id="rubber_plnatation.residential_census",
+        id="rubber_plantation.residential_census",
         name="Residential Census (1897)",
         location="Rubber Plantation",
         description="A residential survey of Pelau Siring inhabitants. Eight names with ages and family notes. Someone had begun annotating it in a different ink, trying to match names to ledger numbers."
-    )
-    $ journal_add_clue(
-        text="The colonial ledger stripped workers of their names, recording them only as numbers and outputs. Someone was already working to restore those names before us.",
-        location="Rubber Plantation"
     )
     $ journal_update_friend("marcus", note="His compulsion to work mirrors the colonial extraction of labor — the same erasure of rest and personhood recorded in the plantation ledger.", solved=True)
 

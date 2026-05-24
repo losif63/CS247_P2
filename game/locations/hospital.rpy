@@ -84,7 +84,7 @@ init python:
                     "name":      "Emilia Gonzalez",
                     "item":      "hospital.basement.morgue.emilia.photo",
                     "action":    None,
-                    "msg_first": ["You approach a unit named Emlia Gonzalez.", "There seems to be a piece of a photo inside the unit.", "The piece shows a woman smiling."],
+                    "msg_first": ["You approach a unit named Emlia Gonzalez.", "There seems to be a {color=#ff0000}{b}piece of a photo{/b}{/color} inside the unit.", "The piece shows a woman smiling."],
                     "msg_done":  "There is nothing in the unit.",
                 },
             ],

@@ -91,18 +91,18 @@ style jnl_title_text:
     size 26
 
 style jnl_meta_text:
-    font "fonts/Typewriter.ttf"
+    font "fonts/SpecialElite.ttf"
     color "#7a6a50"
     size 15
 
 style jnl_body_text:
-    font "fonts/Typewriter.ttf"
+    font "fonts/SpecialElite.ttf"
     color "#c4b090"
     size 17
     line_spacing 4
 
 style jnl_empty_text:
-    font "fonts/Typewriter.ttf"
+    font "fonts/SpecialElite.ttf"
     color "#5a4e38"
     size 20
     text_align 0.5
@@ -156,7 +156,7 @@ screen journal_screen():
                         action Function(renpy.hide_screen, "journal_screen")
                         text_color "#7a6a50"
                         text_hover_color "#e8d5a0"
-                        text_font "fonts/Typewriter.ttf"
+                        text_font "fonts/SpecialElite.ttf"
                         text_size 24
                         text_xalign 0.5
                         text_yalign 0.5
@@ -248,10 +248,10 @@ screen journal_tab_friends():
                             spacing 10
                             text "[_fname]" style "jnl_title_text" color ("#90d090" if _fsolved else "#e8d5a0")
                             if _fsolved:
-                                text "  [Resolved]" style "jnl_meta_text" color "#6ab86a" yalign 1.0
+                                text "  [[Resolved]" style "jnl_meta_text" color "#6ab86a" yalign 1.0
                         text "[_fsymptom]" style "jnl_body_text" color "#a09070"
                         if _fnotes:
                             null height 6
                             for note in _fnotes:
                                 $ _note = note
-                                text "— [_note]" style "jnl_body_text"
+                                text "[_note]" style "jnl_body_text"
