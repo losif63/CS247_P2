@@ -84,19 +84,19 @@ label mirror_pool_scene:
         $ choice = _return
 
         if choice == "bottle":
-            call mirror_pool_bottle
+            call mirror_pool_bottle from _call_mirror_pool_bottle
         elif choice == "sign":
-            call mirror_pool_sign
+            call mirror_pool_sign from _call_mirror_pool_sign
         elif choice == "drain":
-            call mirror_pool_drain
+            call mirror_pool_drain from _call_mirror_pool_drain
         elif choice == "change_sign":
-            call mirror_pool_sign_restore
+            call mirror_pool_sign_restore from _call_mirror_pool_sign_restore
         elif choice == "return_map":
             return
         elif choice == "check_thia":
-            call mirror_pool_thia_message
+            call mirror_pool_thia_message from _call_mirror_pool_thia_message
         elif choice == "final_bottle":
-            call mirror_pool_final_bottle_choice
+            call mirror_pool_final_bottle_choice from _call_mirror_pool_final_bottle_choice
 
         if puzzleSolved:
             return
@@ -109,7 +109,7 @@ label mirror_pool_bottle:
         return
 
     if finalBottleChoiceUnlocked:
-        call mirror_pool_final_bottle_choice
+        call mirror_pool_final_bottle_choice from _call_mirror_pool_final_bottle_choice_1
         return
 
     if not bottleReturned:
@@ -136,7 +136,7 @@ label mirror_pool_bottle:
 
 label mirror_pool_sign:
     if signRestorationUnlocked and not signChanged:
-        call mirror_pool_sign_restore
+        call mirror_pool_sign_restore from _call_mirror_pool_sign_restore_1
         return
 
     scene sign_view_bg at fit_screen
@@ -221,7 +221,7 @@ label mirror_pool_after_bottle_choice:
 
     menu:
         "Change the Sign Back":
-            call mirror_pool_sign_restore
+            call mirror_pool_sign_restore from _call_mirror_pool_sign_restore_2
         "Return to Spring":
             pass
 
@@ -279,7 +279,7 @@ label mirror_pool_sign_restored:
 
     menu:
         "Check on Thia":
-            call mirror_pool_thia_message
+            call mirror_pool_thia_message from _call_mirror_pool_thia_message_1
         "Return to Spring":
             pass
 

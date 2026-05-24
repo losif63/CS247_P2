@@ -189,9 +189,9 @@ init python:
                         '"So I hid in the basement and stayed there forever! Mommy never found me."',
                         '"I heard a lot of footsteps and shouting upstairs - it seems like mommy invited neighbors to play as well."',
                         '"After a few hours I became hungry, so I came out of the basement. Mommy was missing - and there were policemen around my house."',
-                        '"I asked the policement where mommy and daddy is. He told me that daddy is at the city hall, and mommy went to the hospital because she was sick."',
+                        '"I asked the policemen where mommy and daddy is. He told me that daddy is at the city hall, and mommy went to the hospital because she was sick."',
                         '"I am starving. I hope she comes back soon."',
-                        "You close the book. Seems like something nasty happened to her parents."
+                        "You close the book."
                     ],
                     "msg_done":  "There is nothing on the swing.",
                 },
