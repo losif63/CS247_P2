@@ -1,6 +1,6 @@
 define m = Character('Me', color="#c8c8ff")
 image intro = "intro.png"
-image village_map = "images/Map.jpg"
+image village_map = "images/village_map.png"
 image evelyn = "images/evelyn.png"
 image marcus = "images/marcus.png"
 image theo   = "images/theo.png"

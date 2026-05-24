@@ -11,20 +11,19 @@ image spring_bg_without_bottle = "images/SpringBackgroundWithoutBottle.png"
 image spring_bg_with_bottle = "images/SpringBackgroundWithBottle.png"
 image sign_view_bg = "images/BackgroundViewWhenViewingSign.png"
 image sign_before_change = "images/SignBeforeChange.png"
-# sign_after_correct_change image
 image sign_after_correct_change = "images/SignAfterCorrectChange.png"
 # Thia sprite used for the final message
 image thia_sprite = "images/ThiaTransparentBG.png"
 
 transform thia_left_speaker:
     # Anchor the sprite by its bottom edge and place it above the dialogue box
-    xalign 0.08
+    xalign 0.12
     # lowered to sit closer to the dialogue box
     yalign 0.70
-    xalign 0.12
     xanchor 0.5
     yanchor 1.0
     zoom 0.65
+
 transform sign_full_view:
     xalign 0.5
     yalign 0.20
