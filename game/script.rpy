@@ -93,24 +93,24 @@ label friends_flashback:
     "He can't stop working. He shows up to work hours early and leaves late at night."
     "At home, he can't sit down. He paces, cleans, organizes, anythiing to keep being productive."
 
-    scene theo
-    with Dissolve(1.0)
-    "Theo."
-    "He can't get rid of anything. The things he throws away appears on his bed."
-    "Receipts pile up in his pockets, food wrappers show up on his bed."
+    # scene theo
+    # with Dissolve(1.0)
+    # "Theo."
+    # "He can't get rid of anything. The things he throws away appears on his bed."
+    # "Receipts pile up in his pockets, food wrappers show up on his bed."
 
     scene yuna
     with Dissolve(1.0)
     "Yuna."
-    "She says people can't see her anymore."
-    "Delivery drivers can't find her home. Her name disappears from email chains."
-    "At the doctor's office, the nurse walks into her room, frowns, and marks her as a no-show."
+    "She is plagued by recurring dreams she can't escape."
+    "In them, her father is dragged away and tortured to death. Her mother is taken and used as a subject of illegal human experimentation."
+    "The dreams come every night. She wakes up screaming. Her sanity is slowly eroding."
 
-    scene aanya
-    with Dissolve(1.0)
-    "Aanya."
-    "She can't speak her first language, Tamil, anymore."
-    "She can feel the words on her tongue, but they won't come out."
+    # scene aanya
+    # with Dissolve(1.0)
+    # "Aanya."
+    # "She can't speak her first language, Tamil, anymore."
+    # "She can feel the words on her tongue, but they won't come out."
 
     scene black
     with Dissolve(1.0)

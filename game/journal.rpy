@@ -21,21 +21,21 @@ default friend_notes = {
         "solved": False,
         "notes": [],
     },
-    "theo": {
-        "symptom": "Can't get rid of anything. Things he throws away keep reappearing.",
-        "solved": False,
-        "notes": [],
-    },
+    # "theo": {
+    #     "symptom": "Can't get rid of anything. Things he throws away keep reappearing.",
+    #     "solved": False,
+    #     "notes": [],
+    # },
     "yuna": {
-        "symptom": "People can't see her anymore.",
+        "symptom": "Plagued by recurring dreams of losing her parents — the dreams are eroding her sanity.",
         "solved": False,
         "notes": [],
     },
-    "aanya": {
-        "symptom": "Can't speak Tamil anymore.",
-        "solved": False,
-        "notes": [],
-    },
+    # "aanya": {
+    #     "symptom": "Can't speak Tamil anymore.",
+    #     "solved": False,
+    #     "notes": [],
+    # },
 }
 
 

@@ -377,4 +377,11 @@ label empty_home_photo_present:
     m "But I wonder if somewhere, underneath all of that — she already knew what it felt like to lose them."
     m "She just hadn't admitted it yet."
 
+    "Your phone buzzes."
+    "A message from Yuna's roommate: {i}I don't know what happened, but she slept through the night. No screaming. She says the dreams are gone.{/i}"
+    m "..."
+    m "She's going to be okay."
+
+    $ journal_update_friend("yuna", note="The dreams have stopped. She slept through the night for the first time.", solved=True)
+
     return
