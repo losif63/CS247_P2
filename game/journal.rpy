@@ -1,6 +1,6 @@
 ##############################################################################
 ## Investigation Journal
-## Three tabs: Inventory | Friends | Clues
+## Three tabs: Inventory | Friends
 ## Open via the "Journal" button in the quick menu.
 ##############################################################################
 
@@ -9,9 +9,6 @@
 
 default inventory_items = []
 # Each entry: {"id": str, "name": str, "location": str, "description": str}
-
-default inventory_clues = []
-# Each entry: {"text": str, "location": str}
 
 default friend_notes = {
     "evelyn": {
@@ -53,10 +50,6 @@ init python:
                 "description": description,
             })
 
-    def journal_add_clue(text, location):
-        if not any(c["text"] == text for c in inventory_clues):
-            inventory_clues.append({"text": text, "location": location})
-
     def journal_update_friend(name, note=None, solved=False):
         if name in friend_notes:
             if note and note not in friend_notes[name]["notes"]:
@@ -75,7 +68,7 @@ style jnl_tab_idle:
     yfill True
 
 style jnl_tab_idle_text:
-    font "fonts/OldLondon.ttf"
+    font "fonts/SpecialElite.ttf"
     color "#7a6a50"
     hover_color "#e8d5a0"
     size 26
@@ -93,7 +86,7 @@ style jnl_item_frame:
     xfill True
 
 style jnl_title_text:
-    font "fonts/OldLondon.ttf"
+    font "fonts/SpecialElite.ttf"
     color "#e8d5a0"
     size 26
 
@@ -148,7 +141,7 @@ screen journal_screen():
                     yfill True
 
                     text "Investigation Journal":
-                        font "fonts/OldLondon.ttf"
+                        font "fonts/SpecialElite.ttf"
                         color "#b89050"
                         size 30
                         yalign 0.5
@@ -182,10 +175,6 @@ screen journal_screen():
                     style ("jnl_tab_active" if tab == "friends" else "jnl_tab_idle")
                     action SetScreenVariable("tab", "friends")
 
-                textbutton "Clues":
-                    style ("jnl_tab_active" if tab == "clues" else "jnl_tab_idle")
-                    action SetScreenVariable("tab", "clues")
-
                 null xfill True
 
             # ── Content area ─────────────────────────────────────────────────
@@ -199,8 +188,6 @@ screen journal_screen():
                     use journal_tab_inventory
                 elif tab == "friends":
                     use journal_tab_friends
-                elif tab == "clues":
-                    use journal_tab_clues
 
 
 # ─── Evidence tab ─────────────────────────────────────────────────────────────
@@ -268,33 +255,3 @@ screen journal_tab_friends():
                             for note in _fnotes:
                                 $ _note = note
                                 text "— [_note]" style "jnl_body_text"
-
-
-# ─── Clues tab ────────────────────────────────────────────────────────────────
-
-screen journal_tab_clues():
-    if inventory_clues:
-        viewport:
-            xfill True
-            yfill True
-            mousewheel True
-            draggable True
-            vbox:
-                xfill True
-                spacing 10
-                for clue in inventory_clues:
-                    $ _cloc  = clue["location"]
-                    $ _ctext = clue["text"]
-                    frame:
-                        style "jnl_item_frame"
-                        vbox:
-                            spacing 3
-                            text "[ [_cloc] ]" style "jnl_meta_text"
-                            text "[_ctext]" style "jnl_body_text"
-    else:
-        vbox:
-            xalign 0.5
-            yalign 0.5
-            spacing 8
-            text "No clues discovered yet." style "jnl_empty_text" xalign 0.5
-            text "Investigate the village locations to learn more." style "jnl_empty_text" xalign 0.5

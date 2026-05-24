@@ -148,7 +148,7 @@ screen church_box_lock_screen():
                             text_xalign 0.5
 
                         text "[_digit_var]":
-                            font "fonts/OldLondon.ttf"
+                            font "fonts/SpecialElite.ttf"
                             color "#e8d5a0"
                             size 36
                             xalign 0.5

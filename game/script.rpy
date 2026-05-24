@@ -1,4 +1,6 @@
 define m = Character('Me', color="#c8c8ff")
+
+default map_onboarding_shown = False
 image intro = "Enter.png"
 image village_map = "images/Map.jpg"
 image evelyn = "images/evelyn.png"
@@ -113,6 +115,53 @@ label friends_flashback:
     scene black
     with Dissolve(1.0)
     return
+
+
+# ─────────────────────────────────────────────
+# MAP ONBOARDING OVERLAY
+# ─────────────────────────────────────────────
+
+screen map_onboarding_screen():
+    modal True
+    zorder 200
+
+    add "#000000bb"
+
+    frame:
+        xalign 0.5
+        yalign 0.5
+        xmaximum 700
+        background "#161412"
+        padding (40, 36, 40, 36)
+
+        vbox:
+            spacing 20
+            xfill True
+
+            text "Investigation Journal":
+                font "fonts/SpecialElite.ttf"
+                color "#b89050"
+                size 34
+                xalign 0.5
+
+            text "Use the {b}Journal{/b} button in the quick menu at the bottom of the screen to open your investigation notes at any time.\n\n• {b}Inventory{/b} — clues and items you've collected\n• {b}Friends{/b} — your friends' current status":
+                font "fonts/SpecialElite.ttf"
+                color "#c4b090"
+                size 20
+                line_spacing 6
+                xalign 0.0
+
+            textbutton "Got it":
+                xalign 0.5
+                background "#2d2720"
+                hover_background "#4a3a28"
+                padding (24, 12, 24, 12)
+                action Return()
+                text_font "fonts/SpecialElite.ttf"
+                text_color "#e8d5a0"
+                text_hover_color "#ffffff"
+                text_size 26
+                text_xalign 0.5
 
 
 # ─────────────────────────────────────────────
@@ -236,6 +285,10 @@ screen village_map_screen():
 label village_map:
     scene village_map at fit_screen
     with Dissolve(1.0)
+
+    if not map_onboarding_shown:
+        $ map_onboarding_shown = True
+        call screen map_onboarding_screen
 
     call screen village_map_screen
     $ map_choice = _return

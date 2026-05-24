@@ -377,16 +377,4 @@ label empty_home_photo_present:
     m "But I wonder if somewhere, underneath all of that — she already knew what it felt like to lose them."
     m "She just hadn't admitted it yet."
 
-    # $ journal_add_clue(
-    #     "The torn family photo belonged to the Gonzalez family — Joaquin (father), Emilia (mother), and Sonia (daughter). "
-    #     "Joaquin was executed as an independence activist. Emilia died as a subject of medical experimentation. "
-    #     "Sonia was left orphaned in this house.",
-    #     "Empty Home"
-    # )
-    # $ _yuna_note = (
-    #     "Her coldness toward the orphaned children mirrors the colonial erasure of families like Sonia's. "
-    #     "Her recurring dreams of losing her parents may be an echo of the real terror those children lived through."
-    # )
-    # $ journal_update_friend("yuna", note=_yuna_note, solved=True)
-
     return
