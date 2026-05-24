@@ -381,6 +381,6 @@ label empty_home_photo_present:
     m "..."
     m "She's going to be okay."
 
-    $ journal_update_friend("yuna", note="The dreams have stopped. She slept through the night for the first time.", solved=True)
+    $ journal_update_friend("yuna", note="Her recurring dreams mirrored the fate of the Gonzalez family exactly — a father dragged away and killed, a mother taken for illegal experimentation. The village made her live through what she had refused to see in the children on the road.", solved=True)
 
     return

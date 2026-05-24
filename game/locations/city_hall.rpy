@@ -167,16 +167,10 @@ init python:
                 {
                     "id":        "city_hall.3f.archiveroom_interrogation.joaquin",
                     "name":      "Joaquin Gonzalez",
-                    "item":      None,
-                    "action":    None,
-                    "msg_first": [
-                        "Name: Joaquin Gonzalez.",
-                        "Arrested For: Instigating independence riots.",
-                        "Interrogation Method: 3A",
-                        "Notes: (blahblah) ~ 1938 ~ (scribbles)",
-                        "The number 1938 catches your eye."
-                    ],
-                    "msg_done": "The number 1938 stands out."
+                    "item":      "city_hall.joaquin_page",
+                    "action":    "city_hall_joaquin_page_action",
+                    "msg_first": "",
+                    "msg_done":  "You already took this page."
                 },
                 {
                     "id":        "city_hall.3f.archiveroom_interrogation_teodora",
@@ -207,21 +201,29 @@ init python:
                 {
                     "id":        "city_hall.3f.archiveroom_interrogation_execution",
                     "name":      "Execution",
-                    "item":      None,
-                    "action":    None,
-                    "msg_first": [
-                        "CLASSIFIED INFORMATION",
-                        "All targets were executed on 19__/__/__.",
-                        "Joaquin Gonazlez was buried at the church backyard.",
-                        "...",
-                    ],
-                    "msg_done": "It states Joaquin Gonzalez was buried at the church backyard."
+                    "item":      "city_hall.execution_page",
+                    "action":    "city_hall_execution_page_action",
+                    "msg_first": "",
+                    "msg_done":  "You already took this page."
                 },
             ],
             "puzzle":     None,
             "requires":   None,
             "unlock":     None,
             "locked_msg": None,
+        },
+    })
+
+    ITEM_CATALOG.update({
+        "city_hall.joaquin_page": {
+            "name":        "Torn Interrogation Record",
+            "location":    "City Hall - Archive Room",
+            "description": "A page torn from the colonial interrogation files. Records Joaquin Gonzalez's arrest for instigating independence riots — Interrogation Method 3A. A number is scrawled in the margin: 1938.",
+        },
+        "city_hall.execution_page": {
+            "name":        "Torn Execution Record",
+            "location":    "City Hall - Archive Room",
+            "description": "A classified page torn from the execution records. All targets executed on a redacted date. States that Joaquin Gonzalez was buried at the {color=#ffff00}{b}church backyard{/b}{/color}.",
         },
     })
 
@@ -274,4 +276,25 @@ label city_hall_3f_archiveroom_rubber_intro:
 
 label city_hall_3f_archiveroom_interrogation_intro:
     "This book seems to have archived the city's rubber production status during the colonial era."
+    return
+
+
+# ── Object action labels ──────────────────────────────────────────────────────
+
+label city_hall_execution_page_action:
+    "CLASSIFIED INFORMATION"
+    "All targets were executed on 19__/__/__."
+    "Joaquin Gonzalez was buried at the {color=#ffff00}{b}church backyard{/b}{/color}."
+    "..."
+    "You tear the {color=#ff0000}{b}page{/b}{/color}  from the file and pocket it."
+    return
+
+
+label city_hall_joaquin_page_action:
+    "Name: Joaquin Gonzalez."
+    "Arrested For: Instigating independence riots."
+    "Interrogation Method: 3A."
+    "Notes: (blahblah) ~ {b}1938{/b} ~ (scribbles)"
+    "The number {b}1938{/b} catches your eye. This seems important."
+    "You tear the {color=#ff0000}{b}page{/b}{/color} from the file and pocket it."
     return
