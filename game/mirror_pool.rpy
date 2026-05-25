@@ -166,13 +166,13 @@ label mirror_pool_drain:
     "A thin trail leads from the pipe into the spring."
 
     menu:
-        “Inspect the pipe”:
-            “A colonial marker is almost buried in the mud:”
-            “”WASTE CHANNEL 3.””
-            “This spring was not only neglected.”
-            “It was used.”
+        "Inspect the pipe":
+            "A colonial marker is almost buried in the mud:"
+            "WASTE CHANNEL 3."
+            "This spring was not only neglected."
+            "It was used."
             $ drainInvestigated = True
-            $ journal_update_friend(“thia”, note=”\”There's mud in my sheets. I'm coughing up brackish water every hour and the saltiness is burning my throat.\””)
+            $ journal_update_friend("thia", note="There's mud in my sheets. I'm coughing up brackish water every hour and the saltiness is burning my throat.")
         "Return to Spring":
             pass
 
@@ -187,7 +187,7 @@ label mirror_pool_final_bottle_choice:
     "You know enough now to understand why the bottle keeps returning."
     "The spring was not only a scenic place."
     "It was a place renamed, used, and made to hold what others wanted gone."
-    "What do you do with Thia’s bottle?"
+    "What do you do with Thia's bottle?"
 
     while True:
         menu:
@@ -203,7 +203,7 @@ label mirror_pool_final_bottle_choice:
                 "Hmm... that does not feel right either."
                 "The bottle was not left in mourning. It was left because Thia assumed the place would absorb it."
             "Carry it away and uncover the old name on the sign.":
-                "You pick up Thia’s bottle and hold onto it."
+                "You pick up Thia's bottle and hold onto it."
                 "This time, it does not roll back."
                 "The spring does not ask you to leave the bottle here."
                 "It asks you to stop pretending this place was only scenery."
@@ -218,7 +218,7 @@ label mirror_pool_after_bottle_choice:
     with Dissolve(0.5)
 
     "The bottle is gone, but the sign still speaks first."
-    "“The Mirror Pool.”"
+    "The Mirror Pool."
     "A tourist name. A clean name. A name that makes the spring easier to pass through."
 
     menu:
@@ -239,7 +239,7 @@ label mirror_pool_sign_restore:
 
     if not signChanged:
         "The bottle is gone, but the sign still speaks first."
-        "“The Mirror Pool.”"
+        "The Mirror Pool."
         "A tourist name. A clean name. A name that makes the spring easier to pass through."
         "What should the sign say now?"
 
@@ -288,11 +288,11 @@ label mirror_pool_sign_restored:
     return
 
 label mirror_pool_thia_message:
-    “Your phone buzzes.”
-    “A message from Thia: {i}I threw something away today and it stayed gone. I don’t think that means I fixed anything. But I think I understand why it kept coming back.{/i}”
-    m “...”
-    m “She’s going to be okay.”
-    $ journal_update_friend(“thia”, note=”Her body had become a container for everything she wanted to discard — mirroring the fate of the Mother Spring, seized as a colonial waste channel. Carrying back what she left and restoring the spring’s true name broke the connection.”, solved=True)
+    "Your phone buzzes."
+    "A message from Thia: {i}I threw something away today and it stayed gone. I don't think that means I fixed anything. But I think I understand why it kept coming back.{/i}"
+    m "..."
+    m "She's going to be okay."
+    $ journal_update_friend("thia", note="Her body had become a container for everything she wanted to discard — mirroring the fate of the Mother Spring, seized as a colonial waste channel. Carrying back what she left and restoring the spring's true name broke the connection.", solved=True)
 
     menu:
         "Return to Map":
