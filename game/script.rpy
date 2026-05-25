@@ -417,85 +417,68 @@ label night_scene:
 # ENDING
 # ─────────────────────────────────────────────
 
-screen ending_status_screen():
-    modal True
-    add "#000000ee"
-
-    vbox:
-        xalign 0.5
-        yalign 0.4
-        spacing 30
-
-        text "Five days have passed.":
-            font "fonts/SpecialElite.ttf"
-            color "#b89050"
-            size 38
-            xalign 0.5
-
-        null height 10
-
-        for fname, fdata in friend_notes.items():
-            $ _fname   = fname.capitalize()
-            $ _fsolved = fdata["solved"]
-            hbox:
-                xalign 0.5
-                spacing 24
-                text "[_fname]":
-                    font "fonts/SpecialElite.ttf"
-                    color "#e8d5a0"
-                    size 28
-                    xminimum 180
-                    text_align 1.0
-                text ("— Saved" if _fsolved else "— Lost"):
-                    font "fonts/Typewriter.ttf"
-                    color ("#6ab86a" if _fsolved else "#c84040")
-                    size 28
-
-        null height 30
-
-        textbutton "Continue":
-            xalign 0.5
-            background "#2d2720"
-            hover_background "#4a3a28"
-            padding (24, 12, 24, 12)
-            action Return()
-            text_font "fonts/SpecialElite.ttf"
-            text_color "#e8d5a0"
-            text_hover_color "#ffffff"
-            text_size 26
-            text_xalign 0.5
-
-
 label game_ending:
     scene black
     with Dissolve(2.0)
 
-    call screen ending_status_screen
+    "Five days have passed. You board the boat back to the mainland."
 
+    # ── Thia ──────────────────────────────────
+    "Thia."
+
+    if friend_notes["thia"]["solved"]:
+        "Her skin no longer smells of the spring."
+        "The things she throws away stay gone now."
+        "She texted you once to say she thinks about where she leaves things. That was all she said."
+    else:
+        "She was found in her apartment three days after you returned. Her throat had closed."
+        "The doctors couldn't explain the brackish water in her lungs."
+        "Everything she had ever thrown away was piled neatly around her bed."
+
+    # ── Marcus ────────────────────────────────
+    "Marcus."
+
+    if friend_notes["marcus"]["solved"]:
+        "He took a day off for the first time in months."
+        "He said it felt strange, sitting still. But he managed it."
+        "He's learning to let the work wait."
+    else:
+        "He collapsed at his desk six days after you returned."
+        "His coworkers said he hadn't left the building in four days."
+        "He died doing exactly what the curse demanded, until there was nothing left of him."
+
+    # ── Yuna ──────────────────────────────────
+    "Yuna."
+
+    if friend_notes["yuna"]["solved"]:
+        "She slept through the night. Then the next. Then the next."
+        "She doesn't remember the dreams anymore."
+        "She called you once to say she was okay. That was enough."
+    else:
+        "Yuna's parents were found murdered in their home two weeks after you returned."
+        "Three days later, Yuna was found dead as well. She had taken her own life."
+        "The dreams had shown her what she could not live with."
+
+    # ── Ending branch ─────────────────────────
     $ friends_saved = sum(1 for f in friend_notes.values() if f["solved"])
 
     if friends_saved < 2:
-        # Bad ending
-        "You board the boat back to the mainland with the same hollow feeling you arrived with."
-        "The village keeps its secrets. Your friends keep suffering."
-        "Some curses, you think, were never meant to be lifted by someone like you."
-        "You wonder if you ever really saw them at all."
+        "You stare at the water as the island disappears behind you."
+        "The village gave nothing back. You took nothing home."
+        "You wonder if you ever really saw any of them at all."
         "{b}Bad Ending — The Village Remembers{/b}"
 
     elif friends_saved == 2:
-        # Normal ending
-        "You board the boat back. Two of your friends will wake up tomorrow as themselves again."
-        "The third... you don't let yourself think about the third."
+        "Two of your friends will wake up tomorrow as themselves again."
+        "The third you don't let yourself think about."
         "The village gave up some of what it took. Not all of it."
         "You wonder what it would have cost you to stay one more day."
         "{b}Normal Ending — Partial Restitution{/b}"
 
     else:
-        # Good ending
-        "You board the boat back. All three of your friends will be okay."
         "You don't feel like a hero. You feel like someone who finally paid attention."
         "The village is still standing behind you. Its history remains."
-        "But something has been returned. Something the colony tried to erase."
+        "But something has been returned — something the colony tried to erase."
         "That, at least, was yours to give back."
         "{b}Good Ending — What Was Taken{/b}"
 
