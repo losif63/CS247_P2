@@ -167,6 +167,49 @@ screen map_onboarding_screen():
                 text_xalign 0.5
 
 
+screen map_time_limit_screen():
+    modal True
+    zorder 200
+
+    add "#000000bb"
+
+    frame:
+        xalign 0.5
+        yalign 0.5
+        xmaximum 700
+        background "#161412"
+        padding (40, 36, 40, 36)
+
+        vbox:
+            spacing 20
+            xfill True
+
+            text "Your Time Is Limited":
+                font "fonts/SpecialElite.ttf"
+                color "#b89050"
+                size 34
+                xalign 0.5
+
+            text "You have {b}5 days{/b} before you must leave Pelau Siring.\n\nEach day, you may explore {b}3 locations{/b}. Once you visit a third location, night falls and the day ends.\n\nUse your time wisely.":
+                font "fonts/SpecialElite.ttf"
+                color "#c4b090"
+                size 20
+                line_spacing 6
+                xalign 0.0
+
+            textbutton "Understood":
+                xalign 0.5
+                background "#2d2720"
+                hover_background "#4a3a28"
+                padding (24, 12, 24, 12)
+                action Return()
+                text_font "fonts/SpecialElite.ttf"
+                text_color "#e8d5a0"
+                text_hover_color "#ffffff"
+                text_size 26
+                text_xalign 0.5
+
+
 # ─────────────────────────────────────────────
 # MAP BUTTON STYLES
 # ─────────────────────────────────────────────
@@ -309,6 +352,7 @@ label village_map:
     if not map_onboarding_shown:
         $ map_onboarding_shown = True
         call screen map_onboarding_screen
+        call screen map_time_limit_screen
 
     call screen village_map_screen
     $ map_choice = _return
