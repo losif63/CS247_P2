@@ -11,8 +11,8 @@ default inventory_items = []
 # Each entry: {"id": str, "name": str, "location": str, "description": str}
 
 default friend_notes = {
-    "evelyn": {
-        "symptom": "Feels like she's burning up all the time for no reason.",
+    "thia": {
+        "symptom": "Can't get rid of anything. Items she throws away keep reappearing — receipts in her pockets, food wrappers on her bed. Her condition is getting worse.",
         "solved": False,
         "notes": [],
     },

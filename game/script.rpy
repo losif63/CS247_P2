@@ -1,13 +1,15 @@
 define m = Character('Me', color="#c8c8ff")
 
 default map_onboarding_shown = False
+default current_day = 1
+default locations_today = 0
 image intro = "Enter.png"
 image village_map = "images/Map.jpg"
-image evelyn = "images/evelyn.png"
+image thia = "images/thia.png"
 image marcus = "images/marcus_affliction.png"
-image theo   = "images/theo.png"
+# image theo   = "images/theo.png"
 image yuna   = "images/yuna.png"
-image aanya  = "images/aanya.png"
+# image aanya  = "images/aanya.png"
 
 define FANON_BODY = ("\"Colonialism is not satisfied merely with holding a people in its grip "
     "and emptying the native's brain of all form and content. By a kind of perverted logic, "
@@ -64,7 +66,7 @@ label start:
 
     m "Well, here I am again. All alone, this time..."
 
-    "Last month, I visited this place for my summer vacation with 5 of my friends - Evelyn, Marcus, Theo, Yuna, and Aanya."
+    "Last month, I visited this place for my summer vacation with 5 of my friends - Thia, Marcus, Theo, Yuna, and Aanya."
 
     "After returning from the vacation, strange symptoms have appeared. I was the only one unaffected."
 
@@ -81,11 +83,12 @@ label start:
 
 label friends_flashback:
 
-    scene evelyn
+    scene thia
     with Dissolve(1.0)
-    "Evelyn."
-    "She feels like she's burning up all the time for no reason."
-    "She sleeps with multiple fans pointed at her and ice packs on her wrists."
+    "Thia."
+    "She can't get rid of anything."
+    "Whatever she throws away comes back. Receipts pile up in her pockets. Food wrappers reappear on her bed."
+    "Lately it's gotten physical — her skin smells like mangrove water no matter how much she showers, and she keeps coughing up brackish water."
 
     scene marcus at fit_screen
     with Dissolve(1.0)
@@ -196,6 +199,23 @@ style return_map_button_text:
 
 screen village_map_screen():
     modal True
+
+    # Day / location counter HUD
+    frame:
+        xpos 20
+        ypos 20
+        background "#000000aa"
+        padding (16, 10, 16, 10)
+        vbox:
+            spacing 4
+            text "Day [current_day] / 5":
+                font "fonts/SpecialElite.ttf"
+                color "#e8d5a0"
+                size 22
+            text "Locations today: [locations_today] / 3":
+                font "fonts/SpecialElite.ttf"
+                color "#a09070"
+                size 18
 
     # Rubber Plantation — bottom-left cluster
     button:
@@ -310,6 +330,15 @@ label village_map:
     elif map_choice == "mirror_pool":
         call mirror_pool_scene from _call_mirror_pool_scene
 
+    $ locations_today += 1
+
+    if locations_today >= 3:
+        call night_scene from _call_night_scene
+        $ locations_today = 0
+        $ current_day += 1
+        if current_day > 5:
+            jump game_ending
+
     jump village_map
 
 
@@ -361,3 +390,113 @@ label graveyard_scene:
 
 
 # hospital_scene is defined in locations/hospital.rpy
+
+
+# ─────────────────────────────────────────────
+# NIGHT TRANSITION
+# ─────────────────────────────────────────────
+
+label night_scene:
+    scene black
+    with Dissolve(1.5)
+
+    if current_day < 5:
+        "Night falls over Pelau Siring."
+        "Day [current_day] has ended."
+        $ _days_left = 5 - current_day
+        "[_days_left] day(s) remain."
+    else:
+        "Night falls over Pelau Siring for the last time."
+        "Five days. That was all you had."
+        "Tomorrow you leave — with whatever answers you've found."
+
+    return
+
+
+# ─────────────────────────────────────────────
+# ENDING
+# ─────────────────────────────────────────────
+
+screen ending_status_screen():
+    modal True
+    add "#000000ee"
+
+    vbox:
+        xalign 0.5
+        yalign 0.4
+        spacing 30
+
+        text "Five days have passed.":
+            font "fonts/SpecialElite.ttf"
+            color "#b89050"
+            size 38
+            xalign 0.5
+
+        null height 10
+
+        for fname, fdata in friend_notes.items():
+            $ _fname   = fname.capitalize()
+            $ _fsolved = fdata["solved"]
+            hbox:
+                xalign 0.5
+                spacing 24
+                text "[_fname]":
+                    font "fonts/SpecialElite.ttf"
+                    color "#e8d5a0"
+                    size 28
+                    xminimum 180
+                    text_align 1.0
+                text ("— Saved" if _fsolved else "— Lost"):
+                    font "fonts/Typewriter.ttf"
+                    color ("#6ab86a" if _fsolved else "#c84040")
+                    size 28
+
+        null height 30
+
+        textbutton "Continue":
+            xalign 0.5
+            background "#2d2720"
+            hover_background "#4a3a28"
+            padding (24, 12, 24, 12)
+            action Return()
+            text_font "fonts/SpecialElite.ttf"
+            text_color "#e8d5a0"
+            text_hover_color "#ffffff"
+            text_size 26
+            text_xalign 0.5
+
+
+label game_ending:
+    scene black
+    with Dissolve(2.0)
+
+    call screen ending_status_screen
+
+    $ friends_saved = sum(1 for f in friend_notes.values() if f["solved"])
+
+    if friends_saved < 2:
+        # Bad ending
+        "You board the boat back to the mainland with the same hollow feeling you arrived with."
+        "The village keeps its secrets. Your friends keep suffering."
+        "Some curses, you think, were never meant to be lifted by someone like you."
+        "You wonder if you ever really saw them at all."
+        "{b}Bad Ending — The Village Remembers{/b}"
+
+    elif friends_saved == 2:
+        # Normal ending
+        "You board the boat back. Two of your friends will wake up tomorrow as themselves again."
+        "The third... you don't let yourself think about the third."
+        "The village gave up some of what it took. Not all of it."
+        "You wonder what it would have cost you to stay one more day."
+        "{b}Normal Ending — Partial Restitution{/b}"
+
+    else:
+        # Good ending
+        "You board the boat back. All three of your friends will be okay."
+        "You don't feel like a hero. You feel like someone who finally paid attention."
+        "The village is still standing behind you. Its history remains."
+        "But something has been returned. Something the colony tried to erase."
+        "That, at least, was yours to give back."
+        "{b}Good Ending — What Was Taken{/b}"
+
+    return

@@ -124,6 +124,7 @@ label mirror_pool_bottle:
                 "The bottle is back at the water’s edge, wet with brackish water."
                 "Hmm... that did not fix it."
                 $ bottleReturned = True
+                $ journal_update_friend("thia", note="\"I keep cleaning my room, but everything I throw away outside keeps coming back.\"")
             "Leave it for now":
                 "You decide not to disturb the bottle yet."
     else:
@@ -165,12 +166,13 @@ label mirror_pool_drain:
     "A thin trail leads from the pipe into the spring."
 
     menu:
-        "Inspect the pipe":
-            "A colonial marker is almost buried in the mud:"
-            "“WASTE CHANNEL 3.”"
-            "This spring was not only neglected."
-            "It was used."
+        “Inspect the pipe”:
+            “A colonial marker is almost buried in the mud:”
+            “”WASTE CHANNEL 3.””
+            “This spring was not only neglected.”
+            “It was used.”
             $ drainInvestigated = True
+            $ journal_update_friend(“thia”, note=”\”There's mud in my sheets. I'm coughing up brackish water every hour and the saltiness is burning my throat.\””)
         "Return to Spring":
             pass
 
@@ -286,11 +288,11 @@ label mirror_pool_sign_restored:
     return
 
 label mirror_pool_thia_message:
-    "Message from Thia:"
-    "“I threw something away today and it stayed gone."
-    "I don’t think that means I fixed anything."
-    "But I think I understand why it kept coming back.”"
-    "Thia’s affliction has eased."
+    “Your phone buzzes.”
+    “A message from Thia: {i}I threw something away today and it stayed gone. I don’t think that means I fixed anything. But I think I understand why it kept coming back.{/i}”
+    m “...”
+    m “She’s going to be okay.”
+    $ journal_update_friend(“thia”, note=”Her body had become a container for everything she wanted to discard — mirroring the fate of the Mother Spring, seized as a colonial waste channel. Carrying back what she left and restoring the spring’s true name broke the connection.”, solved=True)
 
     menu:
         "Return to Map":
