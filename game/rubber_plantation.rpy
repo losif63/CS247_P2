@@ -1,6 +1,7 @@
 ################################################################################
 ## RUBBER PLANTATION — Colonial Ledger Matching Puzzle
 ################################################################################
+image rubber_plantation_bg = "images/rubber.png"
 
 init python:
 
@@ -83,13 +84,13 @@ init python:
         "note": ""},
 
         {"id": "100334", "residence": "Transport", "outputs": (88, 86, 90),
-        "note": "Tall."},
+        "note": "Requests to be assigned with younger sibling."},
 
         {"id": "100335", "residence": "Grove A", "outputs": (26, 26, 27),
         "note": "Guardian: 100331."},
 
         {"id": "100336", "residence": "Grove A", "outputs": (70, 73, 70),
-        "note": "Contract revised - week 18."},
+        "note": "Contract revised - week 18 (birth in family)."},
     ]
 
     # ── Census entries (shuffled so matching isn't trivially 1-to-1) ──────────
@@ -142,7 +143,7 @@ init python:
         "sex": "M",
         "race": "Non-White",
         "marital": "Unmarried",
-        "family": "Eldest of 3 sons",
+        "family": "Eldest of 2 sons",
         "labor_status": "Fit"
     },
 
@@ -152,7 +153,7 @@ init python:
         "sex": "M",
         "race": "Non-White",
         "marital": "Unmarried",
-        "family": "Has 2 siblings",
+        "family": "1 sibling",
         "labor_status": "Fit"
     },
 
@@ -195,9 +196,7 @@ init python:
     }
 
     MATCH_COLOR_CORRECT  = "#1a6b3a"   # dark green — correct pair
-    MATCH_COLOR_WRONG    = "#c8913a"   # amber  — wrong pair (unused during puzzle)
-    MATCH_COLOR_ASSIGNED = "#c8913a"   # neutral amber — any active connection
-
+   
     # ── Puzzle state (globals reset at scene start) ───────────────────────────
 
     plantation_matches  = [None] * 8   # matches[ledger_idx] = census_idx | None
@@ -257,7 +256,7 @@ init python:
 ################################################################################
 
 style plantation_panel_frame:
-    background Frame("gui/paper.jpg", 0, 0, 0, 0)
+    background Frame("gui/paper_pixel.png", 0, 0, 0, 0)
     padding (0, 0, 0, 0)
 
 style plantation_header_frame:
@@ -643,7 +642,7 @@ screen plantation_puzzle():
 ################################################################################
 
 label rubber_plantation_scene:
-    scene black
+    scene rubber_plantation_bg
     with Dissolve(0.5)
 
     "You arrive at the rubber plantation at the edge of the village."
@@ -670,7 +669,7 @@ label rubber_plantation_scene:
                 $ plantation_mark_wrong()
                 jump rubber_plantation_failed
 
-image marcus_haggling = "images/marcus-haggling.png"
+image marcus_haggling = "images/Marcus_Haggling_New.png"
 
 transform fullscreen:
     xysize (1920, 1080)
