@@ -26,6 +26,13 @@ define gui.show_name = True
 define config.version = "1.0"
 
 
+## Developer mode. "auto" enables developer features (Shift+O console,
+## Shift+R reload, Shift+D debug menu, dev scene-select in label start)
+## when run from the Ren'Py launcher, and disables them in built distributions.
+
+define config.developer = "auto"
+
+
 ## Text that is placed on the game's about screen. Place the text between the
 ## triple-quotes, and leave a blank line between paragraphs.
 

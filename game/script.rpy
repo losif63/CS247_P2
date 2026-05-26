@@ -49,6 +49,9 @@ screen epigraph(body, source=""):
             text source style "epigraph_attribution"
 
 label start:
+    if config.developer:
+        call dev_scene_select from _call_dev_scene_select
+
     ################ Starting Sequence #################
     $ quick_menu = True
     scene black
@@ -527,3 +530,61 @@ label game_ending:
         "{b}Good Ending — What Was Taken{/b}"
 
     return
+
+
+# ─────────────────────────────────────────────
+# DEVELOPER SCENE SELECT
+# Only invoked when config.developer is True.
+# Pre-sets any variables a scene expects, then jumps.
+# ─────────────────────────────────────────────
+
+label dev_scene_select:
+    menu:
+        "── DEV: where to start? ──"
+
+        "Normal start (intro)":
+            return
+
+        # ── Free roam ──────────────────────────────────
+        "Village map (free roam)":
+            jump village_map
+
+        # ── After-puzzle resolution scenes ─────────────
+        "Marcus — Rubber Plantation post-puzzle":
+            call rubber_plantation_solved from _call_dev_rubber_plantation_solved
+            jump dev_scene_select
+
+        "Thia — Mirror Pool post-puzzle (sign restored)":
+            call mirror_pool_sign_restored from _call_dev_mirror_pool_sign_restored
+            jump dev_scene_select
+
+        "Thia — Mirror Pool post-puzzle (Thia message)":
+            call mirror_pool_thia_message from _call_dev_mirror_pool_thia_message
+            jump dev_scene_select
+
+        "Yuna — Empty Home post-puzzle (flashback + present)":
+            call empty_home_photo_flashback from _call_dev_empty_home_photo_flashback
+            call empty_home_photo_present from _call_dev_empty_home_photo_present
+            jump dev_scene_select
+
+        # ── Night & endings ────────────────────────────
+        "Night scene (day 1)":
+            jump night_scene
+
+        "Night scene (final day)":
+            $ current_day = 5
+            jump night_scene
+
+        "Ending — no friends saved":
+            jump game_ending
+
+        "Ending — partial (2 friends saved)":
+            $ friend_notes["thia"]["solved"] = True
+            $ friend_notes["marcus"]["solved"] = True
+            jump game_ending
+
+        "Ending — all friends saved":
+            python:
+                for f in friend_notes.values():
+                    f["solved"] = True
+            jump game_ending
