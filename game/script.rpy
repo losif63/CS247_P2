@@ -5,10 +5,11 @@ default current_day = 1
 default locations_today = 0
 image intro = "Enter.png"
 image village_map = "images/Map.jpg"
-image thia = "images/thia.png"
-image marcus = "images/marcus_affliction.png"
+image bg black = Solid("#000")
+image thia = "images/ThiaTransparentBG.png"
+image marcus = "images/marcusasset.png"
 # image theo   = "images/theo.png"
-image yuna   = "images/yuna.png"
+image yuna   = "images/yunaasset.png"
 # image aanya  = "images/aanya.png"
 
 define FANON_BODY = ("\"Colonialism is not satisfied merely with holding a people in its grip "
@@ -23,6 +24,13 @@ transform fit_screen:
     fit "cover"
     xalign 0.5
     yalign 0.5
+
+transform friend_flashback:
+    xalign 0.5
+    yalign 0.74
+    xanchor 0.5
+    yanchor 1.0
+    zoom 0.65
 
 style epigraph_quote:
     color "#ffffff"
@@ -66,7 +74,7 @@ label start:
 
     m "Well, here I am again. All alone, this time..."
 
-    "Last month, I visited this place for my summer vacation with 5 of my friends - Thia, Marcus, Theo, Yuna, and Aanya."
+    "Last month, I visited this place for my summer vacation with 3 of my friends - Thia, Marcus and Yuna."
 
     "After returning from the vacation, strange symptoms have appeared. I was the only one unaffected."
 
@@ -83,14 +91,16 @@ label start:
 
 label friends_flashback:
 
-    scene thia
+    scene bg black
+    show thia at friend_flashback
     with Dissolve(1.0)
     "Thia."
     "She can't get rid of anything."
     "Whatever she throws away comes back. Receipts pile up in her pockets. Food wrappers reappear on her bed."
     "Lately it's gotten physical — her skin smells like mangrove water no matter how much she showers, and she keeps coughing up brackish water."
 
-    scene marcus at fit_screen
+    scene bg black
+    show marcus at friend_flashback
     with Dissolve(1.0)
     "Marcus."
     "He can't stop working. He shows up to work hours early and leaves late at night."
@@ -102,7 +112,8 @@ label friends_flashback:
     # "He can't get rid of anything. The things he throws away appears on his bed."
     # "Receipts pile up in his pockets, food wrappers show up on his bed."
 
-    scene yuna
+    scene bg black
+    show yuna at friend_flashback
     with Dissolve(1.0)
     "Yuna."
     "She is plagued by recurring dreams she can't escape."

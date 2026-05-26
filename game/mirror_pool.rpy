@@ -19,7 +19,7 @@ transform thia_left_speaker:
     # Anchor the sprite by its bottom edge and place it above the dialogue box
     xalign 0.12
     # lowered to sit closer to the dialogue box
-    yalign 0.70
+    yalign 0.74
     xanchor 0.5
     yanchor 1.0
     zoom 0.65
