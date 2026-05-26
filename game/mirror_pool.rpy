@@ -12,6 +12,17 @@ image spring_bg_with_bottle = "images/SpringBackgroundWithBottle.png"
 image sign_view_bg = "images/BackgroundViewWhenViewingSign.png"
 image sign_before_change = "images/SignBeforeChange.png"
 image sign_after_correct_change = "images/SignAfterCorrectChange.png"
+# Thia sprite used for the final message
+image thia_sprite = "images/ThiaTransparentBG.png"
+
+transform thia_left_speaker:
+    # Anchor the sprite by its bottom edge and place it above the dialogue box
+    xalign 0.12
+    # lowered to sit closer to the dialogue box
+    yalign 0.70
+    xanchor 0.5
+    yanchor 1.0
+    zoom 0.65
 
 transform sign_full_view:
     xalign 0.5
@@ -288,11 +299,13 @@ label mirror_pool_sign_restored:
     return
 
 label mirror_pool_thia_message:
-    "Your phone buzzes."
-    "A message from Thia: {i}I threw something away today and it stayed gone. I don't think that means I fixed anything. But I think I understand why it kept coming back.{/i}"
-    m "..."
-    m "She's going to be okay."
-    $ journal_update_friend("thia", note="Her body had become a container for everything she wanted to discard — mirroring the fate of the Mother Spring, seized as a colonial waste channel. Carrying back what she left and restoring the spring's true name broke the connection.", solved=True)
+    "Message from Thia:"
+    show thia_sprite onlayer master at thia_left_speaker zorder 2000
+    "“I threw something away today and it stayed gone."
+    "I don’t think that means I fixed anything."
+    "But I think I understand why it kept coming back.”"
+    "Thia’s affliction has eased."
+    hide thia_sprite onlayer master
 
     menu:
         "Return to Map":
