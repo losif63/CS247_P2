@@ -158,7 +158,7 @@ screen map_onboarding_screen():
                 size 34
                 xalign 0.5
 
-            text "Use the {b}Journal{/b} button in the quick menu at the bottom of the screen to open your investigation notes at any time.\n\n• {color=#ff0000}{b}Inventory{/b}{/color} — clues and items you've collected\n• {color=#0000ff}{b}Friends{/b}{/color} — your friends' current status":
+            text "Use the {b}Journal{/b} button in the quick menu at the bottom right of the screen to open your investigation notes at any time.\n\n• {color=#ff0000}{b}Inventory{/b}{/color} — clues and items you've collected\n• {color=#0000ff}{b}Friends{/b}{/color} — your friends' current status":
                 font "fonts/SpecialElite.ttf"
                 color "#c4b090"
                 size 20

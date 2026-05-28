@@ -254,15 +254,35 @@ screen quick_menu():
             textbutton _("Q.Save") action QuickSave()
             textbutton _("Q.Load") action QuickLoad()
             textbutton _("Prefs") action ShowMenu('preferences')
-            textbutton _("Journal") action Function(renpy.show_screen, "journal_screen")
 
 
 ## This code ensures that the quick_menu screen is displayed in-game, whenever
 ## the player has not explicitly hidden the interface.
 init python:
     config.overlay_screens.append("quick_menu")
+    config.overlay_screens.append("journal_icon")
 
 default quick_menu = True
+
+
+## Journal Icon ##
+
+screen journal_icon():
+    zorder 101
+
+    if quick_menu:
+        button:
+            xalign 1.0
+            yalign 1.0
+            xoffset 70
+            yoffset -10
+            xysize (350, 191)
+            background None
+            hover_background None
+            action Function(renpy.show_screen, "journal_screen")
+
+            add "images/journal.png" xysize (350, 191)
+
 
 style quick_menu is hbox
 style quick_button is default
