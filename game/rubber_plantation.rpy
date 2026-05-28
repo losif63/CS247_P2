@@ -661,7 +661,9 @@ label rubber_plantation_scene:
     $ plantation_names[4] = "Mira Sotan"
 
     label .puzzle_loop:
+        $ journal_blocked = True
         call screen plantation_puzzle
+        $ journal_blocked = False
         if _return == "check":
             if plantation_check_answers():
                 jump rubber_plantation_solved

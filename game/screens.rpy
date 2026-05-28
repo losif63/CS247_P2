@@ -263,6 +263,7 @@ init python:
     config.overlay_screens.append("journal_icon")
 
 default quick_menu = True
+default journal_blocked = False
 
 
 ## Journal Icon ##
@@ -270,7 +271,7 @@ default quick_menu = True
 screen journal_icon():
     zorder 101
 
-    if quick_menu and journal_available:
+    if quick_menu and journal_available and not journal_blocked:
         button:
             xalign 1.0
             yalign 1.0
