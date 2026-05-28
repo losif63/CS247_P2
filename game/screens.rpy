@@ -270,7 +270,7 @@ default quick_menu = True
 screen journal_icon():
     zorder 101
 
-    if quick_menu:
+    if quick_menu and journal_available:
         button:
             xalign 1.0
             yalign 1.0

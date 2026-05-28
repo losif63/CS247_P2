@@ -1,6 +1,7 @@
 define m = Character('Me', color="#c8c8ff")
 
 default map_onboarding_shown = False
+default journal_available = False
 default current_day = 1
 default locations_today = 0
 image intro = "Enter.png"
@@ -81,6 +82,8 @@ label start:
     call friends_flashback from _call_friends_flashback
 
     "The doctors couldn't identify what's wrong with them. Something tells me that the secret lies in this village..."
+
+    $ journal_available = True
 
     jump village_map
 
