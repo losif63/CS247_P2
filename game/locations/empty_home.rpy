@@ -202,6 +202,23 @@ init python:
                     "msg_first": "A wooden rack leans against the wall, holding a few old tools. A {color=#ff0000}{b}shovel{/b}{/color} hangs from one of the pegs — you take it.",
                     "msg_done":  "The rack is empty now.",
                 },
+                {
+                    "id":        "empty_home.basement.crumpled_code_note",
+                    "name":      "Crumpled Note Behind Rack",
+                    "item":      None,
+                    "action":    "empty_home_crumpled_code_note_action",
+                    "msg_first": [
+                        "Behind the rack, something brittle catches against the wood.",
+                        "You pull out a crumpled note, damp at the edges but still readable.",
+                        "1A: MOTHER",
+                        "3A: SPRING",
+                        "7G: REMEMBERS",
+                        "The codes look familiar.",
+                        "Not names. Not exactly.",
+                        "More like a way to read something hidden somewhere else.",
+                    ],
+                    "msg_done": "The note is gone now.",
+                },
             ],
             "puzzle":     None,
             "requires":   "empty_home.basement_door.key",
@@ -234,6 +251,11 @@ init python:
             "name": "Shovel",
             "location": "Empty Home - Basement",
             "description": "An old shovel taken from a rack in the basement."
+        },
+        "empty_home.basement.crumpled_code_note": {
+            "name": "Crumpled Code Note",
+            "location": "Empty Home - Basement",
+            "description": "A torn note found behind the basement rack: 1A: MOTHER, 3A: SPRING, 7G: REMEMBERS."
         },
 
     })
@@ -295,6 +317,20 @@ label empty_home_basement_door_intro:
 label empty_home_basement_unlock:
     "You fit the key into the lock. It turns with a heavy click."
     "The door swings inward. Cold air rises from below."
+    return
+
+label empty_home_crumpled_code_note_action:
+    if codeNoteFound:
+        "You've already taken the crumpled note."
+        return
+
+    $ codeNoteFound = True
+    $ journal_add_item(
+        "empty_home.basement.crumpled_code_note",
+        "Crumpled Code Note",
+        "Empty Home - Basement",
+        "A torn note found behind the basement rack: 1A: MOTHER, 3A: SPRING, 7G: REMEMBERS."
+    )
     return
 
 

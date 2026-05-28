@@ -1,16 +1,24 @@
 default bottleReturned = False
+default bottleFilled = False
+default bayaniNoteRead = False
+default codeNoteFound = False
+default signMarksRevealed = False
 default signInvestigated = False
 default drainInvestigated = False
+default signRemoved = False
 default finalBottleChoiceUnlocked = False
 default bottleResolved = False
+default messageDecoded = False
 default signRestorationUnlocked = False
 default signChanged = False
 default puzzleSolved = False
 default mirror_pool_intro_seen = False
 image spring_bg_without_bottle = "images/SpringBackgroundWithoutBottle.png"
 image spring_bg_with_bottle = "images/SpringBackgroundWithBottle.png"
+image spring_bg_without_sign = "images/SignAfterRemoved.png"
 image sign_view_bg = "images/BackgroundViewWhenViewingSign.png"
 image sign_before_change = "images/SignBeforeChange.png"
+image sign_with_marks_revealed = "images/SignWithMarksRevealed.png"
 image sign_after_correct_change = "images/SignAfterCorrectChange.png"
 # Thia sprite used for the final message
 image thia_sprite = "images/ThiaTransparentBG.png"
@@ -33,7 +41,9 @@ screen mirror_pool_screen():
     modal True
     tag mirror_pool
 
-    if bottleResolved:
+    if signRemoved:
+        add "SignAfterRemoved.png" at fit_screen
+    elif bottleFilled:
         add "SpringBackgroundWithoutBottle.png" at fit_screen
     else:
         add "SpringBackgroundWithBottle.png" at fit_screen
@@ -48,8 +58,8 @@ screen mirror_pool_screen():
         hover_background Solid("#ffffff22")
         action Return("drain")
 
-    # Bottle hotspot (only present when the bottle is unresolved)
-    if not bottleResolved:
+    # Bottle hotspot (only present when the bottle is unresolved, unfilled, and the sign has not been removed)
+    if not bottleResolved and not signRemoved and not bottleFilled:
         button:
             xpos 590
             ypos 840
@@ -78,7 +88,9 @@ screen mirror_pool_screen():
 
 label mirror_pool_scene:
     while True:
-        if bottleResolved:
+        if signRemoved:
+            scene spring_bg_without_sign at fit_screen
+        elif bottleFilled:
             scene spring_bg_without_bottle at fit_screen
         else:
             scene spring_bg_with_bottle at fit_screen
@@ -100,14 +112,11 @@ label mirror_pool_scene:
             call mirror_pool_sign from _call_mirror_pool_sign
         elif choice == "drain":
             call mirror_pool_drain from _call_mirror_pool_drain
-        elif choice == "change_sign":
-            call mirror_pool_sign_restore from _call_mirror_pool_sign_restore
         elif choice == "return_map":
             return
         elif choice == "check_thia":
             call mirror_pool_thia_message from _call_mirror_pool_thia_message
-        elif choice == "final_bottle":
-            call mirror_pool_final_bottle_choice from _call_mirror_pool_final_bottle_choice
+
 
         if puzzleSolved:
             return
@@ -117,10 +126,6 @@ label mirror_pool_scene:
 label mirror_pool_bottle:
     if bottleResolved:
         "The bottle is gone from the spring now. The water is quieter for it."
-        return
-
-    if finalBottleChoiceUnlocked:
-        call mirror_pool_final_bottle_choice from _call_mirror_pool_final_bottle_choice_1
         return
 
     if not bottleReturned:
@@ -138,17 +143,46 @@ label mirror_pool_bottle:
                 $ journal_update_friend("thia", note="\"I keep cleaning my room, but everything I throw away outside keeps coming back.\"")
             "Leave it for now":
                 "You decide not to disturb the bottle yet."
-    else:
+        return
+
+    if not bottleFilled:
         "The bottle is still here."
         "Every time you try to remove it, the spring gives it back."
 
-    if bottleReturned and signInvestigated and drainInvestigated and not finalBottleChoiceUnlocked:
-        $ finalBottleChoiceUnlocked = True
+        if bottleReturned and signInvestigated and drainInvestigated:
+            menu:
+                "Fill the bottle with spring water.":
+                    "You lower Thia’s bottle into the spring."
+                    "The water inside darkens, then stills."
+                    "For the first time, the bottle does not roll away from your hand."
+                    "The bottle is no longer only something Thia left behind."
+                    "For now, it is carrying something back."
+                    $ bottleFilled = True
+                    $ journal_add_item(
+                        "mirror_pool.bottle_of_spring_water",
+                        "Bottle of Spring Water",
+                        "Mirror Pool",
+                        "A bottle filled with dark spring water from the Mirror Pool. It feels less like trash and more like a message waiting to be carried."
+                    )
+                "Leave it for now":
+                    "You decide not to disturb it yet."
+        else:
+            menu:
+                "Leave it for now":
+                    "You decide not to disturb it yet."
+        return
+
+    "The bottle is full of dark spring water."
+    "It feels less like trash now and more like a message waiting to be carried."
+
+    menu:
+        "Return to Spring":
+            pass
     return
 
 label mirror_pool_sign:
-    if signRestorationUnlocked and not signChanged:
-        call mirror_pool_sign_restore from _call_mirror_pool_sign_restore_1
+    if signRemoved:
+        call mirror_pool_sign_removed from _call_mirror_pool_sign_removed
         return
 
     scene sign_view_bg at fit_screen
@@ -159,17 +193,68 @@ label mirror_pool_sign:
     "A scenic stop. A place for visitors. A place made easy to look at."
     "But the wood underneath looks older than the words painted on top."
 
-    menu:
-        "Look closer":
-            "Beneath the tourist name, you notice an older meaning trying to surface."
-            "This place was not always named for reflection."
-            "It was once named for mourning."
-            $ signInvestigated = True
-        "Return to Spring":
-            pass
+    if not signMarksRevealed:
+        if bottleFilled and bayaniNoteRead:
+            menu:
+                "Pour spring water over the sign.":
+                    "You pour the spring water over the painted wood."
+                    "At first, nothing happens."
+                    "Then the tourist paint darkens."
+                    "Three small marks surface beneath the words “THE MIRROR POOL.”"
+                    $ signMarksRevealed = True
+                    $ journal_add_item(
+                        "mirror_pool.hidden_sign_marks",
+                        "Hidden Sign Marks",
+                        "Mirror Pool Sign",
+                        "After spring water touched the sign, three marks appeared beneath the tourist paint: 1A, 3A, and 7G."
+                    )
+                    scene sign_view_bg at fit_screen
+                    show sign_with_marks_revealed at sign_full_view
+                    with Dissolve(0.5)
+                    "The sign now shows three hidden marks:"
+                    "1A"
+                    "3A"
+                    "7G"
+                "Look closer":
+                    "The words are painted over older wood."
+                    "Something is underneath, but the tourist sign is covering most of it."
+                    $ signInvestigated = True
+                "Return to Spring":
+                    pass
+        elif bottleFilled and not bayaniNoteRead:
+            menu:
+                "Look closer":
+                    "The bottle is full of spring water, but you are not sure what to do with it yet."
+                    "The sign remains silent beneath its tourist name."
+                    $ signInvestigated = True
+                "Return to Spring":
+                    pass
+        else:
+            menu:
+                "Look closer":
+                    "The words are painted over older wood."
+                    "Something is underneath, but the tourist sign is covering most of it."
+                    $ signInvestigated = True
+                "Return to Spring":
+                    pass
+    else:
+        scene sign_view_bg at fit_screen
+        show sign_with_marks_revealed at sign_full_view
+        with Dissolve(0.5)
 
-    if bottleReturned and signInvestigated and drainInvestigated and not finalBottleChoiceUnlocked:
-        $ finalBottleChoiceUnlocked = True
+        if not codeNoteFound:
+            "The sign shows three hidden marks:"
+            "1A"
+            "3A"
+            "7G"
+            "They look important, but you do not have enough to read them yet."
+            menu:
+                "Return to Spring":
+                    pass
+        elif not messageDecoded:
+            call mirror_pool_decode_marks from _call_mirror_pool_decode_marks
+        else:
+            call mirror_pool_remove_sign_choice from _call_mirror_pool_remove_sign_choice
     return
 
 label mirror_pool_drain:
@@ -187,123 +272,139 @@ label mirror_pool_drain:
         "Return to Spring":
             pass
 
-    if bottleReturned and signInvestigated and drainInvestigated and not finalBottleChoiceUnlocked:
-        $ finalBottleChoiceUnlocked = True
     return
 
-label mirror_pool_final_bottle_choice:
-    if not finalBottleChoiceUnlocked:
-        return
+label mirror_pool_decode_marks:
+    scene sign_view_bg at fit_screen
+    show sign_with_marks_revealed at sign_full_view
+    with Dissolve(0.5)
 
-    "You know enough now to understand why the bottle keeps returning."
-    "The spring was not only a scenic place."
-    "It was a place renamed, used, and made to hold what others wanted gone."
-    "What do you do with Thia's bottle?"
+    "The sign shows three hidden marks:"
+    "1A"
+    "3A"
+    "7G"
+
+    "In your journal, the crumpled note from the Empty Home basement gives the key:"
+    "1A: MOTHER"
+    "3A: SPRING"
+    "7G: REMEMBERS"
+
+    "Use the note to decode the hidden message."
 
     while True:
         menu:
-            "Throw it in the trash again.":
-                "You throw the bottle away again."
-                "For a moment, the spring is still."
-                "Then the bottle rolls back through the mud."
-                "Hmm... that is not right."
-                "Throwing it away treats the problem like litter, but this place was already forced to hold what others discarded."
-            "Leave it by the spring as an offering.":
-                "You place the bottle carefully by the water."
-                "Nothing changes."
-                "Hmm... that does not feel right either."
-                "The bottle was not left in mourning. It was left because Thia assumed the place would absorb it."
-            "Carry it away and uncover the old name on the sign.":
-                "You pick up Thia's bottle and hold onto it."
-                "This time, it does not roll back."
-                "The spring does not ask you to leave the bottle here."
-                "It asks you to stop pretending this place was only scenery."
+            "MOTHER SPRING REMEMBERS":
+                "The words settle into place."
+                "1A: MOTHER."
+                "3A: SPRING."
+                "7G: REMEMBERS."
+                "MOTHER SPRING REMEMBERS."
+                $ messageDecoded = True
+                $ journal_add_item(
+                    "mirror_pool.decoded_message",
+                    "Decoded Spring Message",
+                    "Mirror Pool Sign",
+                    "Using the crumpled code note, you decoded the hidden marks on the sign: MOTHER SPRING REMEMBERS."
+                )
+                return
+
+            "SPRING MOTHER REMEMBERS":
+                "Hmm... that does not feel right."
+                "The words are there, but the marks are asking to be read more carefully."
+                "Check the note from the basement."
+
+            "REMEMBERS MOTHER SPRING":
+                "That version hides the beginning again."
+                "The message should start where the first mark starts."
+                "Check the note from the basement."
+
+label mirror_pool_remove_sign_choice:
+    scene sign_view_bg at fit_screen
+    show sign_with_marks_revealed at sign_full_view
+    with Dissolve(0.5)
+
+    "The decoded message is clear now."
+    "The problem is not that the sign needs better words."
+    "The problem is that the tourist sign was placed over what was already there."
+
+    "What do you do with the tourist sign?"
+
+    while True:
+        menu:
+            "Write the hidden message onto the sign.":
+                "Hmm... that feels too easy."
+                "The message was not missing because no one wrote it."
+                "It was hidden because something was placed over it."
+
+            "Put up a new warning about littering.":
+                "That makes the harm too small."
+                "This was never only about litter."
+
+            "Pull the tourist sign away.":
+                "You grip the edge of the tourist sign."
+                "The wood groans as it pulls loose from the older post beneath it."
+                "For a moment, the spring is quiet."
+                "Then the tourist sign comes free."
+                $ signRemoved = True
+                jump mirror_pool_sign_removed
+
+label mirror_pool_sign_removed:
+    scene spring_bg_without_sign at fit_screen
+    with Dissolve(0.5)
+
+    "The tourist name no longer gets the last word."
+    "The spring is still dark."
+    "The mangroves still hold what they were made to hold."
+    "But the sign is gone now."
+
+    "You are still holding Thia's bottle, filled with the spring water you collected earlier."
+
+    call mirror_pool_final_bottle_resolution from _call_mirror_pool_final_bottle_resolution
+    return
+
+label mirror_pool_final_bottle_resolution:
+    scene spring_bg_without_sign at fit_screen
+    with Dissolve(0.5)
+
+    "The bottle is in your hand now."
+    "It feels different than before."
+    "The spring has returned what it needed to return."
+
+    "What do you do with Thia’s bottle now?"
+
+    while True:
+        menu:
+            "Leave it by the spring.":
+                "You start to set the bottle down."
+                "Hmm... no."
+                "The bottle was not left in mourning."
+                "It was left because Thia assumed the place would hold it for her."
+
+            "Throw it away again.":
+                "You look toward the trash bin."
+                "But this is not about making the bottle disappear anymore."
+
+            "Carry it away.":
+                "You cap the bottle and carry it away from the spring."
+                "This time, it does not pull back toward the water."
+                "It is only a bottle now."
                 $ bottleResolved = True
-                $ signRestorationUnlocked = True
-                jump mirror_pool_after_bottle_choice
+                $ puzzleSolved = True
+                $ journal_update_friend(
+                    "thia",
+                    note="Thia’s affliction was tied to the Mirror Pool, a mourning site renamed for tourists after being used as Waste Channel 3. The hidden marks beneath the tourist sign decoded to: MOTHER SPRING REMEMBERS.",
+                    solved=True
+                )
+                jump mirror_pool_thia_message
 
-    return
-
-label mirror_pool_after_bottle_choice:
-    scene spring_bg_without_bottle at fit_screen
-    with Dissolve(0.5)
-
-    "The bottle is gone, but the sign still speaks first."
-    "The Mirror Pool."
-    "A tourist name. A clean name. A name that makes the spring easier to pass through."
-
-    menu:
-        "Change the Sign Back":
-            call mirror_pool_sign_restore from _call_mirror_pool_sign_restore_2
-        "Return to Spring":
-            pass
-
-    return
-
-label mirror_pool_sign_restore:
-    scene sign_view_bg at fit_screen
-    if not signChanged:
-        show sign_before_change at sign_full_view
-    else:
-        show sign_after_correct_change at sign_full_view
-    with Dissolve(0.5)
-
-    if not signChanged:
-        "The bottle is gone, but the sign still speaks first."
-        "The Mirror Pool."
-        "A tourist name. A clean name. A name that makes the spring easier to pass through."
-        "What should the sign say now?"
-
-        while True:
-            menu:
-                "Please keep this area clean.":
-                    "Hmm... that is not enough."
-                    "The marker talks about cleanliness, but not memory."
-                    "This place was not only dirtied. It was renamed, used, and made easier to ignore."
-                "Mother Spring: a place of mourning, later used as a waste channel.":
-                    "You fix the marker beneath the old sign."
-                    "The words “Mirror Pool” are still there, but they no longer get the last word."
-                    $ signChanged = True
-                    $ puzzleSolved = True
-                    jump mirror_pool_sign_restored
-                "Do not litter. Fines may apply.":
-                    "Hmm... that makes the harm too small."
-                    "This was never only about litter."
-                    "A warning sign cannot acknowledge what happened here."
-
-    else:
-        "The sign now names what the tourist version hid."
-        "Mother Spring."
-        "A place of mourning."
-        "Later used as a waste channel."
-        return
-
-label mirror_pool_sign_restored:
-    scene sign_view_bg at fit_screen
-    show sign_after_correct_change at sign_full_view
-    with Dissolve(0.5)
-
-    "The sign now names what the tourist version hid."
-    "Mother Spring."
-    "A place of mourning."
-    "Later used as a waste channel."
-    "The bottle stays in your bag."
-    "It does not return."
-
-    menu:
-        "Check on Thia":
-            call mirror_pool_thia_message from _call_mirror_pool_thia_message_1
-        "Return to Spring":
-            pass
-
-    return
 
 label mirror_pool_thia_message:
     "Message from Thia:"
     show thia_sprite onlayer master at thia_left_speaker zorder 2000
-    "“I threw something away today and it stayed gone."
-    "I don’t think that means I fixed anything."
-    "But I think I understand why it kept coming back.”"
+    "“Something changed."
+    "I threw something away today and it stayed gone."
+    "But I don’t think it was because I finally got rid of it."
+    "I think it was because I stopped asking the wrong place to hold it."
     "Thia’s affliction has eased."
     hide thia_sprite onlayer master
 

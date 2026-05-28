@@ -189,12 +189,12 @@ init python:
                     "id":        "city_hall.3f.archiveroom_interrogation_bayani",
                     "name":      "Bayani Magtanggol",
                     "item":      None,
-                    "action":    None,
+                    "action":    "city_hall_bayani_note_action",
                     "msg_first": [
                         "Name: Bayani Magtanggol.",
                         "Arrested For: Assasination of military general.",
                         "Interrogation Method: 1A.",
-                        "Notes: (scribbles)",
+                        "Notes: Water returns what ink refuses.",
                     ],
                     "msg_done": "You already viewed this entry."
                 },
@@ -258,6 +258,21 @@ label city_hall_2f_intro:
 label city_hall_3f_intro:
     "The third floor is restricted access, according to the sign at the stairwell."
     "The sign has been torn halfway off. No one is here to stop you."
+    return
+
+label city_hall_bayani_note_action:
+    if bayaniNoteRead:
+        "You've already read Bayani's note."
+        return
+
+    $ bayaniNoteRead = True
+    $ journal_add_item(
+        "city_hall.bayani_margin_note",
+        "Bayani's Margin Note",
+        "City Hall - Archive Room",
+        "A note in Bayani Magtanggol's interrogation record reads: 'Water returns what ink refuses.'"
+    )
+    "You trace the scribbled note carefully."
     return
 
 label city_hall_3f_archiveroom_intro:
