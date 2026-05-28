@@ -84,7 +84,7 @@ screen mirror_pool_screen():
         text_style "return_map_button_text"
         xalign 0.97
         yalign 0.04
-        action Return("return_map")
+        action Confirm("Are you sure you want to return to the map?", Return("return_map"))
 
 label mirror_pool_scene:
     while True:
