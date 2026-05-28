@@ -279,7 +279,7 @@ screen journal_icon():
             xysize (350, 191)
             background None
             hover_background None
-            action Function(renpy.show_screen, "journal_screen")
+            action ToggleScreen("journal_screen")
 
             add "images/journal.png" xysize (350, 191)
 
