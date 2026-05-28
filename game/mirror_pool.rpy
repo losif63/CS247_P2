@@ -305,6 +305,7 @@ label mirror_pool_thia_message:
     "I don’t think that means I fixed anything."
     "But I think I understand why it kept coming back.”"
     "Thia’s affliction has eased."
+    $ journal_update_friend("thia", note="Thia's affliction has eased.", solved=True)
     hide thia_sprite onlayer master
 
     menu:
