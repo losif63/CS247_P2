@@ -249,7 +249,7 @@ label empty_home_scene:
 # ── Intro labels (called once per node on first visit) ────────────────────────
 
 label empty_home_intro:
-    scene black
+    scene emptyhome at fit_screen
     with Dissolve(0.5)
     "The door to the empty home swings open at your touch — it wasn't locked."
     "A layer of dust coats everything. Furniture still in place, as if the occupants simply vanished."

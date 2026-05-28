@@ -238,7 +238,7 @@ label town_hall_scene:
 # ── Intro labels (called once per node on first visit) ────────────────────────
 
 label city_hall_intro:
-    scene black
+    scene townhall at fit_screen
     with Dissolve(0.5)
     "You push open the heavy doors of the city hall."
     "Dusty portraits of colonial administrators line the walls, staring down with cold, flat eyes."

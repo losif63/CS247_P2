@@ -222,7 +222,7 @@ label church_backyard_box_puzzle:
 # ── Intro / unlock labels ─────────────────────────────────────────────────────
 
 label church_intro:
-    scene black
+    scene church at fit_screen
     with Dissolve(0.5)
     "The church looms at the edge of the square, its white walls stained by decades of rain."
     "Inside, rows of wooden pews face a simple altar."

@@ -274,7 +274,7 @@ screen journal_icon():
         button:
             xalign 1.0
             yalign 1.0
-            xoffset 70
+            xoffset 80
             yoffset -10
             xysize (350, 191)
             background None
