@@ -2,6 +2,8 @@ default bottleReturned = False
 default bottleFilled = False
 default bayaniNoteRead = False
 default codeNoteFound = False
+default waterNoteFound = False
+default museumFragmentsFound = False
 default signMarksRevealed = False
 default signInvestigated = False
 default drainInvestigated = False
@@ -19,7 +21,6 @@ image spring_bg_without_sign = "images/SignAfterRemoved.png"
 image sign_view_bg = "images/BackgroundViewWhenViewingSign.png"
 image sign_before_change = "images/SignBeforeChange.png"
 image sign_with_marks_revealed = "images/SignWithMarksRevealed.png"
-image sign_after_correct_change = "images/SignAfterCorrectChange.png"
 # Thia sprite used for the final message
 image thia_sprite = "images/ThiaTransparentBG.png"
 
@@ -194,34 +195,36 @@ label mirror_pool_sign:
     "But the wood underneath looks older than the words painted on top."
 
     if not signMarksRevealed:
-        if bottleFilled and bayaniNoteRead:
+        if bottleFilled and waterNoteFound:
             menu:
                 "Pour spring water over the sign.":
                     "You pour the spring water over the painted wood."
                     "At first, nothing happens."
                     "Then the tourist paint darkens."
-                    "Three small marks surface beneath the words “THE MIRROR POOL.”"
+                    "Three small marks surface beneath the tourist name."
+                    "They do not look like words."
+                    "They look like labels someone expected to be overlooked."
                     $ signMarksRevealed = True
                     $ journal_add_item(
                         "mirror_pool.hidden_sign_marks",
                         "Hidden Sign Marks",
                         "Mirror Pool Sign",
-                        "After spring water touched the sign, three marks appeared beneath the tourist paint: 1A, 3A, and 7G."
+                        "After spring water touched the sign, three marks appeared beneath the tourist paint: S-03, S-08, and S-14."
                     )
                     scene sign_view_bg at fit_screen
                     show sign_with_marks_revealed at sign_full_view
                     with Dissolve(0.5)
                     "The sign now shows three hidden marks:"
-                    "1A"
-                    "3A"
-                    "7G"
+                    "S-03"
+                    "S-08"
+                    "S-14"
                 "Look closer":
                     "The words are painted over older wood."
                     "Something is underneath, but the tourist sign is covering most of it."
                     $ signInvestigated = True
                 "Return to Spring":
                     pass
-        elif bottleFilled and not bayaniNoteRead:
+        elif bottleFilled and not waterNoteFound:
             menu:
                 "Look closer":
                     "The bottle is full of spring water, but you are not sure what to do with it yet."
@@ -242,11 +245,11 @@ label mirror_pool_sign:
         show sign_with_marks_revealed at sign_full_view
         with Dissolve(0.5)
 
-        if not codeNoteFound:
+        if not museumFragmentsFound:
             "The sign shows three hidden marks:"
-            "1A"
-            "3A"
-            "7G"
+            "S-03"
+            "S-08"
+            "S-14"
             "They look important, but you do not have enough to read them yet."
             menu:
                 "Return to Spring":
@@ -280,43 +283,34 @@ label mirror_pool_decode_marks:
     with Dissolve(0.5)
 
     "The sign shows three hidden marks:"
-    "1A"
-    "3A"
-    "7G"
-
-    "In your journal, the crumpled note from the Empty Home basement gives the key:"
-    "1A: MOTHER"
-    "3A: SPRING"
-    "7G: REMEMBERS"
-
-    "Use the note to decode the hidden message."
+    "S-03"
+    "S-08"
+    "S-14"
 
     while True:
         menu:
             "MOTHER SPRING REMEMBERS":
                 "The words settle into place."
-                "1A: MOTHER."
-                "3A: SPRING."
-                "7G: REMEMBERS."
                 "MOTHER SPRING REMEMBERS."
+                "The message was never rewritten. It was waiting beneath the tourist name."
                 $ messageDecoded = True
                 $ journal_add_item(
                     "mirror_pool.decoded_message",
                     "Decoded Spring Message",
                     "Mirror Pool Sign",
-                    "Using the crumpled code note, you decoded the hidden marks on the sign: MOTHER SPRING REMEMBERS."
+                    "The hidden marks on the sign were decoded as: MOTHER SPRING REMEMBERS."
                 )
                 return
 
             "SPRING MOTHER REMEMBERS":
                 "Hmm... that does not feel right."
-                "The words are there, but the marks are asking to be read more carefully."
-                "Check the note from the basement."
+                "The words are there, but the order still hides the beginning."
+                "Check what you recorded from the museum."
 
             "REMEMBERS MOTHER SPRING":
-                "That version hides the beginning again."
-                "The message should start where the first mark starts."
-                "Check the note from the basement."
+                "Hmm... that does not feel right."
+                "The words are there, but the order still hides the beginning."
+                "Check what you recorded from the museum."
 
 label mirror_pool_remove_sign_choice:
     scene sign_view_bg at fit_screen
@@ -366,8 +360,7 @@ label mirror_pool_final_bottle_resolution:
     scene spring_bg_without_sign at fit_screen
     with Dissolve(0.5)
 
-    "The bottle is in your hand now."
-    "It feels different than before."
+    "The bottle is still in your hand, heavy with spring water."
     "The spring has returned what it needed to return."
 
     "What do you do with Thia’s bottle now?"
@@ -401,7 +394,7 @@ label mirror_pool_final_bottle_resolution:
 label mirror_pool_thia_message:
     "Message from Thia:"
     show thia_sprite onlayer master at thia_left_speaker zorder 2000
-    "“Something changed."
+    "Something changed."
     "I threw something away today and it stayed gone."
     "But I don’t think it was because I finally got rid of it."
     "I think it was because I stopped asking the wrong place to hold it."

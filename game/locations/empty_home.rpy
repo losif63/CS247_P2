@@ -204,20 +204,16 @@ init python:
                 },
                 {
                     "id":        "empty_home.basement.crumpled_code_note",
-                    "name":      "Crumpled Note Behind Rack",
+                    "name":      "Crumpled Paper Behind Rack",
                     "item":      None,
                     "action":    "empty_home_crumpled_code_note_action",
                     "msg_first": [
                         "Behind the rack, something brittle catches against the wood.",
-                        "You pull out a crumpled note, damp at the edges but still readable.",
-                        "1A: MOTHER",
-                        "3A: SPRING",
-                        "7G: REMEMBERS",
-                        "The codes look familiar.",
-                        "Not names. Not exactly.",
-                        "More like a way to read something hidden somewhere else.",
+                        "You pull out a crumpled paper, damp at the edges but still readable.",
+                        "The paper only has one sentence:",
+                        "\"Water reveals hidden writing.\"",
                     ],
-                    "msg_done": "The note is gone now.",
+                    "msg_done": "The paper is already in your notes.",
                 },
             ],
             "puzzle":     None,
@@ -253,9 +249,9 @@ init python:
             "description": "An old shovel taken from a rack in the basement."
         },
         "empty_home.basement.crumpled_code_note": {
-            "name": "Crumpled Code Note",
+            "name": "Crumpled Water Note",
             "location": "Empty Home - Basement",
-            "description": "A torn note found behind the basement rack: 1A: MOTHER, 3A: SPRING, 7G: REMEMBERS."
+            "description": "A damp, crumpled paper found behind the basement rack. It reads: \"Water reveals hidden writing.\""
         },
 
     })
@@ -320,16 +316,16 @@ label empty_home_basement_unlock:
     return
 
 label empty_home_crumpled_code_note_action:
-    if codeNoteFound:
-        "You've already taken the crumpled note."
+    if waterNoteFound:
+        "You've already noted the crumpled paper."
         return
 
-    $ codeNoteFound = True
+    $ waterNoteFound = True
     $ journal_add_item(
-        "empty_home.basement.crumpled_code_note",
-        "Crumpled Code Note",
+        "empty_home.basement.crumpled_water_note",
+        "Crumpled Water Note",
         "Empty Home - Basement",
-        "A torn note found behind the basement rack: 1A: MOTHER, 3A: SPRING, 7G: REMEMBERS."
+        "A damp, crumpled paper found behind the basement rack. It reads: \"Water reveals hidden writing.\""
     )
     return
 

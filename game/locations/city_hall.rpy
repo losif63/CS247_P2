@@ -189,12 +189,12 @@ init python:
                     "id":        "city_hall.3f.archiveroom_interrogation_bayani",
                     "name":      "Bayani Magtanggol",
                     "item":      None,
-                    "action":    "city_hall_bayani_note_action",
+                    "action":    None,
                     "msg_first": [
                         "Name: Bayani Magtanggol.",
                         "Arrested For: Assasination of military general.",
                         "Interrogation Method: 1A.",
-                        "Notes: Water returns what ink refuses.",
+                        "Notes: (scribbles)",
                     ],
                     "msg_done": "You already viewed this entry."
                 },
