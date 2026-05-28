@@ -146,6 +146,11 @@ default preferences.afm_time = 15
 define config.save_directory = "Remnant-1778195726"
 
 
+## Disable rollback via PageUp and mouse wheel / trackpad scroll up.
+init python:
+    config.keymap['rollback'] = []
+
+
 ## Icon ########################################################################
 ##
 ## The icon displayed on the taskbar or dock.

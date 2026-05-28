@@ -406,6 +406,7 @@ label mirror_pool_thia_message:
     "But I don’t think it was because I finally got rid of it."
     "I think it was because I stopped asking the wrong place to hold it."
     "Thia’s affliction has eased."
+    $ journal_update_friend("thia", note="Thia's affliction has eased.", solved=True)
     hide thia_sprite onlayer master
 
     menu:
