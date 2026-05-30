@@ -107,6 +107,13 @@ style jnl_empty_text:
     size 20
     text_align 0.5
 
+style jnl_scrollbar is vscrollbar:
+    xsize 14
+    base_bar Solid("#0e0c0a")
+    thumb Solid("#5a4e38")
+    hover_thumb Solid("#7a6a50")
+    unscrollable "hide"
+
 
 # ─── Main screen ──────────────────────────────────────────────────────────────
 
@@ -194,26 +201,29 @@ screen journal_screen():
 
 screen journal_tab_inventory():
     if inventory_items:
-        viewport:
-            xfill True
-            yfill True
-            mousewheel True
-            draggable True
-            vbox:
+        side "c r":
+            spacing 8
+            viewport id "inv_vp":
                 xfill True
-                spacing 12
-                for item in inventory_items:
-                    $ _iname = item["name"]
-                    $ _iloc  = item["location"]
-                    $ _idesc = item["description"]
-                    frame:
-                        style "jnl_item_frame"
-                        vbox:
-                            spacing 4
-                            text "[_iname]" style "jnl_title_text"
-                            text "Found at: [_iloc]" style "jnl_meta_text"
-                            null height 3
-                            text "[_idesc]" style "jnl_body_text"
+                yfill True
+                mousewheel True
+                draggable True
+                vbox:
+                    xfill True
+                    spacing 12
+                    for item in inventory_items:
+                        $ _iname = item["name"]
+                        $ _iloc  = item["location"]
+                        $ _idesc = item["description"]
+                        frame:
+                            style "jnl_item_frame"
+                            vbox:
+                                spacing 4
+                                text "[_iname]" style "jnl_title_text"
+                                text "Found at: [_iloc]" style "jnl_meta_text"
+                                null height 3
+                                text "[_idesc]" style "jnl_body_text"
+            vbar value YScrollValue("inv_vp") style "jnl_scrollbar"
     else:
         vbox:
             xalign 0.5
@@ -226,32 +236,35 @@ screen journal_tab_inventory():
 # ─── Friends tab ──────────────────────────────────────────────────────────────
 
 screen journal_tab_friends():
-    viewport:
-        xfill True
-        yfill True
-        mousewheel True
-        draggable True
-        vbox:
+    side "c r":
+        spacing 8
+        viewport id "friends_vp":
             xfill True
-            spacing 14
-            for fname, fdata in friend_notes.items():
-                $ _fname   = fname.capitalize()
-                $ _fsymptom = fdata["symptom"]
-                $ _fsolved  = fdata["solved"]
-                $ _fnotes   = fdata["notes"]
-                frame:
-                    style "jnl_item_frame"
-                    background ("#0f180f" if _fsolved else "#14120f")
-                    vbox:
-                        spacing 4
-                        hbox:
-                            spacing 10
-                            text "[_fname]" style "jnl_title_text" color ("#90d090" if _fsolved else "#e8d5a0")
-                            if _fsolved:
-                                text "  [[Resolved]" style "jnl_meta_text" color "#6ab86a" yalign 1.0
-                        text "[_fsymptom]" style "jnl_body_text" color "#a09070"
-                        if _fnotes:
-                            null height 6
-                            for note in _fnotes:
-                                $ _note = note
-                                text "[_note]" style "jnl_body_text"
+            yfill True
+            mousewheel True
+            draggable True
+            vbox:
+                xfill True
+                spacing 14
+                for fname, fdata in friend_notes.items():
+                    $ _fname   = fname.capitalize()
+                    $ _fsymptom = fdata["symptom"]
+                    $ _fsolved  = fdata["solved"]
+                    $ _fnotes   = fdata["notes"]
+                    frame:
+                        style "jnl_item_frame"
+                        background ("#0f180f" if _fsolved else "#14120f")
+                        vbox:
+                            spacing 4
+                            hbox:
+                                spacing 10
+                                text "[_fname]" style "jnl_title_text" color ("#90d090" if _fsolved else "#e8d5a0")
+                                if _fsolved:
+                                    text "  [[Resolved]" style "jnl_meta_text" color "#6ab86a" yalign 1.0
+                            text "[_fsymptom]" style "jnl_body_text" color "#a09070"
+                            if _fnotes:
+                                null height 6
+                                for note in _fnotes:
+                                    $ _note = note
+                                    text "[_note]" style "jnl_body_text"
+        vbar value YScrollValue("friends_vp") style "jnl_scrollbar"
