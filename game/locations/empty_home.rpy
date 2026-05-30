@@ -310,6 +310,10 @@ label empty_home_crumpled_code_note_action:
         return
 
     $ waterNoteFound = True
+    "Behind the rack, something brittle catches against the wood."
+    "You pull out a crumpled paper, damp at the edges but still readable."
+    "The paper only has one sentence:"
+    "\"Water reveals hidden writing.\""
     # $ journal_add_item(
     #     "empty_home.basement.crumpled_water_note",
     #     "Crumpled Water Note",
@@ -403,5 +407,9 @@ label empty_home_photo_present:
     m "She's going to be okay."
 
     $ journal_update_friend("yuna", note="Her recurring dreams mirrored the fate of the Gonzalez family exactly — a father dragged away and killed, a mother taken for illegal experimentation. The village made her live through what she had refused to see in the children on the road.", solved=True)
+    $ journal_remove_item("church.backyard.lawn.photo_piece")
+    $ journal_remove_item("hospital.basement.morgue.emilia.photo")
+    $ journal_remove_item("empty_home.backyard.swing.photo")
+    $ journal_remove_item("empty_home.basement.diary")
 
     return

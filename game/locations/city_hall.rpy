@@ -219,7 +219,7 @@ init python:
         "city_hall.joaquin_page": {
             "name":        "Torn Interrogation Record",
             "location":    "City Hall - Archive Room",
-            "description": "A page torn from the colonial interrogation files. Records Joaquin Gonzalez's arrest for instigating independence riots — Interrogation Method 3A. A number is scrawled in the margin: {b}1938{/b}.",
+            "description": "A page torn from the colonial interrogation files. Records Joaquin Gonzalez's arrest for instigating independence riots — A number is scrawled in the margin: {b}1938{/b}.",
         },
         "city_hall.execution_page": {
             "name":        "Torn Execution Record",

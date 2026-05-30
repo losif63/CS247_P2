@@ -214,6 +214,8 @@ label church_backyard_box_puzzle:
             "The lock clicks open."
             "Inside the box is a torn {color=#ff0000}{b}piece of a photo{/b}{/color} — it shows a man smiling."
             $ _box_solved = True
+            $ journal_remove_item("city_hall.joaquin_page")
+            $ journal_remove_item("city_hall.execution_page")
         else:
             "The lock doesn't budge. That's not the right combination."
     return
