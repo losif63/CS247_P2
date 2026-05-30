@@ -198,7 +198,7 @@ init python:
                     "id":        "empty_home.basement.crumpled_code_note",
                     "name":      "Crumpled Paper Behind Bookshelf",
                     "item":      "empty_home.basement.crumpled_code_note",
-                    "action":    None,
+                    "action":    "empty_home_crumpled_code_note_action",
                     "msg_first": [
                         "Behind the rack, something brittle catches against the wood.",
                         "You pull out a crumpled paper, damp at the edges but still readable.",

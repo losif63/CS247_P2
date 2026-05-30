@@ -4,6 +4,9 @@ default map_onboarding_shown = False
 default journal_available = False
 default current_day = 1
 default locations_today = 0
+default ended_early = False
+# Set True when the player saves every friend before the 5 days run out, so the
+# ending can acknowledge they left the island early rather than waiting it out.
 image intro = "Enter.png"
 image village_map = "images/Map.jpg"
 image townhall = "images/newtownhall.png"
@@ -392,6 +395,12 @@ label village_map:
     elif map_choice == "mirror_pool":
         call mirror_pool_scene from _call_mirror_pool_scene
 
+    # Early ending — if every friend has been saved, the journey is complete and
+    # the game ends the moment the player returns to the map.
+    if friend_notes and all(f["solved"] for f in friend_notes.values()):
+        $ ended_early = True
+        jump game_ending
+
     $ locations_today += 1
 
     if locations_today >= 3:
@@ -451,7 +460,11 @@ label game_ending:
     scene black
     with Dissolve(2.0)
 
-    "Five days have passed. You board the boat back to the mainland."
+    if ended_early:
+        "You don't wait for the fifth day."
+        "There is nothing left undone here. With all three friends safe, you board the boat back to the mainland."
+    else:
+        "Five days have passed. You board the boat back to the mainland."
 
     # ── Thia ──────────────────────────────────
     "Thia."
