@@ -412,51 +412,7 @@ label village_map:
 
 # town_hall_scene is defined in locations/city_hall.rpy
 
-label museum_scene:
-    scene museum at fit_screen
-    with Dissolve(0.5)
-    "The village museum is small but unsettling."
-    "Glass cases display artifacts — masks, farming tools, ceremonial objects — each stripped of their original meaning by sterile labels."
-    "Something about this place feels wrong."
-    $ finish = False
-    $ inspect_fragments = False
-    while not finish:
-        $ inspect_fragments = False
-        menu:
-            "Inspect the spring fragments":
-                $ inspect_fragments = True
-            "Finish Investigation":
-                menu:
-                    "Are you sure you want to finish investigating here?"
-                    "Yes, return to the map.":
-                        $ finish = True
-                    "No, keep looking.":
-                        pass
-        if inspect_fragments:
-            call museum_spring_fragments from _call_museum_spring_fragments
-    return
-
-label museum_spring_fragments:
-    "A glass case near the back wall holds three pieces of carved wood."
-    "The label reads: {i}Fragments from an Unidentified Spring Marker.{/i}"
-    "Three fragments sit under glass."
-    "The museum label calls them decorative remnants from an unidentified spring structure."
-    "Each one has been cataloged by fragment number."
-    "Spring Fragment 03"
-    "A carved piece of wood. One word remains visible: {b}MOTHER{/b}."
-    "Spring Fragment 08"
-    "A broken strip of painted board. The word {b}SPRING{/b} is still legible."
-    "Spring Fragment 14"
-    "A piece of root-warped signage. The final carved word reads: {b}REMEMBERS{/b}."
-    if not museumFragmentsFound:
-        $ museumFragmentsFound = True
-        $ journal_add_item(
-            "museum.spring_fragments",
-            "Museum Fragment Notes",
-            "Museum",
-            "The museum display labeled three pieces as Spring Fragment 03, Spring Fragment 08, and Spring Fragment 14. The visible words were: MOTHER, SPRING, and REMEMBERS."
-        )
-    return
+# museum_scene is defined in locations/museum.rpy
 
 # graveyard_scene is defined in locations/graveyard.rpy
 
