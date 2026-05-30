@@ -80,7 +80,7 @@ init python:
                 },
             ],
             "puzzle":     None,
-            "requires":   "empty_home.basement.shovel",
+            "requires":   "graveyard.shovel",
             "unlock":     "church_backyard_lawn_unlock",
             "locked_msg": "The soil here looks recently disturbed. You'd need something to dig with.",
         },

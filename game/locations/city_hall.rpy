@@ -180,8 +180,9 @@ init python:
                     "msg_first": [
                         "Name: Teodora Salvacion.",
                         "Arrested For: Treason. Acted as a spy for independence rebels.",
-                        "Interrogation Method: 7G.",
-                        "Notes: (scribbles)",
+                        "Interrogation Method: Physical force. Suspect was bound to a chair and was struck multiple times in the head with a blunt instrument."
+                        "Fingernails were extracted using scissors...",
+                        "Notes: ... Interrogation unsuccesful. Suspect perished before revealing any info.",
                     ],
                     "msg_done": "You already viewed this entry."
                 },
@@ -193,7 +194,7 @@ init python:
                     "msg_first": [
                         "Name: Bayani Magtanggol.",
                         "Arrested For: Assasination of military general.",
-                        "Interrogation Method: 1A.",
+                        "Interrogation Method: Water torture. Hang susepct upside down and pour water into his nose while stamping his abdomen.",
                         "Notes: (scribbles)",
                     ],
                     "msg_done": "You already viewed this entry."
@@ -218,7 +219,7 @@ init python:
         "city_hall.joaquin_page": {
             "name":        "Torn Interrogation Record",
             "location":    "City Hall - Archive Room",
-            "description": "A page torn from the colonial interrogation files. Records Joaquin Gonzalez's arrest for instigating independence riots — Interrogation Method 3A. A number is scrawled in the margin: 1938.",
+            "description": "A page torn from the colonial interrogation files. Records Joaquin Gonzalez's arrest for instigating independence riots — Interrogation Method 3A. A number is scrawled in the margin: {b}1938{/b}.",
         },
         "city_hall.execution_page": {
             "name":        "Torn Execution Record",
@@ -308,8 +309,10 @@ label city_hall_execution_page_action:
 label city_hall_joaquin_page_action:
     "Name: Joaquin Gonzalez."
     "Arrested For: Instigating independence riots."
-    "Interrogation Method: 3A."
-    "Notes: (blahblah) ~ {b}1938{/b} ~ (scribbles)"
+    "Interrogation Method: Electrocution."
+    "Notes: (blahblah)"
+    "Confessed: {b}1938{/b}"
+    "(scribbles)"
     "The number {b}1938{/b} catches your eye. This seems important."
     "You tear the {color=#ff0000}{b}page{/b}{/color} from the file and pocket it."
     return

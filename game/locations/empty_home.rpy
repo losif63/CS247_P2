@@ -197,10 +197,10 @@ init python:
                 {
                     "id":        "empty_home.basement.rack",
                     "name":      "Rack",
-                    "item":      "empty_home.basement.shovel",
+                    "item":      None,
                     "action":    None,
-                    "msg_first": "A wooden rack leans against the wall, holding a few old tools. A {color=#ff0000}{b}shovel{/b}{/color} hangs from one of the pegs — you take it.",
-                    "msg_done":  "The rack is empty now.",
+                    "msg_first": "A wooden rack leans against the wall, holding a few old tools. Bare pegs show where larger tools once hung — they're long gone.",
+                    "msg_done":  "Just a few rusted odds and ends left on the rack.",
                 },
                 {
                     "id":        "empty_home.basement.crumpled_code_note",
@@ -243,11 +243,6 @@ init python:
             "description": "A piece of a torn photo. The piece shows a young girl smiling."
         },
 
-        "empty_home.basement.shovel": {
-            "name": "Shovel",
-            "location": "Empty Home - Basement",
-            "description": "An old shovel taken from a rack in the basement."
-        },
         "empty_home.basement.crumpled_code_note": {
             "name": "Crumpled Water Note",
             "location": "Empty Home - Basement",

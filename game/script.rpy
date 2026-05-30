@@ -458,23 +458,7 @@ label museum_spring_fragments:
         )
     return
 
-label graveyard_scene:
-    scene black
-    with Dissolve(0.5)
-    "The graveyard is older than the village itself, some say."
-    "You walk between the crumbling headstones, many worn smooth — names erased by time."
-    "A fresh wreath of flowers sits at one of the graves. Someone was here recently."
-    $ finish = False
-    while not finish:
-        menu:
-            "Finish Investigation":
-                menu:
-                    "Are you sure you want to finish investigating here?"
-                    "Yes, return to the map.":
-                        $ finish = True
-                    "No, keep looking.":
-                        pass
-    return
+# graveyard_scene is defined in locations/graveyard.rpy
 
 # church_scene is defined in locations/church.rpy
 
