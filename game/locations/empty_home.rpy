@@ -192,21 +192,13 @@ init python:
                         '"I am starving. I hope she comes back soon."',
                         "You close the book."
                     ],
-                    "msg_done":  "There is nothing on the swing.",
-                },
-                {
-                    "id":        "empty_home.basement.rack",
-                    "name":      "Rack",
-                    "item":      None,
-                    "action":    None,
-                    "msg_first": "A wooden rack leans against the wall, holding a few old tools. Bare pegs show where larger tools once hung — they're long gone.",
-                    "msg_done":  "Just a few rusted odds and ends left on the rack.",
+                    "msg_done":  "You've already viewed this bookshelf.",
                 },
                 {
                     "id":        "empty_home.basement.crumpled_code_note",
-                    "name":      "Crumpled Paper Behind Rack",
-                    "item":      None,
-                    "action":    "empty_home_crumpled_code_note_action",
+                    "name":      "Crumpled Paper Behind Bookshelf",
+                    "item":      "empty_home.basement.crumpled_code_note",
+                    "action":    None,
                     "msg_first": [
                         "Behind the rack, something brittle catches against the wood.",
                         "You pull out a crumpled paper, damp at the edges but still readable.",
@@ -308,6 +300,8 @@ label empty_home_basement_door_intro:
 label empty_home_basement_unlock:
     "You fit the key into the lock. It turns with a heavy click."
     "The door swings inward. Cold air rises from below."
+    # The key has served its purpose — drop it from the inventory.
+    $ journal_remove_item("empty_home.basement_door.key")
     return
 
 label empty_home_crumpled_code_note_action:
@@ -316,12 +310,12 @@ label empty_home_crumpled_code_note_action:
         return
 
     $ waterNoteFound = True
-    $ journal_add_item(
-        "empty_home.basement.crumpled_water_note",
-        "Crumpled Water Note",
-        "Empty Home - Basement",
-        "A damp, crumpled paper found behind the basement rack. It reads: \"Water reveals hidden writing.\""
-    )
+    # $ journal_add_item(
+    #     "empty_home.basement.crumpled_water_note",
+    #     "Crumpled Water Note",
+    #     "Empty Home - Basement",
+    #     "A damp, crumpled paper found behind the basement rack. It reads: \"Water reveals hidden writing.\""
+    # )
     return
 
 

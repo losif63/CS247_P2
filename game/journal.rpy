@@ -10,6 +10,12 @@
 default inventory_items = []
 # Each entry: {"id": str, "name": str, "location": str, "description": str}
 
+default hidden_items = set()
+# IDs of items that have been collected but should no longer be listed in the
+# inventory (e.g. a key consumed unlocking a door, a shovel left in the dug hole).
+# The item stays in inventory_items / collected_items — it is only hidden from
+# the Inventory tab. Use journal_remove_item / journal_restore_item to toggle.
+
 default friend_notes = {
     "thia": {
         "symptom": "Can't get rid of anything. Items she throws away keep reappearing — receipts in her pockets, food wrappers on her bed. Her condition is getting worse.",
@@ -49,6 +55,18 @@ init python:
                 "location": location,
                 "description": description,
             })
+
+    def journal_remove_item(id):
+        # Soft-delete: hide the item from the Inventory tab without erasing it.
+        # Safe to call even if the item was never collected.
+        hidden_items.add(id)
+
+    def journal_restore_item(id):
+        # Un-hide a previously removed item so it lists again.
+        hidden_items.discard(id)
+
+    def journal_item_visible(id):
+        return id not in hidden_items
 
     def journal_update_friend(name, note=None, solved=False):
         if name in friend_notes:
@@ -200,7 +218,8 @@ screen journal_screen():
 # ─── Evidence tab ─────────────────────────────────────────────────────────────
 
 screen journal_tab_inventory():
-    if inventory_items:
+    $ _visible_items = [i for i in inventory_items if i["id"] not in hidden_items]
+    if _visible_items:
         side "c r":
             spacing 8
             viewport id "inv_vp":
@@ -211,7 +230,7 @@ screen journal_tab_inventory():
                 vbox:
                     xfill True
                     spacing 12
-                    for item in inventory_items:
+                    for item in _visible_items:
                         $ _iname = item["name"]
                         $ _iloc  = item["location"]
                         $ _idesc = item["description"]

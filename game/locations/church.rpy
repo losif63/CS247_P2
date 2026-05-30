@@ -242,6 +242,9 @@ label church_backyard_intro:
 label church_backyard_lawn_unlock:
     "You drive the shovel into the soil. The ground here is softer than it looks."
     "After a few scoops, the blade strikes something solid."
+    "You leave the shovel stuck in the upturned earth — you won't be needing it again."
+    # The shovel has served its purpose — drop it from the inventory.
+    $ journal_remove_item("graveyard.shovel")
     return
 
 label church_backyard_lawn_intro:
