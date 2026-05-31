@@ -2,68 +2,9 @@
 ## RUBBER PLANTATION — Colonial Ledger Matching Puzzle
 ################################################################################
 image rubber_plantation_bg = "images/rubber.png"
+image bg black = Solid("#000")
 
 init python:
-
-    import pygame
-
-    def _match_hex_to_rgba(hex_color, alpha=210):
-        h = hex_color.lstrip('#')
-        return (int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16), alpha)
-
-    class MatchLineOverlay(renpy.Displayable):
-        # ── Layout constants (pixels at 1920-wide screen) ──────────────────────
-        HBOX_X       = 90     # (1920 - (840+20+880)) / 2
-        HBOX_Y       = 90     # ypos of the two-panel hbox
-        LEFT_W       = 840    # width of the ledger panel
-        GAP          = 20     # spacing between panels
-
-        # Approximate rendered heights of each panel's header frame.
-        # If lines are visibly misaligned, tweak these two values.
-        LEDGER_HDR_H = 130
-        CENSUS_HDR_H = 130
-
-        ROW_H        = 20     # ysize of each data row
-        ROW_GAP      = 15     # vbox spacing between rows
-        # Y of first data row inside the viewport
-        # = header-row height (20) + one spacing gap (15)
-        FIRST_ROW_Y  = 35
-
-        def __init__(self, matches, **kwargs):
-            super(MatchLineOverlay, self).__init__(**kwargs)
-            self.matches = tuple(matches)
-
-        def _ledger_y(self, i):
-            vp_top = self.HBOX_Y + self.LEDGER_HDR_H
-            return vp_top + self.FIRST_ROW_Y + i * (self.ROW_H + self.ROW_GAP) + self.ROW_H // 2
-
-        def _census_y(self, j):
-            vp_top = self.HBOX_Y + self.CENSUS_HDR_H
-            return vp_top + self.FIRST_ROW_Y + j * (self.ROW_H + self.ROW_GAP) + self.ROW_H // 2
-
-        def render(self, width, height, st, at):
-            rv   = renpy.Render(width, height)
-            surf = pygame.Surface((width, height), pygame.SRCALPHA)
-            surf.fill((0, 0, 0, 0))
-
-            x0 = self.HBOX_X + self.LEFT_W      # right edge of ledger panel
-            x1 = x0 + self.GAP                  # left edge of census panel
-
-            for li, ci in enumerate(self.matches):
-                if ci is None:
-                    continue
-                rgba = _match_hex_to_rgba(MATCH_COLOR_ASSIGNED)
-                y0   = self._ledger_y(li)
-                y1   = self._census_y(ci)
-                pygame.draw.line(surf, rgba, (x0, y0), (x1, y1), 3)
-                pygame.draw.circle(surf, rgba, (x0, y0), 5)
-                pygame.draw.circle(surf, rgba, (x1, y1), 5)
-
-            rv.blit(surf, (0, 0))
-            return rv
-
-        def visit(self):
-            return []
 
     # ── Ledger entries (workers listed without names) ─────────────────────────
 
@@ -93,9 +34,9 @@ init python:
         "note": "Contract revised - week 18 (birth in family)."},
     ]
 
-    # ── Census entries (shuffled so matching isn't trivially 1-to-1) ──────────
+    # ── Census entries  ──────────
 
-    CENSUS_ENTRIES = [  # sorted by last name
+    CENSUS_ENTRIES = [  
 
     {
         "name": "Davan Kori",
@@ -139,7 +80,7 @@ init python:
 
     {
         "name": "Aran Sotan",
-        "age": 22,
+        "age": 24,
         "sex": "M",
         "race": "Non-White",
         "marital": "Unmarried",
@@ -149,11 +90,11 @@ init python:
 
     {
         "name": "Mira Sotan",
-        "age": 20,
+        "age": 22,
         "sex": "M",
         "race": "Non-White",
         "marital": "Unmarried",
-        "family": "1 sibling",
+        "family": "One sibling",
         "labor_status": "Fit"
     },
 
@@ -180,23 +121,11 @@ init python:
 
     ]
 
-    # ── Correct mapping: LEDGER index → CENSUS index ─────────────────────────
-    #   100329 [0] → Banu Korev   [2]  ("Unfit for labor" → Unfit, age 69)
-    #   100330 [1] → Davan Kori   [0]  (output drops to 0 → Deceased)
-    #   100331 [2] → Linh Tavar   [7]  (nurses baby → infant daughter)
-    #   100332 [3] → Komal Kori   [1]  (decreasing outputs → widowed, bereaved)
-    #   100333 [4] → Mira Sotan   [5]  (paired with workers → has siblings)
-    #   100334 [5] → Aran Sotan   [4]  (highest output, oversight → eldest son)
-    #   100335 [6] → Kovi Sela    [3]  ("taken care of" → Light Duty, age 10)
-    #   100336 [7] → Nesa Tavar   [6]  (lighter rows → youngest son)
-
     CORRECT_MATCHES = {
         0: 2,  1: 0,  2: 7,  3: 1,
         4: 5,  5: 4,  6: 3,  7: 6,
     }
 
-    MATCH_COLOR_CORRECT  = "#1a6b3a"   # dark green — correct pair
-   
     # ── Puzzle state (globals reset at scene start) ───────────────────────────
 
     plantation_matches  = [None] * 8   # matches[ledger_idx] = census_idx | None
@@ -228,6 +157,10 @@ init python:
         plantation_matches[plantation_selected] = census_idx
         plantation_names[plantation_selected] = CENSUS_ENTRIES[census_idx]["name"]
         plantation_struck.discard(plantation_selected)
+        if CORRECT_MATCHES.get(plantation_selected) == census_idx:
+            renpy.sound.play("audio/ledger-correct-feedback.wav")
+        else:
+            renpy.sound.play("audio/ledger-incorrect-feedback.wav")
         plantation_selected = None
         renpy.restart_interaction()
 
@@ -241,14 +174,6 @@ init python:
 
     def plantation_check_answers():
         return all(plantation_matches[li] == ci for li, ci in CORRECT_MATCHES.items())
-
-    def plantation_mark_wrong():
-        global plantation_struck
-        plantation_struck = set(
-            li for li, ci in CORRECT_MATCHES.items()
-            if plantation_matches[li] != ci
-        )
-        renpy.restart_interaction()
 
 
 ################################################################################
@@ -269,12 +194,6 @@ style plantation_header_text:
     color "#1a0d00"
     size 75
     text_align 0.5
-
-style plantation_entry_button:
-    background "#00000000"
-    hover_background "#00000011"
-    padding (12, 7, 12, 7)
-    xfill True
 
 style plantation_dim_text:
     color "#1a0d00"
@@ -307,56 +226,64 @@ style ledger_notes_text:
     color "#1a0d00"
     size 24
 
-style ledger_name_text:
-    font "fonts/handwriting.ttf"
-    color "#b50000"
-    size 30
-
-style ledger_name_placeholder_text:
-    font "fonts/handwriting.ttf"
+style reveal_text_number:
+    font "fonts/Kopi.otf"
+    size 80
     color "#000000"
-    size 30
+
+style reveal_text_name:
+    font "fonts/handwriting.ttf"
+    size 80
+    color "#000000"
 
 ################################################################################
 ## Screens
 ################################################################################
 
-screen plantation_name_input(idx):
-    default typed_name = plantation_names[idx]
+transform name_appear(delay):
+    alpha 0.0
+    pause delay
+    linear 1.8 alpha 1.0
 
-    # Blocks all interaction with the puzzle screen below
-    modal True
+transform id_disappear(delay):
+    alpha 1.0
+    pause delay
+    linear 1.8 alpha 0.0
 
-    # Barely-there tint so the documents stay readable
-    add "#00000033"
+
+# Ledger panel only — matched names fade in one by one in handwriting
+screen ledger_names_reveal():
+    add "#0d0b07"
 
     frame:
+        style "plantation_panel_frame"
         xalign 0.5
-        yalign 0.93
-        background "#1e160aee"
-        padding (30, 18)
+        yalign 0.45
+        xsize 980
+        ysize 1000
         vbox:
-            spacing 10
-            text "Who is worker [LEDGER_ENTRIES[idx]['id']]?":
-                font "fonts/Kopi.otf"
-                color "#c8a060"
-                size 50
-            input:
-                value ScreenVariableInputValue("typed_name")
-                length 100
-                pixel_width 500
-                font "fonts/handwriting.ttf"
-                color "#e8dcc8"
-                size 40
-            textbutton "Confirm":
-                xalign 0.5
-            
-                action [Function(plantation_set_name, idx, typed_name), Hide("plantation_name_input")]
-
-    key "K_RETURN" action [Function(plantation_set_name, idx, typed_name), Hide("plantation_name_input")]
+           
+            yalign 0.5
+            xalign 0.5
+            spacing 54
+            for i in range(8):
+                $ _e    = LEDGER_ENTRIES[i]
+                $ _name = CENSUS_ENTRIES[CORRECT_MATCHES[i]]["name"]
+                fixed:
+                    xsize 500
+                    ysize 40
+                    xalign 0.5
+                    text _e["id"] style "reveal_text_number" xalign 0.5 yalign 0.5 text_align 0.5 at id_disappear(i * 0.5)
+                    text _name style "reveal_text_name" xalign 0.5 yalign 0.5 text_align 0.5 at name_appear(i * 0.5)
 
 
 screen plantation_puzzle():
+
+    default hovered_ledger = None
+    default hovered_census = None
+
+    if plantation_check_answers():
+        timer 1.0 action Return("solved")
 
     add "#0d0b07"
 
@@ -447,9 +374,10 @@ screen plantation_puzzle():
                             $ _sel        = (plantation_selected == i)
                             $ _wname      = plantation_names[i]
                             $ _is_struck  = (i in plantation_struck)
+                            $ _is_correct = (plantation_matches[i] is not None and CORRECT_MATCHES.get(i) == plantation_matches[i])
 
                             frame:
-                                background ("#fac268ff" if _sel else "#00000000")
+                                background ("#fac268ff" if _sel else ("#47853766" if _is_correct else ("#fac26844" if hovered_ledger == i else "#00000000")))
                                 xfill True
                                 padding (4, 2)
                                 vbox:
@@ -460,9 +388,11 @@ screen plantation_puzzle():
                                             xsize 120
                                             ysize 20
                                             background "#00000000"
-                                            hover_background "#00000022"
+                                            hover_background "#00000000"
+                                            hovered (NullAction() if _is_correct else SetScreenVariable("hovered_ledger", i))
+                                            unhovered SetScreenVariable("hovered_ledger", None)
                                             padding (0, 0)
-                                            action Function(plantation_select_ledger, i)
+                                            action (NullAction() if _is_correct else [Play("sound", "audio/map-click.wav"), Function(plantation_select_ledger, i)])
                                             text "[_eid]" style "plantation_dim_text"
                                         frame:
                                             xsize 120
@@ -490,29 +420,18 @@ screen plantation_puzzle():
                                             padding (0, 0)
                                             text "[_enote]" style "ledger_notes_text"
 
-                                    # Name — auto-filled when matched; strikethrough only after failed submit
-                                    frame:
-                                        xsize 700
-                                        background None
-                                        padding (4, 0)
-                                        if _wname and _is_struck:
-                                            text "{s}[_wname]{/s}" style "ledger_name_text"
-                                        elif _wname:
-                                            text "[_wname]" style "ledger_name_text"
-                                        else:
-                                            null
 
         # RIGHT — Census
         frame:
             style "plantation_panel_frame"
-            xysize (880, 870)
+            xysize (1080, 870)
             vbox:
                 xpos 20
                 frame:
                     style "plantation_header_frame"
                     text "Residential Survey of Inhabitants of Pelau Siring - 1897" style "census_header_text"
                 viewport:
-                    xysize (880, 830)
+                    xysize (1080, 830)
                     mousewheel True
                     draggable True
 
@@ -577,50 +496,53 @@ screen plantation_puzzle():
                             $ _plabor   = _p["labor_status"]
                             $ _casgn       = next((ii for ii in range(8) if plantation_matches[ii] == j), None)
                             $ _cis_correct = (_casgn is not None and CORRECT_MATCHES[_casgn] == j)
-                            $ _cact        = Function(plantation_assign, j)
+                            $ _cact        = [Play("sound", "audio/map-click.wav"), Function(plantation_assign, j)]
 
-                            hbox:
-                                spacing 15
-                                button:
-                                    xsize 160
-                                    background "#00000000"
-                                    hover_background "#00000022"
-                                    padding (0, 0)
-                                    action _cact
-                                    if _cis_correct:
-                                        text "{s}[_pname]{/s}" style "census_dim_text" color "#1a0d00"
-                                    else:
+                            frame:
+                                background ("#47853766" if _cis_correct else ("#fac26844" if hovered_census == j else "#00000000"))
+                                xfill True
+                                padding (0, 2)
+                                hbox:
+                                    spacing 15
+                                    button:
+                                        xsize 160
+                                        background "#00000000"
+                                        hover_background "#00000000"
+                                        hovered (NullAction() if _cis_correct else SetScreenVariable("hovered_census", j))
+                                        unhovered SetScreenVariable("hovered_census", None)
+                                        padding (0, 0)
+                                        action (NullAction() if _cis_correct else _cact)
                                         text "[_pname]" style "census_dim_text" color "#1a0d00"
-                                frame:
-                                    xsize 35
-                                    background None
-                                    padding (0, 0)
-                                    text "[_page]" style "census_dim_text"
-                                frame:
-                                    xsize 30
-                                    background None
-                                    padding (0, 0)
-                                    text "[_psex]" style "census_dim_text"
-                                frame:
-                                    xsize 75
-                                    background None
-                                    padding (0, 0)
-                                    text "[_prace]" style "census_dim_text"
-                                frame:
-                                    xsize 150
-                                    background None
-                                    padding (0, 0)
-                                    text "[_pmarital]" style "census_dim_text"
-                                frame:
-                                    xsize 210
-                                    background None
-                                    padding (0, 0)
-                                    text "[_pnotes]" style "census_dim_text"
-                                frame:
-                                    xsize 120
-                                    background None
-                                    padding (0, 0)
-                                    text "[_plabor]" style "census_dim_text"
+                                    frame:
+                                        xsize 35
+                                        background None
+                                        padding (0, 0)
+                                        text "[_page]" style "census_dim_text"
+                                    frame:
+                                        xsize 30
+                                        background None
+                                        padding (0, 0)
+                                        text "[_psex]" style "census_dim_text"
+                                    frame:
+                                        xsize 75
+                                        background None
+                                        padding (0, 0)
+                                        text "[_prace]" style "census_dim_text"
+                                    frame:
+                                        xsize 150
+                                        background None
+                                        padding (0, 0)
+                                        text "[_pmarital]" style "census_dim_text"
+                                    frame:
+                                        xsize 210
+                                        background None
+                                        padding (0, 0)
+                                        text "[_pnotes]" style "census_dim_text"
+                                    frame:
+                                        xsize 120
+                                        background None
+                                        padding (0, 0)
+                                        text "[_plabor]" style "census_dim_text"
 
     # ── Footer ────────────────────────────────────────────────────────────────
     hbox:
@@ -628,13 +550,13 @@ screen plantation_puzzle():
         ypos 974
         spacing 40
 
-        textbutton "Submit":
-            style "map_button_button"
-            action Return("check")
-
         textbutton "Reset All":
             style "map_button_button"
             action Function(plantation_reset)
+
+        textbutton "Leave":
+            style "map_button_button"
+            action Return("exit")
 
 
 ################################################################################
@@ -645,33 +567,33 @@ label rubber_plantation_scene:
     scene rubber_plantation_bg at fit_screen
     with Dissolve(0.5)
 
+    play music "audio/plantation-wind.wav" loop fadein 1.0
+
     "You arrive at the rubber plantation at the edge of the village."
     "The smell of latex and jungle humidity hangs heavy in the air."
     "Rows of rubber trees stretch as far as the eye can see, their bark scarred with diagonal cuts."
 
     "Near the foreman's hut, you find a strongbox. The lock was broken open long ago."
-    "Inside, there is a colonial production ledger, and tucked behind it, a residential census with margin notes in a different ink."
+    "Inside, there is a colonial production ledger, and tucked behind it, a residential census."
 
-    m "The ledger doesn't use names, just numbered workers, their residence, and their monthly output."
-    m "But someone annotated this census. Someone was trying to match them."
+    m "The ledger doesn't use names, just numbered workers, their assignments, and their monthly output."
+    m "But it looks like someone was trying to match them to the names in the census."
     m "Let me finish what they started."
 
+    stop music fadeout 1.0
     $ plantation_reset()
-    $ plantation_matches[4] = 5
-    $ plantation_names[4] = "Mira Sotan"
 
     label .puzzle_loop:
         $ journal_blocked = True
         call screen plantation_puzzle
         $ journal_blocked = False
-        if _return == "check":
-            if plantation_check_answers():
-                jump rubber_plantation_solved
-            else:
-                $ plantation_mark_wrong()
-                jump rubber_plantation_failed
+        if _return == "solved":
+            jump rubber_plantation_solved
+        elif _return == "exit":
+            return
 
 image marcus_haggling = "images/Marcus_Haggling_New.png"
+image marcus_sitting = "images/marcusasset.png"
 
 transform fullscreen:
     xysize (1920, 1080)
@@ -680,6 +602,8 @@ transform fullscreen:
     yalign 0.5
 
 label rubber_plantation_solved:
+
+    play music "audio/plantation-solved.wav" fadein 1.0
 
     # ── Journal entries ────────────────────────────────────────────────────────
     $ journal_add_item(
@@ -710,14 +634,35 @@ label rubber_plantation_solved:
     scene black
     with Dissolve(1.0)
 
+    stop music fadeout 1.0
+
+    show screen plantation_puzzle
+    with Dissolve(0.8)
+
     "You lay the two documents side by side."
+
+    hide screen plantation_puzzle
+    show screen ledger_names_reveal
+    with Dissolve(0.8)
+
     "The numbers become people."
 
     m "Banu. Davan. Linh. Komal."
     m "Mira. Aran. Kovi. Nesa."
     m "Eight names. Eight people the ledger reduced to outputs and tallies."
 
+    hide screen ledger_names_reveal
+    with Dissolve(1.0)
+
+    show screen plantation_puzzle
     "You photograph both documents and slip them into your bag."
+    hide screen plantation_puzzle
+    with Dissolve(1.0)
+
+    scene bg black
+    show marcus_sitting 
+    with Dissolve(1.0)
+
     "Back home, Marcus sits down for the first time in days."
 
     menu:
@@ -725,16 +670,4 @@ label rubber_plantation_solved:
             pass
     return
 
-label rubber_plantation_failed:
-    scene black
-    with Dissolve(0.5)
 
-    m "These don't add up."
-    m "I'm matching numbers to names, but I'm missing something."
-    m "I need to look more carefully."
-
-    menu:
-        "Try again":
-            jump rubber_plantation_scene.puzzle_loop
-        "Leave the plantation":
-            return

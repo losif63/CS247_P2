@@ -114,6 +114,12 @@
         "settings": {
           "fontStyle": "italic"
         }
+      },
+      {
+        "scope": "renpy.meta.color.#0000ff",
+        "settings": {
+          "foreground": "#0000ff"
+        }
       }
     ]
   }

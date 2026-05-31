@@ -75,15 +75,25 @@ label start:
 
     scene intro at fit_screen
 
+    play music "audio/frogs-intro.wav" loop fadein 1.5
+    play sound "audio/insects-intro.wav" loop fadein 1.5
+
     "An eerie atmosphere creeps in as I approach Pelau Siring."
 
-    m "Well, here I am again. All alone, this time..."
+    "It looks just the same as it did the last time I was here, bright and sunny and bustling with tourists."
 
-    "Last month, I visited this place for my summer vacation with 3 of my friends - Thia, Marcus and Yuna."
+    "But I can't shake the sense of unease."
 
-    "After returning from the vacation, strange symptoms have appeared. I was the only one unaffected."
+    "I'm here all alone this time..."
+
+    "Last month, I visited for my summer vacation with 3 of my friends - Thia, Marcus and Yuna."
+
+    "After returning from the vacation, they all started experiencing strange and unexplainable symptoms. I was the only one unaffected."
 
     call friends_flashback from _call_friends_flashback
+
+    play music "audio/frogs-intro.wav" loop fadein 1.5
+    play sound "audio/insects-intro.wav" loop fadein 1.5
 
     "The doctors couldn't identify what's wrong with them. Something tells me that the secret lies in this village..."
 
@@ -98,9 +108,14 @@ label start:
 
 label friends_flashback:
 
+    stop music fadeout 1.0
+    stop sound fadeout 1.0
+
     scene bg black
     show thia at friend_flashback
     with Dissolve(1.0)
+    play music "audio/thia-intro-trash.wav" loop fadein 1.0
+    play sound "audio/thia-intro-trickle.wav" loop fadein 1.0
     "Thia."
     "She can't get rid of anything."
     "Whatever she throws away comes back. Receipts pile up in her pockets. Food wrappers reappear on her bed."
@@ -109,9 +124,11 @@ label friends_flashback:
     scene bg black
     show marcus at friend_flashback
     with Dissolve(1.0)
+    play music "audio/marcus-intro-type.wav" loop fadeout 0.5 fadein 0.5
+    play sound "audio/marcus-pen-intro.wav" loop fadeout 0.5 fadein 0.5
     "Marcus."
     "He can't stop working. He shows up to work hours early and leaves late at night."
-    "At home, he can't sit down. He paces, cleans, organizes, anythiing to keep being productive."
+    "At home, he can't sit down. He types up documents, scribbles notes furiously, paces, cleans, organizes, anything to keep being productive."
 
     # scene theo
     # with Dissolve(1.0)
@@ -122,6 +139,8 @@ label friends_flashback:
     scene bg black
     show yuna at friend_flashback
     with Dissolve(1.0)
+    play music "audio/yuna-intro-footsteps.mp3" loop fadeout 0.5 fadein 0.5
+    play sound "audio/yuna-intro-voices.wav" loop fadeout 0.5 fadein 0.5
     "Yuna."
     "She is plagued by recurring dreams she can't escape."
     "In them, her father is dragged away and tortured to death. Her mother is taken and used as a subject of illegal human experimentation."
@@ -133,6 +152,8 @@ label friends_flashback:
     # "She can't speak her first language, Tamil, anymore."
     # "She can feel the words on her tongue, but they won't come out."
 
+    stop music fadeout 1.0
+    stop sound fadeout 1.0
     scene black
     with Dissolve(1.0)
     return
@@ -286,7 +307,7 @@ screen village_map_screen():
         ysize 270
         background None
         hover_background "#ffffff22"
-        action Confirm("Do you want to move to the Rubber Plantation?", yes=Return("rubber_plantation"))
+        action [Play("sound", "audio/map-click.wav"), Confirm("Do you want to move to the Rubber Plantation?", yes=Return("rubber_plantation"))]
 
     # Town Hall — upper-left building
     button:
@@ -296,7 +317,7 @@ screen village_map_screen():
         ysize 183
         background None
         hover_background "#ffffff22"
-        action Confirm("Do you want to move to the Town Hall?", yes=Return("town_hall"))
+        action [Play("sound", "audio/map-click.wav"), Confirm("Do you want to move to the Town Hall?", yes=Return("town_hall"))]
 
     # Museum — upper-center columned building
     button:
@@ -306,7 +327,7 @@ screen village_map_screen():
         ysize 139
         background None
         hover_background "#ffffff22"
-        action Confirm("Do you want to move to the Museum?", yes=Return("museum"))
+        action [Play("sound", "audio/map-click.wav"), Confirm("Do you want to move to the Museum?", yes=Return("museum"))]
 
     # Graveyard — upper-right-center gravestones
     button:
@@ -316,7 +337,7 @@ screen village_map_screen():
         ysize 193
         background None
         hover_background "#ffffff22"
-        action Confirm("Do you want to move to the Graveyard?", yes=Return("graveyard"))
+        action [Play("sound", "audio/map-click.wav"), Confirm("Do you want to move to the Graveyard?", yes=Return("graveyard"))]
 
     # Church — far-right steeple
     button:
@@ -326,7 +347,7 @@ screen village_map_screen():
         ysize 274
         background None
         hover_background "#ffffff22"
-        action Confirm("Do you want to move to the Church?", yes=Return("church"))
+        action [Play("sound", "audio/map-click.wav"), Confirm("Do you want to move to the Church?", yes=Return("church"))]
 
     # Empty Home — center small house
     button:
@@ -336,7 +357,7 @@ screen village_map_screen():
         ysize 128
         background None
         hover_background "#ffffff22"
-        action Confirm("Do you want to move to the Empty Home?", yes=Return("empty_home"))
+        action [Play("sound", "audio/map-click.wav"), Confirm("Do you want to move to the Empty Home?", yes=Return("empty_home"))]
 
     # Hospital — right-lower cross building
     button:
@@ -346,7 +367,7 @@ screen village_map_screen():
         ysize 229
         background None
         hover_background "#ffffff22"
-        action Confirm("Do you want to move to the Hospital?", yes=Return("hospital"))
+        action [Play("sound", "audio/map-click.wav"), Confirm("Do you want to move to the Hospital?", yes=Return("hospital"))]
 
     # Mangrove Spring — far right tourist stop
     button:
@@ -367,6 +388,10 @@ label village_map:
     scene village_map at fit_screen
     with Dissolve(1.0)
 
+    play music "audio/map-ticking.wav" loop fadein 1.5
+    stop sound fadeout 1.5
+    play ambience "audio/map-atmosphere.wav" loop fadein 1.5
+
     if not map_onboarding_shown:
         $ map_onboarding_shown = True
         call screen map_onboarding_screen
@@ -374,6 +399,9 @@ label village_map:
 
     call screen village_map_screen
     $ map_choice = _return
+
+    stop music fadeout 1.0
+    stop ambience fadeout 1.0
 
     if map_choice == "rubber_plantation":
         call rubber_plantation_scene from _call_rubber_plantation_scene
