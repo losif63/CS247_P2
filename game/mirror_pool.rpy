@@ -85,7 +85,7 @@ screen mirror_pool_screen():
         text_style "return_map_button_text"
         xalign 0.97
         yalign 0.04
-        action Return("return_map")
+        action Confirm("Are you sure you want to return to the map?", Return("return_map"))
 
 label mirror_pool_scene:
     while True:
@@ -388,6 +388,12 @@ label mirror_pool_final_bottle_resolution:
                     note="Thia’s affliction was tied to the Mirror Pool, a mourning site renamed for tourists after being used as Waste Channel 3. The hidden marks beneath the tourist sign decoded to: MOTHER SPRING REMEMBERS.",
                     solved=True
                 )
+                $ journal_remove_item("mirror_pool.bottle_of_spring_water")
+                $ journal_remove_item("museum.spring_fragments")
+                $ journal_remove_item("mirror_pool.hidden_sign_marks")
+                $ journal_remove_item("mirror_pool.decoded_message")
+                $ journal_remove_item("city_hall.bayani_margin_note") 
+                $ journal_remove_item("empty_home.basement.crumpled_code_note")
                 jump mirror_pool_thia_message
 
 

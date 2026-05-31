@@ -636,6 +636,13 @@ screen plantation_puzzle():
             style "map_button_button"
             action Function(plantation_reset)
 
+    textbutton "Return to Map":
+        style "return_map_button"
+        text_style "return_map_button_text"
+        xalign 0.97
+        yalign 0.04
+        action Confirm("Are you sure you want to return to the map?", Return("Leave"))
+
 
 ################################################################################
 ## Scene
@@ -664,6 +671,8 @@ label rubber_plantation_scene:
         $ journal_blocked = True
         call screen plantation_puzzle
         $ journal_blocked = False
+        if _return == "Leave":
+            return
         if _return == "check":
             if plantation_check_answers():
                 jump rubber_plantation_solved

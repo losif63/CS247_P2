@@ -80,7 +80,7 @@ init python:
                 },
             ],
             "puzzle":     None,
-            "requires":   "empty_home.basement.shovel",
+            "requires":   "graveyard.shovel",
             "unlock":     "church_backyard_lawn_unlock",
             "locked_msg": "The soil here looks recently disturbed. You'd need something to dig with.",
         },
@@ -214,6 +214,8 @@ label church_backyard_box_puzzle:
             "The lock clicks open."
             "Inside the box is a torn {color=#ff0000}{b}piece of a photo{/b}{/color} — it shows a man smiling."
             $ _box_solved = True
+            $ journal_remove_item("city_hall.joaquin_page")
+            $ journal_remove_item("city_hall.execution_page")
         else:
             "The lock doesn't budge. That's not the right combination."
     return
@@ -242,6 +244,9 @@ label church_backyard_intro:
 label church_backyard_lawn_unlock:
     "You drive the shovel into the soil. The ground here is softer than it looks."
     "After a few scoops, the blade strikes something solid."
+    "You leave the shovel stuck in the upturned earth — you won't be needing it again."
+    # The shovel has served its purpose — drop it from the inventory.
+    $ journal_remove_item("graveyard.shovel")
     return
 
 label church_backyard_lawn_intro:
