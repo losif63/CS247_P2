@@ -311,7 +311,7 @@ label empty_home_crumpled_code_note_action:
 
     $ waterNoteFound = True
     "Behind the rack, something brittle catches against the wood."
-    "You pull out a crumpled paper, damp at the edges but still readable."
+    "You pull out a {color=#ff0000}{b}crumpled paper{/b}{/color}, damp at the edges but still readable."
     "The paper only has one sentence:"
     "\"Water reveals hidden writing.\""
     # $ journal_add_item(
