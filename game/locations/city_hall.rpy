@@ -37,7 +37,46 @@ init python:
             "parent":     "city_hall",
             "intro":      "city_hall_ground_floor_intro",
             "children":   [],
-            "objects":    [],
+            "objects":    [
+                {
+                    "id":        "city_hall.ground_floor.cabinets",
+                    "name":      "Filing Cabinets",
+                    "item":      None,
+                    "action":    None,
+                    "msg_first": [
+                        "The cabinets are stuffed with permits — thousands of them, all stamped and counter-stamped.",
+                        "A permit to travel to the next village. A permit to hold a wedding. A permit to gather more than five people after dark.",
+                        "Under the colonial administration, it seems, simply living required someone's signature.",
+                        "Most of the applications are marked with the same word: {i}Denied.{/i}",
+                    ],
+                    "msg_done":  "Drawers of permits, most of them denied.",
+                },
+                {
+                    "id":        "city_hall.ground_floor.notice_board",
+                    "name":      "Public Notice Board",
+                    "item":      None,
+                    "action":    None,
+                    "msg_first": [
+                        "Layers of proclamations are pinned over one another, the oldest yellowed almost to nothing.",
+                        "A curfew order. A reward offered for information on 'agitators and seditionists.' A decree that all official business be conducted in the colonisers' language.",
+                        "Pasted crookedly over them all is a newer bulletin, hand-printed in the local tongue: a single line announcing the village's independence.",
+                        "Someone tore the corner of it off. Whether in anger or to keep, you can't tell.",
+                    ],
+                    "msg_done":  "Old decrees buried under a newer, hopeful one.",
+                },
+                {
+                    "id":        "city_hall.ground_floor.clerks_desk",
+                    "name":      "Clerk's Desk",
+                    "item":      None,
+                    "action":    None,
+                    "msg_first": [
+                        "A clerk's desk, abandoned mid-task. An official seal lies on its side beside a dried-out ink pad.",
+                        "A half-finished form rejects a family's petition to recover a relative 'taken for questioning.'",
+                        "The reason for denial is pre-printed. The clerk only had to sign.",
+                    ],
+                    "msg_done":  "Just an old desk and a seal that once decided lives.",
+                },
+            ],
             "puzzle":     None,
             "requires":   None,
             "unlock":     None,
@@ -49,7 +88,48 @@ init python:
             "parent":     "city_hall",
             "intro":      "city_hall_2f_intro",
             "children":   [],
-            "objects":    [],
+            "objects":    [
+                {
+                    "id":        "city_hall.2f.council_table",
+                    "name":      "Council Table",
+                    "item":      None,
+                    "action":    None,
+                    "msg_first": [
+                        "The long table is still set for a meeting that never resumed. Bound minutes lie at each place.",
+                        "You leaf through one. The language is calm, procedural — agenda items and motions carried.",
+                        "Item four: a 'labour shortfall' in the groves, resolved by 'reassigning' two neighbouring villages.",
+                        "Item seven: a complaint about the smell from the river, tabled for next session.",
+                        "Whole communities and a bad smell, weighed on the same page in the same flat hand.",
+                    ],
+                    "msg_done":  "Council minutes, where atrocities share the page with petty business.",
+                },
+                {
+                    "id":        "city_hall.2f.private_office",
+                    "name":      "Private Office",
+                    "item":      None,
+                    "action":    None,
+                    "msg_first": [
+                        "An administrator's private office, grander than the rest. A half-written letter sits on the blotter.",
+                        "It is addressed home, across the sea. He complains of the heat, of the food, of 'these people and their endless grievances.'",
+                        "He misses his children. He has framed their portrait on the desk, facing his chair.",
+                        "He signs off promising to be home by spring. You wonder if he ever was.",
+                    ],
+                    "msg_done":  "A homesick letter from a man who governed a place he despised.",
+                },
+                {
+                    "id":        "city_hall.2f.survey_map",
+                    "name":      "Survey Map",
+                    "item":      None,
+                    "action":    None,
+                    "msg_first": [
+                        "A vast survey map covers one wall, the village and its surroundings drawn in meticulous detail.",
+                        "Every river, hill, and settlement has been given a new name in the colonisers' language.",
+                        "Beneath each, in smaller faded lettering, the original local names have been struck through with a single ruled line.",
+                        "To remake a place, first you rename it.",
+                    ],
+                    "msg_done":  "A map that renamed everything it touched.",
+                },
+            ],
             "puzzle":     None,
             "requires":   None,
             "unlock":     None,
@@ -95,24 +175,24 @@ init python:
                     "name":      "1920",
                     "item":      None,
                     "action":    None,
-                    "msg_first": "just a lot of numbers...",
-                    "msg_done": "just a lot of numbers..."
+                    "msg_first": "The rubber plantation brought the city a lot of profit in 1920.",
+                    "msg_done": "You've already viewed this report."
                 },
                 {
                     "id":        "city_hall.3f.archiveroom_financial.1921",
                     "name":      "1921",
                     "item":      None,
                     "action":    None,
-                    "msg_first": "just a lot of numbers...",
-                    "msg_done": "just a lot of numbers..."
+                    "msg_first": "The files in this report seems to be missing for some reason.",
+                    "msg_done": "You've already viewed this report."
                 },
                 {
                     "id":        "city_hall.3f.archiveroom_financial.1922",
                     "name":      "1922",
                     "item":      None,
                     "action":    None,
-                    "msg_first": "just a lot of numbers...",
-                    "msg_done": "just a lot of numbers..."
+                    "msg_first": "The city suffered from massive deficits due to a record-breaking flood that year.",
+                    "msg_done": "You've already viewed this report."
                 },
             ],
             "puzzle":     None,
@@ -132,24 +212,32 @@ init python:
                     "name":      "1920",
                     "item":      None,
                     "action":    None,
-                    "msg_first": "just a lot of numbers...",
-                    "msg_done": "just a lot of numbers..."
+                    "msg_first": [
+                        "The plantation produced 67 tons of rubber in 1920.",
+                        "...those numbers seem useless."
+                    ],
+                    "msg_done": "You've already viewed this report."
                 },
                 {
                     "id":        "city_hall.3f.archiveroom_rubber.1921",
                     "name":      "1921",
                     "item":      None,
                     "action":    None,
-                    "msg_first": "just a lot of numbers...",
-                    "msg_done": "just a lot of numbers..."
+                    "msg_first": [
+                        "The plantation produced 59 tons of rubber in 1921.",
+                        "...those numbers seem useless."
+                    ],
+                    "msg_done": "You've already viewed this report."
                 },
                 {
                     "id":        "city_hall.3f.archiveroom_rubber.1922",
                     "name":      "1922",
                     "item":      None,
                     "action":    None,
-                    "msg_first": "just a lot of numbers...",
-                    "msg_done": "just a lot of numbers..."
+                    "msg_first": [
+                        "The plantation didn't operate in 1922 due to a catastrophic flood."
+                    ],
+                    "msg_done": "You've already viewed this report."
                 },
             ],
             "puzzle":     None,
@@ -180,8 +268,9 @@ init python:
                     "msg_first": [
                         "Name: Teodora Salvacion.",
                         "Arrested For: Treason. Acted as a spy for independence rebels.",
-                        "Interrogation Method: 7G.",
-                        "Notes: (scribbles)",
+                        "Interrogation Method: Physical force. Suspect was bound to a chair and was struck multiple times in the head with a blunt instrument."
+                        "Fingernails were extracted using scissors...",
+                        "Notes: ... Interrogation unsuccesful. Suspect perished before revealing any info.",
                     ],
                     "msg_done": "You already viewed this entry."
                 },
@@ -193,7 +282,7 @@ init python:
                     "msg_first": [
                         "Name: Bayani Magtanggol.",
                         "Arrested For: Assasination of military general.",
-                        "Interrogation Method: 1A.",
+                        "Interrogation Method: Water torture. Hang susepct upside down and pour water into his nose while stamping his abdomen.",
                         "Notes: (scribbles)",
                     ],
                     "msg_done": "You already viewed this entry."
@@ -218,7 +307,7 @@ init python:
         "city_hall.joaquin_page": {
             "name":        "Torn Interrogation Record",
             "location":    "City Hall - Archive Room",
-            "description": "A page torn from the colonial interrogation files. Records Joaquin Gonzalez's arrest for instigating independence riots — Interrogation Method 3A. A number is scrawled in the margin: 1938.",
+            "description": "A page torn from the colonial interrogation files. Records Joaquin Gonzalez's arrest for instigating independence riots — A number is scrawled in the margin: {b}1938{/b}.",
         },
         "city_hall.execution_page": {
             "name":        "Torn Execution Record",
@@ -308,8 +397,10 @@ label city_hall_execution_page_action:
 label city_hall_joaquin_page_action:
     "Name: Joaquin Gonzalez."
     "Arrested For: Instigating independence riots."
-    "Interrogation Method: 3A."
-    "Notes: (blahblah) ~ {b}1938{/b} ~ (scribbles)"
+    "Interrogation Method: Electrocution."
+    "Notes: (blahblah)"
+    "Confessed: {b}1938{/b}"
+    "(scribbles)"
     "The number {b}1938{/b} catches your eye. This seems important."
     "You tear the {color=#ff0000}{b}page{/b}{/color} from the file and pocket it."
     return

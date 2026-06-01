@@ -670,4 +670,3 @@ label rubber_plantation_solved:
             pass
     return
 
-

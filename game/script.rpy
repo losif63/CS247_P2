@@ -4,6 +4,9 @@ default map_onboarding_shown = False
 default journal_available = False
 default current_day = 1
 default locations_today = 0
+default ended_early = False
+# Set True when the player saves every friend before the 5 days run out, so the
+# ending can acknowledge they left the island early rather than waiting it out.
 image intro = "Enter.png"
 image village_map = "images/Map.jpg"
 image townhall = "images/newtownhall.png"
@@ -420,6 +423,12 @@ label village_map:
     elif map_choice == "mirror_pool":
         call mirror_pool_scene from _call_mirror_pool_scene
 
+    # Early ending — if every friend has been saved, the journey is complete and
+    # the game ends the moment the player returns to the map.
+    if friend_notes and all(f["solved"] for f in friend_notes.values()):
+        $ ended_early = True
+        jump game_ending
+
     $ locations_today += 1
 
     if locations_today >= 3:
@@ -440,69 +449,9 @@ label village_map:
 
 # town_hall_scene is defined in locations/city_hall.rpy
 
-label museum_scene:
-    scene museum at fit_screen
-    with Dissolve(0.5)
-    "The village museum is small but unsettling."
-    "Glass cases display artifacts — masks, farming tools, ceremonial objects — each stripped of their original meaning by sterile labels."
-    "Something about this place feels wrong."
-    $ finish = False
-    $ inspect_fragments = False
-    while not finish:
-        $ inspect_fragments = False
-        menu:
-            "Inspect the spring fragments":
-                $ inspect_fragments = True
-            "Finish Investigation":
-                menu:
-                    "Are you sure you want to finish investigating here?"
-                    "Yes, return to the map.":
-                        $ finish = True
-                    "No, keep looking.":
-                        pass
-        if inspect_fragments:
-            call museum_spring_fragments from _call_museum_spring_fragments
-    return
+# museum_scene is defined in locations/museum.rpy
 
-label museum_spring_fragments:
-    "A glass case near the back wall holds three pieces of carved wood."
-    "The label reads: {i}Fragments from an Unidentified Spring Marker.{/i}"
-    "Three fragments sit under glass."
-    "The museum label calls them decorative remnants from an unidentified spring structure."
-    "Each one has been cataloged by fragment number."
-    "Spring Fragment 03"
-    "A carved piece of wood. One word remains visible: {b}MOTHER{/b}."
-    "Spring Fragment 08"
-    "A broken strip of painted board. The word {b}SPRING{/b} is still legible."
-    "Spring Fragment 14"
-    "A piece of root-warped signage. The final carved word reads: {b}REMEMBERS{/b}."
-    if not museumFragmentsFound:
-        $ museumFragmentsFound = True
-        $ journal_add_item(
-            "museum.spring_fragments",
-            "Museum Fragment Notes",
-            "Museum",
-            "The museum display labeled three pieces as Spring Fragment 03, Spring Fragment 08, and Spring Fragment 14. The visible words were: MOTHER, SPRING, and REMEMBERS."
-        )
-    return
-
-label graveyard_scene:
-    scene black
-    with Dissolve(0.5)
-    "The graveyard is older than the village itself, some say."
-    "You walk between the crumbling headstones, many worn smooth — names erased by time."
-    "A fresh wreath of flowers sits at one of the graves. Someone was here recently."
-    $ finish = False
-    while not finish:
-        menu:
-            "Finish Investigation":
-                menu:
-                    "Are you sure you want to finish investigating here?"
-                    "Yes, return to the map.":
-                        $ finish = True
-                    "No, keep looking.":
-                        pass
-    return
+# graveyard_scene is defined in locations/graveyard.rpy
 
 # church_scene is defined in locations/church.rpy
 
@@ -539,7 +488,11 @@ label game_ending:
     scene black
     with Dissolve(2.0)
 
-    "Five days have passed. You board the boat back to the mainland."
+    if ended_early:
+        "You don't wait for the fifth day."
+        "There is nothing left undone here. With all three friends safe, you board the boat back to the mainland."
+    else:
+        "Five days have passed. You board the boat back to the mainland."
 
     # ── Thia ──────────────────────────────────
     "Thia."

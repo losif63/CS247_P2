@@ -192,20 +192,12 @@ init python:
                         '"I am starving. I hope she comes back soon."',
                         "You close the book."
                     ],
-                    "msg_done":  "There is nothing on the swing.",
-                },
-                {
-                    "id":        "empty_home.basement.rack",
-                    "name":      "Rack",
-                    "item":      "empty_home.basement.shovel",
-                    "action":    None,
-                    "msg_first": "A wooden rack leans against the wall, holding a few old tools. A {color=#ff0000}{b}shovel{/b}{/color} hangs from one of the pegs — you take it.",
-                    "msg_done":  "The rack is empty now.",
+                    "msg_done":  "You've already viewed this bookshelf.",
                 },
                 {
                     "id":        "empty_home.basement.crumpled_code_note",
-                    "name":      "Crumpled Paper Behind Rack",
-                    "item":      None,
+                    "name":      "Crumpled Paper Behind Bookshelf",
+                    "item":      "empty_home.basement.crumpled_code_note",
                     "action":    "empty_home_crumpled_code_note_action",
                     "msg_first": [
                         "Behind the rack, something brittle catches against the wood.",
@@ -243,11 +235,6 @@ init python:
             "description": "A piece of a torn photo. The piece shows a young girl smiling."
         },
 
-        "empty_home.basement.shovel": {
-            "name": "Shovel",
-            "location": "Empty Home - Basement",
-            "description": "An old shovel taken from a rack in the basement."
-        },
         "empty_home.basement.crumpled_code_note": {
             "name": "Crumpled Water Note",
             "location": "Empty Home - Basement",
@@ -313,6 +300,8 @@ label empty_home_basement_door_intro:
 label empty_home_basement_unlock:
     "You fit the key into the lock. It turns with a heavy click."
     "The door swings inward. Cold air rises from below."
+    # The key has served its purpose — drop it from the inventory.
+    $ journal_remove_item("empty_home.basement_door.key")
     return
 
 label empty_home_crumpled_code_note_action:
@@ -321,12 +310,16 @@ label empty_home_crumpled_code_note_action:
         return
 
     $ waterNoteFound = True
-    $ journal_add_item(
-        "empty_home.basement.crumpled_water_note",
-        "Crumpled Water Note",
-        "Empty Home - Basement",
-        "A damp, crumpled paper found behind the basement rack. It reads: \"Water reveals hidden writing.\""
-    )
+    "Behind the rack, something brittle catches against the wood."
+    "You pull out a {color=#ff0000}{b}crumpled paper{/b}{/color}, damp at the edges but still readable."
+    "The paper only has one sentence:"
+    "\"Water reveals hidden writing.\""
+    # $ journal_add_item(
+    #     "empty_home.basement.crumpled_water_note",
+    #     "Crumpled Water Note",
+    #     "Empty Home - Basement",
+    #     "A damp, crumpled paper found behind the basement rack. It reads: \"Water reveals hidden writing.\""
+    # )
     return
 
 
@@ -414,5 +407,9 @@ label empty_home_photo_present:
     m "She's going to be okay."
 
     $ journal_update_friend("yuna", note="Her recurring dreams mirrored the fate of the Gonzalez family exactly — a father dragged away and killed, a mother taken for illegal experimentation. The village made her live through what she had refused to see in the children on the road.", solved=True)
+    $ journal_remove_item("church.backyard.lawn.photo_piece")
+    $ journal_remove_item("hospital.basement.morgue.emilia.photo")
+    $ journal_remove_item("empty_home.backyard.swing.photo")
+    $ journal_remove_item("empty_home.basement.diary")
 
     return
