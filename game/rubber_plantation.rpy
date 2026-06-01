@@ -158,9 +158,9 @@ init python:
         plantation_names[plantation_selected] = CENSUS_ENTRIES[census_idx]["name"]
         plantation_struck.discard(plantation_selected)
         if CORRECT_MATCHES.get(plantation_selected) == census_idx:
-            renpy.sound.play("audio/ledger-correct-feedback.wav")
+            renpy.sound.play("audio/rubber-plantation/ledger-correct-feedback.wav")
         else:
-            renpy.sound.play("audio/ledger-incorrect-feedback.wav")
+            renpy.sound.play("audio/rubber-plantation/ledger-incorrect-feedback.wav")
         plantation_selected = None
         renpy.restart_interaction()
 
@@ -392,7 +392,7 @@ screen plantation_puzzle():
                                             hovered (NullAction() if _is_correct else SetScreenVariable("hovered_ledger", i))
                                             unhovered SetScreenVariable("hovered_ledger", None)
                                             padding (0, 0)
-                                            action (NullAction() if _is_correct else [Play("sound", "audio/map-click.wav"), Function(plantation_select_ledger, i)])
+                                            action (NullAction() if _is_correct else [Play("sound", "audio/map/map-click.wav"), Function(plantation_select_ledger, i)])
                                             text "[_eid]" style "plantation_dim_text"
                                         frame:
                                             xsize 120
@@ -496,7 +496,7 @@ screen plantation_puzzle():
                             $ _plabor   = _p["labor_status"]
                             $ _casgn       = next((ii for ii in range(8) if plantation_matches[ii] == j), None)
                             $ _cis_correct = (_casgn is not None and CORRECT_MATCHES[_casgn] == j)
-                            $ _cact        = [Play("sound", "audio/map-click.wav"), Function(plantation_assign, j)]
+                            $ _cact        = [Play("sound", "audio/map/map-click.wav"), Function(plantation_assign, j)]
 
                             frame:
                                 background ("#47853766" if _cis_correct else ("#fac26844" if hovered_census == j else "#00000000"))
@@ -567,7 +567,7 @@ label rubber_plantation_scene:
     scene rubber_plantation_bg at fit_screen
     with Dissolve(0.5)
 
-    play music "audio/plantation-wind.wav" loop fadein 1.0
+    play music "audio/rubber-plantation/plantation-wind.wav" loop fadein 1.0
 
     "You arrive at the rubber plantation at the edge of the village."
     "The smell of latex and jungle humidity hangs heavy in the air."
@@ -603,7 +603,7 @@ transform fullscreen:
 
 label rubber_plantation_solved:
 
-    play music "audio/plantation-solved.wav" fadein 1.0
+    play music "audio/rubber-plantation/plantation-solved.wav" fadein 1.0
 
     # ── Journal entries ────────────────────────────────────────────────────────
     $ journal_add_item(
