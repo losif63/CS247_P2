@@ -149,6 +149,7 @@ define config.save_directory = "Remnant-1778195726"
 ## Disable rollback via PageUp and mouse wheel / trackpad scroll up.
 init python:
     config.keymap['rollback'] = []
+    renpy.music.register_channel("ambience", "sfx", loop=True)
 
 
 ## Icon ########################################################################
