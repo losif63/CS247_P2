@@ -193,6 +193,10 @@ label explore_node(node_id):
         if _node["intro"] is not None:
             call expression _node["intro"] from _call_explore_intro
 
+    # Call on_enter every visit (audio, scene changes, etc.)
+    if _node.get("on_enter") is not None:
+        call expression _node["on_enter"] from _call_explore_enter
+
     # Trigger unsolved puzzle
     if _node["puzzle"] is not None and _node["puzzle"] not in solved_puzzles:
         call expression _node["puzzle"] from _call_explore_puzzle

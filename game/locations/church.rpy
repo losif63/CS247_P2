@@ -13,6 +13,11 @@
 ################################################################################
 
 
+image church_backyard = "images/church-backyard.png"
+image church_main_hall = "images/church-main-hall-2.png"
+image church_statue_img = "images/church-statue.png"
+
+
 init python:
     EXPLORE_NODES.update({
 
@@ -20,6 +25,7 @@ init python:
             "name":       "Church",
             "parent":     None,
             "intro":      "church_intro",
+            "on_enter":   "church_on_enter",
             "children":   [
                 "church.main_hall",
                 "church.backyard",
@@ -35,6 +41,7 @@ init python:
             "name":       "Main Hall",
             "parent":     "church",
             "intro":      "church_main_hall_intro",
+            "on_enter":   "church_main_hall_on_enter",
             "children":   [],
             "objects":    [],
             "puzzle":     None,
@@ -47,13 +54,14 @@ init python:
             "name":       "Backyard",
             "parent":     "church",
             "intro":      "church_backyard_intro",
+            "on_enter":   "church_backyard_on_enter",
             "children":   ["church.backyard.lawn"],
             "objects":    [
                 {
                     "id":        "church.backyard.statue",
                     "name":      "Saint Mary's Statue",
                     "item":      None,
-                    "action":    None,
+                    "action":    "church_statue_action",
                     "msg_first": "A stone statue of Saint Mary stands at the centre of the backyard. Her expression is serene, but the moss creeping up her base gives her an abandoned look.",
                     "msg_done":  "Saint Mary watches over the yard in silence.",
                 },
@@ -192,6 +200,8 @@ screen church_box_lock_screen():
 
 label church_scene:
     call explore_node("church") from _call_church_root
+    stop ambience fadeout 1.0
+    stop music fadeout 1.0
     return
 
 
@@ -226,17 +236,22 @@ label church_backyard_box_puzzle:
 label church_intro:
     scene church at fit_screen
     with Dissolve(0.5)
+    play ambience "<from 0 to 10 loop 0>audio/church/church-ambient.wav" fadein 1.0
     "The church looms at the edge of the square, its white walls stained by decades of rain."
     "Inside, rows of wooden pews face a simple altar."
     "Candles have been recently burned — the wax is still soft."
     return
 
 label church_main_hall_intro:
+    scene church_main_hall at fit_screen
+    with Dissolve(0.5)
     "You step into the main hall."
     "Pale light filters through the windows, casting long shadows across the pews."
     return
 
 label church_backyard_intro:
+    scene church_backyard at fit_screen
+    with Dissolve(0.5)
     "The backyard stretches behind the church, enclosed by an old iron fence."
     "Headstones line the far wall, some so weathered the names are barely legible."
     return
@@ -251,4 +266,36 @@ label church_backyard_lawn_unlock:
 
 label church_backyard_lawn_intro:
     "A patch of freshly turned soil. Half-buried in the dirt is a small wooden box."
+    return
+
+
+# ── on_enter labels (audio, called every visit) ───────────────────────────────
+
+label church_on_enter:
+    scene church at fit_screen
+    with Dissolve(0.5)
+    if not renpy.music.get_playing("ambience"):
+        play ambience "<from 0 to 10 loop 0>audio/church/church-ambient.wav" fadein 1.0
+    stop music fadeout 1.0
+    return
+
+label church_main_hall_on_enter:
+    scene church_main_hall at fit_screen
+    with Dissolve(0.5)
+    play sound "<from 0 to 2>audio/church/church-main-hall.wav"
+    return
+
+label church_backyard_on_enter:
+    $ renpy.notify("DEBUG: backyard_on_enter fired")
+    $ renpy.music.stop("ambience", fadeout=1.0)
+    play music "audio/church/church-backyard.wav" fadein 1.0
+    return
+
+
+label church_statue_action:
+    scene church_statue_img at fit_screen
+    with Dissolve(0.5)
+    "A stone statue of Saint Mary stands at the centre of the backyard. Her expression is serene, but the moss creeping up her base gives her an abandoned look."
+    scene church_backyard at fit_screen
+    with Dissolve(0.5)
     return

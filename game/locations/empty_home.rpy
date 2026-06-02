@@ -13,6 +13,9 @@
 ################################################################################
 
 init python:
+    renpy.music.register_channel("atmosphere", "sfx", loop=False)
+    renpy.music.register_channel("atmosphere2", "sfx", loop=False)
+
     EXPLORE_NODES.update({
 
         "empty_home": {
@@ -53,7 +56,7 @@ init python:
                     "id":        "empty_home.living_room.drawer.top",
                     "name":      "Top Drawer",
                     "item":      None,
-                    "action":    None,
+                    "action":    "empty_home_drawer_top_action",
                     "msg_first": "The top drawer slides open. Nothing but old receipts and a broken pen.",
                     "msg_done":  "Just old receipts.",
                 },
@@ -61,7 +64,7 @@ init python:
                     "id":        "empty_home.living_room.drawer.middle",
                     "name":      "Middle Drawer",
                     "item":      "empty_home.basement_door.key",
-                    "action":    None,
+                    "action":    "empty_home_drawer_middle_action",
                     "msg_first": "You find a {color=#ff0000}{b}small key{/b}{/color} taped to the back of the drawer.",
                     "msg_done":  "The middle drawer is empty.",
                 },
@@ -69,7 +72,7 @@ init python:
                     "id":        "empty_home.living_room.drawer.bottom",
                     "name":      "Bottom Drawer",
                     "item":      None,
-                    "action":    None,
+                    "action":    "empty_home_drawer_bottom_action",
                     "msg_first": "Stuck. The bottom drawer won't budge no matter how hard you pull.",
                     "msg_done":  "Still stuck.",
                 },
@@ -176,7 +179,7 @@ init python:
                     "id":        "empty_home.basement.bookshelf",
                     "name":      "Bookshelf",
                     "item":      "empty_home.basement.diary",
-                    "action":    None,
+                    "action":    "empty_home_bookshelf_action",
                     "msg_first": [
                         "There seems to be a bookshelf alongside the back wall of the basement.",
                         "An uncanny book immediately catches your eye - it says {color=#ff0000}{b}Sonia's Diary{/b}{/color} on the front cover.",
@@ -256,6 +259,7 @@ label empty_home_scene:
 label empty_home_intro:
     scene emptyhome at fit_screen
     with Dissolve(0.5)
+    play sound "audio/home/home-enter-door.wav"
     "The door to the empty home swings open at your touch — it wasn't locked."
     "A layer of dust coats everything. Furniture still in place, as if the occupants simply vanished."
     return
@@ -298,6 +302,7 @@ label empty_home_basement_door_intro:
     return
 
 label empty_home_basement_unlock:
+    play sound "audio/home/basement-door-open.wav"
     "You fit the key into the lock. It turns with a heavy click."
     "The door swings inward. Cold air rises from below."
     # The key has served its purpose — drop it from the inventory.
@@ -310,6 +315,7 @@ label empty_home_crumpled_code_note_action:
         return
 
     $ waterNoteFound = True
+    play sound "audio/home/home-paper-crumple.wav"
     "Behind the rack, something brittle catches against the wood."
     "You pull out a {color=#ff0000}{b}crumpled paper{/b}{/color}, damp at the edges but still readable."
     "The paper only has one sentence:"
@@ -320,6 +326,54 @@ label empty_home_crumpled_code_note_action:
     #     "Empty Home - Basement",
     #     "A damp, crumpled paper found behind the basement rack. It reads: \"Water reveals hidden writing.\""
     # )
+    return
+
+
+# ── Bookshelf action label ────────────────────────────────────────────────────
+
+label empty_home_bookshelf_action:
+    "There seems to be a bookshelf alongside the back wall of the basement."
+    "An uncanny book immediately catches your eye - it says {color=#ff0000}{b}Sonia's Diary{/b}{/color} on the front cover."
+    play sound "audio/home/home-basement-turn-pages.wav"
+    "You reach out your hand and turn the pages. It seems like this belonged to a girl a long time ago."
+    "\"April 15th, 1925.\""
+    play ambience "audio/home/home-rain.wav" loop fadein 2.0
+    "\"It was rainy today. Mommy also looked really sad. Maybe she doesn't like rain.\""
+    "\"I wanted to cheer mommy up, so we played hide and seek together!\""
+    "\"Mommy played it. She told me to stay hidden in the basement - and that I should never come out no matter what, even if mommy calls me.\""
+    "\"So I hid in the basement and stayed there forever! Mommy never found me.\""
+    play music "audio/home/home-mob.wav" fadein 1.0
+    play sound "audio/home/home-ransack.wav"
+    play atmosphere "audio/home/home-footsteps-1.wav"
+    play atmosphere2 "audio/home/home-basement-footsteps-2.wav"
+    "\"I heard a lot of footsteps and shouting upstairs - it seems like mommy invited neighbors to play as well.\""
+    "\"After a few hours I became hungry, so I came out of the basement. Mommy was missing - and there were policemen around my house.\""
+    "\"I asked the policemen where mommy and daddy is. He told me that daddy is at the {color=#ffff00}{b}city hall{/b}{/color}, and mommy went to the {color=#ffff00}{b}hospital{/b}{/color} because she was sick.\""
+    "\"I am starving. I hope she comes back soon.\""
+    stop music fadeout 2.0
+    stop ambience fadeout 2.0
+    stop atmosphere fadeout 2.0
+    stop atmosphere2 fadeout 2.0
+    "You close the book."
+    return
+
+
+# ── Drawer action labels ──────────────────────────────────────────────────────
+
+label empty_home_drawer_top_action:
+    play sound "audio/home/home-drawer-open.wav"
+    "The top drawer slides open. Nothing but old receipts and a broken pen."
+    return
+
+label empty_home_drawer_middle_action:
+    play sound "audio/home/home-drawer-open.wav"
+    "You find a {color=#ff0000}{b}small key{/b}{/color} taped to the back of the drawer."
+    play sound "audio/home/home-key-found.wav"
+    return
+
+label empty_home_drawer_bottom_action:
+    play sound "audio/home/home-jammed-drawer.wav"
+    "Stuck. The bottom drawer won't budge no matter how hard you pull."
     return
 
 
