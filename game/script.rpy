@@ -4,13 +4,18 @@ default map_onboarding_shown = False
 default journal_available = False
 default current_day = 1
 default locations_today = 0
+default museumTradeMapFound = False
+default museumMasksFound = False
+default museumPlantationRecordsFound = False
 image intro = "Enter.png"
 image village_map = "images/Map.jpg"
 image townhall = "images/newtownhall.png"
 image church = "images/church.png"
 image museum = "images/museum.png"
+image graveyard = "images/graveyard.png"
 image emptyhome = "images/emptyhome.png"
 image bg black = Solid("#000")
+image remnant_logo = "images/RemnantLogo.png"
 image thia = "images/ThiaTransparentBG.png"
 image marcus = "images/marcusasset.png"
 # image theo   = "images/theo.png"
@@ -29,6 +34,13 @@ transform fit_screen:
     fit "cover"
     xalign 0.5
     yalign 0.5
+
+transform logo_intro:
+    xalign 0.5
+    yalign 0.5
+    zoom 1.2
+    alpha 0.0
+    linear 2.5 alpha 1.0
 
 transform friend_flashback:
     xalign 0.5
@@ -70,6 +82,10 @@ label start:
     with Dissolve(2.0)
     $ renpy.pause(5.0, hard=False)
     hide screen epigraph with Dissolve(2.0)
+
+    show remnant_logo at logo_intro
+    $ renpy.pause(6.0, hard=False)
+    hide remnant_logo with Dissolve(1.5)
 
     $ quick_menu = True
 
@@ -419,12 +435,16 @@ label museum_scene:
     "Glass cases display artifacts — masks, farming tools, ceremonial objects — each stripped of their original meaning by sterile labels."
     "Something about this place feels wrong."
     $ finish = False
-    $ inspect_fragments = False
     while not finish:
-        $ inspect_fragments = False
         menu:
+            "Inspect the old trade map":
+                call museum_trade_map from _call_museum_trade_map
+            "Inspect the ceremonial masks":
+                call museum_ceremonial_masks from _call_museum_ceremonial_masks
+            "Inspect the plantation records":
+                call museum_plantation_records from _call_museum_plantation_records
             "Inspect the spring fragments":
-                $ inspect_fragments = True
+                call museum_spring_fragments from _call_museum_spring_fragments
             "Finish Investigation":
                 menu:
                     "Are you sure you want to finish investigating here?"
@@ -432,8 +452,60 @@ label museum_scene:
                         $ finish = True
                     "No, keep looking.":
                         pass
-        if inspect_fragments:
-            call museum_spring_fragments from _call_museum_spring_fragments
+    return
+
+label museum_trade_map:
+    "A large map dominates one wall, framed behind yellowed glass."
+    "The placard reads: {i}Pelau Siring — Regional Trade Activity, Pre-Administration Period.{/i}"
+    "Dotted lines trace shipping routes between the islands. The cartographer's hand is confident, authoritative."
+    "You look closer. Several place names along the coastline have been crossed out in red ink and replaced with colonial designations."
+    "The original names are still faintly visible beneath the corrections — local words, older than any administration."
+    "Fishing grounds, mangrove inlets, and a note about medicinal plant harvesting are marked only as 'resource zones.'"
+    "The island had its own geography before someone decided to rename it."
+    if not museumTradeMapFound:
+        $ museumTradeMapFound = True
+        $ journal_add_item(
+            "museum.trade_map",
+            "Colonial Trade Map",
+            "Museum",
+            "A pre-administration map of Pelau Siring. Original coastal place names were crossed out and replaced. Fishing grounds and mangrove inlets labeled only as 'resource zones.'"
+        )
+    return
+
+label museum_ceremonial_masks:
+    "A long case runs the length of one wall, filled with objects arranged in careful rows."
+    "Carved wooden masks. Woven cloth panels. Small figures made of shell and root fiber."
+    "The placard reads: {i}Festival Objects — Seasonal Use, Cultural Group Unspecified.{/i}"
+    "No names. No ceremonies. No explanation of what any of this was for."
+    "One mask faces outward from the case. Its expression is hard to read — not frightening, exactly. More like it is waiting."
+    "A small handwritten note beneath it, barely legible: {i}Confiscated, 1923. Donated to Collection.{/i}"
+    "Confiscated. You stay with that word for a moment."
+    if not museumMasksFound:
+        $ museumMasksFound = True
+        $ journal_add_item(
+            "museum.ceremonial_masks",
+            "Ceremonial Object Display",
+            "Museum",
+            "Masks and woven objects labeled only as 'festival objects — seasonal use.' One mask noted as 'confiscated, 1923.' No cultural context given for any of the items."
+        )
+    return
+
+label museum_plantation_records:
+    "A ledger sits open inside a flat display case, its pages preserved under glass."
+    "The header reads: {i}Labour Register — Pelau Siring Rubber Administration, 1919–1924.{/i}"
+    "Each entry lists a name, a work category, a weekly quota, and a column headed {i}Debt Outstanding.{/i}"
+    "The names run for pages. The debt column almost never reads zero."
+    "One entry near the bottom of a page has been struck through. No explanation. Just a line drawn through a name."
+    "Beside it, in a different hand, a single word: {i}Absconded.{/i}"
+    "The ledger does not record what happened after that."
+    if not museumPlantationRecordsFound:
+        $ museumPlantationRecordsFound = True
+        $ journal_add_item(
+            "museum.plantation_records",
+            "Plantation Labour Register",
+            "Museum",
+            "A colonial labour register from 1919–1924. Villagers listed by work category and debt. One name struck through with the word 'Absconded' written beside it in a different hand."
+        )
     return
 
 label museum_spring_fragments:
@@ -459,7 +531,7 @@ label museum_spring_fragments:
     return
 
 label graveyard_scene:
-    scene black
+    scene graveyard at fit_screen
     with Dissolve(0.5)
     "The graveyard is older than the village itself, some say."
     "You walk between the crumbling headstones, many worn smooth — names erased by time."
