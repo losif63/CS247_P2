@@ -85,9 +85,11 @@ screen mirror_pool_screen():
         text_style "return_map_button_text"
         xalign 0.97
         yalign 0.04
-        action Return("return_map")
+        action Confirm("Are you sure you want to return to the map?", Return("return_map"))
 
 label mirror_pool_scene:
+    play ambience "audio/mangrove/mangrove-ambient.wav" fadein 1.0
+
     while True:
         if signRemoved:
             scene spring_bg_without_sign at fit_screen
@@ -114,6 +116,7 @@ label mirror_pool_scene:
         elif choice == "drain":
             call mirror_pool_drain from _call_mirror_pool_drain
         elif choice == "return_map":
+            stop ambience fadeout 1.0
             return
         elif choice == "check_thia":
             call mirror_pool_thia_message from _call_mirror_pool_thia_message
@@ -125,6 +128,7 @@ label mirror_pool_scene:
     return
 
 label mirror_pool_bottle:
+    
     if bottleResolved:
         "The bottle is gone from the spring now. The water is quieter for it."
         return
@@ -135,9 +139,11 @@ label mirror_pool_bottle:
 
         menu:
             "Throw it away":
+                play sound "<from 0 to 2>audio/mangrove/mangrove-throw-away-bottle.wav"
                 "You pick up the bottle and throw it into the trash bin near the trail."
                 "For a moment, the spring is quiet."
-                "Something rolls softly through the mud."
+                play sound "audio/mangrove/mangrove-bottle-reappear.mp3"
+                "Something thuds inthe mud."
                 "The bottle is back at the water’s edge, wet with brackish water."
                 "Hmm... that did not fix it."
                 $ bottleReturned = True
@@ -153,6 +159,7 @@ label mirror_pool_bottle:
         if bottleReturned and signInvestigated and drainInvestigated:
             menu:
                 "Fill the bottle with spring water.":
+                    play sound "<from 0 to 3>audio/mangrove/mangrove-fill-bottle.wav"
                     "You lower Thia’s bottle into the spring."
                     "The water inside darkens, then stills."
                     "For the first time, the bottle does not roll away from your hand."
@@ -198,9 +205,11 @@ label mirror_pool_sign:
         if bottleFilled and waterNoteFound:
             menu:
                 "Pour spring water over the sign.":
+                    play sound "audio/mangrove/mangrove-water-on-sign.wav"
                     "You pour the spring water over the painted wood."
                     "At first, nothing happens."
                     "Then the tourist paint darkens."
+                    play sound "audio/mangrove/mangrove-rumble-words-appear.wav"
                     "Three small marks surface beneath the tourist name."
                     "They do not look like words."
                     "They look like labels someone expected to be overlooked."
@@ -266,6 +275,7 @@ label mirror_pool_drain:
 
     menu:
         "Inspect the pipe":
+            play sound "<from 0 to 3>audio/mangrove/mangrove-inspect-pipe.mp3"
             "A colonial marker is almost buried in the mud:"
             "WASTE CHANNEL 3."
             "This spring was not only neglected."
@@ -335,6 +345,7 @@ label mirror_pool_remove_sign_choice:
                 "This was never only about litter."
 
             "Pull the tourist sign away.":
+                play sound "audio/mangrove/mangrove-wood-creak.m4a"
                 "You grip the edge of the tourist sign."
                 "The wood groans as it pulls loose from the older post beneath it."
                 "For a moment, the spring is quiet."
@@ -388,10 +399,18 @@ label mirror_pool_final_bottle_resolution:
                     note="Thia’s affliction was tied to the Mirror Pool, a mourning site renamed for tourists after being used as Waste Channel 3. The hidden marks beneath the tourist sign decoded to: MOTHER SPRING REMEMBERS.",
                     solved=True
                 )
+                $ journal_remove_item("mirror_pool.bottle_of_spring_water")
+                $ journal_remove_item("museum.spring_fragments")
+                $ journal_remove_item("mirror_pool.hidden_sign_marks")
+                $ journal_remove_item("mirror_pool.decoded_message")
+                $ journal_remove_item("city_hall.bayani_margin_note") 
+                $ journal_remove_item("empty_home.basement.crumpled_code_note")
                 jump mirror_pool_thia_message
 
 
 label mirror_pool_thia_message:
+    stop ambience fadeout 1.0
+    play music "audio/mangrove/mangrove-solve.mp3" fadein 1.0
     "Message from Thia:"
     show thia_sprite onlayer master at thia_left_speaker zorder 2000
     "Something changed."

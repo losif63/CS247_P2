@@ -172,7 +172,7 @@ screen explore_nav_screen(node_name, children, objects, has_parent):
 
             textbutton "← Finish Investigation & Leave":
                 style "explore_back_button"
-                action Return("Leave")
+                action Confirm("Are you sure you want to finish your investigation and leave?", Return("Leave"))
                 xalign 0.5
 
     textbutton "Return to Map":
@@ -180,7 +180,7 @@ screen explore_nav_screen(node_name, children, objects, has_parent):
         text_style "return_map_button_text"
         xalign 0.97
         yalign 0.04
-        action Return("Leave")
+        action Confirm("Are you sure you want to return to the map?", Return("Leave"))
 
 # ── Generic exploration label ─────────────────────────────────────────────────
 
