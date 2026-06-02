@@ -153,7 +153,7 @@ label graveyard_scene:
 # ── Intro labels (called once per node on first visit) ────────────────────────
 
 label graveyard_intro:
-    scene black
+    scene graveyard at fit_screen
     with Dissolve(0.5)
     "The graveyard is older than the village itself, some say."
     "You walk between the crumbling headstones, many worn smooth — names erased by time."
