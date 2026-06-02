@@ -130,13 +130,30 @@ init python:
 
     plantation_matches  = [None] * 8   # matches[ledger_idx] = census_idx | None
     plantation_selected = None          # ledger index currently highlighted
+    census_selected     = None          # census index currently highlighted
     plantation_names    = [""] * 8      # auto-filled from match; shown under worker ID
     plantation_struck   = set()         # ledger indices marked wrong on last submit
 
     def plantation_select_ledger(idx):
-        global plantation_selected
-        plantation_selected = None if plantation_selected == idx else idx
-        renpy.restart_interaction()
+        global plantation_selected, census_selected
+        if census_selected is not None:
+            # Census was clicked first — complete the match
+            cs = census_selected
+            census_selected = None
+            plantation_selected = idx
+            plantation_assign(cs)
+        else:
+            plantation_selected = None if plantation_selected == idx else idx
+            renpy.restart_interaction()
+
+    def plantation_select_census(j):
+        global plantation_selected, census_selected
+        if plantation_selected is not None:
+            # Ledger was clicked first — complete the match
+            plantation_assign(j)
+        else:
+            census_selected = None if census_selected == j else j
+            renpy.restart_interaction()
 
     def plantation_assign(census_idx):
         global plantation_matches, plantation_selected, plantation_names, plantation_struck
@@ -165,9 +182,10 @@ init python:
         renpy.restart_interaction()
 
     def plantation_reset():
-        global plantation_matches, plantation_selected, plantation_names, plantation_struck
+        global plantation_matches, plantation_selected, census_selected, plantation_names, plantation_struck
         plantation_matches  = [None] * 8
         plantation_selected = None
+        census_selected     = None
         plantation_names    = [""] * 8
         plantation_struck   = set()
         renpy.restart_interaction()
@@ -376,23 +394,23 @@ screen plantation_puzzle():
                             $ _is_struck  = (i in plantation_struck)
                             $ _is_correct = (plantation_matches[i] is not None and CORRECT_MATCHES.get(i) == plantation_matches[i])
 
-                            frame:
+                            button:
                                 background ("#fac268ff" if _sel else ("#47853766" if _is_correct else ("#fac26844" if hovered_ledger == i else "#00000000")))
+                                hover_background ("#fac268ff" if _sel else ("#47853766" if _is_correct else "#fac26844"))
                                 xfill True
                                 padding (4, 2)
+                                hovered (NullAction() if _is_correct else SetScreenVariable("hovered_ledger", i))
+                                unhovered SetScreenVariable("hovered_ledger", None)
+                                action (NullAction() if _is_correct else [Play("sound", "audio/map/map-click.wav"), Function(plantation_select_ledger, i)])
                                 vbox:
                                     spacing 2
                                     hbox:
                                         spacing 12
-                                        button:
+                                        frame:
                                             xsize 120
                                             ysize 20
-                                            background "#00000000"
-                                            hover_background "#00000000"
-                                            hovered (NullAction() if _is_correct else SetScreenVariable("hovered_ledger", i))
-                                            unhovered SetScreenVariable("hovered_ledger", None)
+                                            background None
                                             padding (0, 0)
-                                            action (NullAction() if _is_correct else [Play("sound", "audio/map/map-click.wav"), Function(plantation_select_ledger, i)])
                                             text "[_eid]" style "plantation_dim_text"
                                         frame:
                                             xsize 120
@@ -496,22 +514,22 @@ screen plantation_puzzle():
                             $ _plabor   = _p["labor_status"]
                             $ _casgn       = next((ii for ii in range(8) if plantation_matches[ii] == j), None)
                             $ _cis_correct = (_casgn is not None and CORRECT_MATCHES[_casgn] == j)
-                            $ _cact        = [Play("sound", "audio/map/map-click.wav"), Function(plantation_assign, j)]
+                            $ _csel        = (census_selected == j)
 
-                            frame:
-                                background ("#47853766" if _cis_correct else ("#fac26844" if hovered_census == j else "#00000000"))
+                            button:
+                                background ("#fac268ff" if _csel else ("#47853766" if _cis_correct else ("#fac26844" if hovered_census == j else "#00000000")))
+                                hover_background ("#fac268ff" if _csel else ("#47853766" if _cis_correct else "#fac26844"))
                                 xfill True
                                 padding (0, 2)
+                                hovered (NullAction() if _cis_correct else SetScreenVariable("hovered_census", j))
+                                unhovered SetScreenVariable("hovered_census", None)
+                                action (NullAction() if _cis_correct else [Play("sound", "audio/map/map-click.wav"), Function(plantation_select_census, j)])
                                 hbox:
                                     spacing 15
-                                    button:
+                                    frame:
                                         xsize 160
-                                        background "#00000000"
-                                        hover_background "#00000000"
-                                        hovered (NullAction() if _cis_correct else SetScreenVariable("hovered_census", j))
-                                        unhovered SetScreenVariable("hovered_census", None)
+                                        background None
                                         padding (0, 0)
-                                        action (NullAction() if _cis_correct else _cact)
                                         text "[_pname]" style "census_dim_text" color "#1a0d00"
                                     frame:
                                         xsize 35
@@ -568,6 +586,13 @@ label rubber_plantation_scene:
     with Dissolve(0.5)
 
     play music "audio/rubber-plantation/plantation-wind.wav" loop fadein 1.0
+
+    if friend_notes["marcus"]["solved"]:
+        "You return to the rubber plantation."
+        "The strongbox sits open where you left it, the ledger and census still tucked inside."
+        m "I've already matched these. Eight workers — eight names."
+        stop music fadeout 1.0
+        return
 
     "You arrive at the rubber plantation at the edge of the village."
     "The smell of latex and jungle humidity hangs heavy in the air."
