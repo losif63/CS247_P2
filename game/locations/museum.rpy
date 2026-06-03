@@ -195,23 +195,32 @@ label museum_spring_display_intro:
 # ── Object action labels ──────────────────────────────────────────────────────
 
 label museum_spring_fragments_action:
-    "A glass case near the back wall holds three pieces of carved wood."
-    "The label reads: {i}Fragments from an Unidentified Spring Marker.{/i}"
-    "{color=#ff0000}{b}Three fragments{/b}{/color} sit under glass."
-    "The museum label calls them decorative remnants from an unidentified spring structure."
-    "Each one has been cataloged by fragment number."
-    "Spring Fragment 03"
-    "A carved piece of wood. One word remains visible: {b}MOTHER{/b}."
-    "Spring Fragment 08"
-    "A broken strip of painted board. The word {b}SPRING{/b} is still legible."
-    "Spring Fragment 14"
-    "A piece of root-warped signage. The final carved word reads: {b}REMEMBERS{/b}."
+    if not signMarksRevealed:
+        $ interacted_objects = set(x for x in interacted_objects if x != "museum.spring_display.fragments")
+        "The case is locked."
+        "Inside are three weathered fragments tagged with catalog numbers, but without context, they feel like museum clutter."
+        "You make a note to come back if you find something that makes the labels matter."
+        return
+    "You find a case of stone fragments labeled Spring Marker Fragments."
+    "The labels match the marks from the sign: S-03, S-08, and S-14."
+    "These are not random pieces."
+    "They look like broken parts of an older sign — one that existed before this place was renamed Mirror Pool."
+    "Each fragment has part of a word carved into it."
+    "The museum label says the pieces were recovered during redevelopment and later archived as historical material."
+    "But the way they are displayed makes them feel disconnected from the spring itself."
+    "Something about this feels wrong."
+    "These fragments were not just artifacts. They were part of the spring's original name."
+    "Fragment S-03 shows the word: {b}MOTHER{/b}."
+    "Fragment S-08 shows the word: {b}SPRING{/b}."
+    "Fragment S-14 shows the word: {b}REMEMBERS{/b}."
+    "Together, they read: {b}MOTHER SPRING REMEMBERS{/b}."
+    "That must be the name the sign was hiding."
     if not museumFragmentsFound:
         $ museumFragmentsFound = True
         $ journal_add_item(
             "museum.spring_fragments",
             "Museum Fragment Notes",
             "Museum",
-            "The museum display labeled three pieces as Spring Fragment 03, Spring Fragment 08, and Spring Fragment 14. The visible words were: MOTHER, SPRING, and REMEMBERS."
+            "The numbers on the sign match museum catalog labels. The museum fragments appear to be broken pieces of the original Mother Spring marker. The tourist sign did not create the message — it covered it."
         )
     return
