@@ -478,9 +478,16 @@ label village_map:
 # NIGHT TRANSITION
 # ─────────────────────────────────────────────
 
+label play_night_ambience:
+    play music "audio/intro/frogs-intro.wav" loop fadein 1.5
+    play ambience "audio/intro/intro-forest.wav" loop fadein 1.5
+    play sound "audio/intro/insects-intro.wav" loop fadein 1.5
+    return
+
 label night_scene:
     scene black
     with Dissolve(1.5)
+    call play_night_ambience from _call_night_ambience
 
     if current_day < 5:
         "Night falls over Pelau Siring."
