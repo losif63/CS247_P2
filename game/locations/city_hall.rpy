@@ -307,12 +307,12 @@ init python:
         "city_hall.joaquin_page": {
             "name":        "Torn Interrogation Record",
             "location":    "City Hall - Archive Room",
-            "description": "A page torn from the colonial interrogation files. Records Joaquin Gonzalez's arrest for instigating independence riots — A number is scrawled in the margin: {b}1938{/b}.",
+            "description": "A page torn from the colonial interrogation files. Records Joaquin Gonzalez's arrest for instigating independence riots — a number is scrawled in the margin.",
         },
         "city_hall.execution_page": {
             "name":        "Torn Execution Record",
             "location":    "City Hall - Archive Room",
-            "description": "A classified page torn from the execution records. All targets executed on a redacted date. States that Joaquin Gonzalez was buried at the {color=#ffff00}{b}church backyard{/b}{/color}.",
+            "description": "A classified page torn from the execution records. All targets executed on a redacted date. States that Joaquin Gonzalez was buried at the {place}church backyard{/place}.",
         },
     })
 
@@ -388,7 +388,7 @@ label city_hall_3f_archiveroom_interrogation_intro:
 label city_hall_execution_page_action:
     "CLASSIFIED INFORMATION"
     "All targets were executed on 19__/__/__."
-    "Joaquin Gonzalez was buried at the {color=#ffff00}{b}church backyard{/b}{/color}."
+    "Joaquin Gonzalez was buried at the {place}church backyard{/place}."
     "..."
     "You tear the {item}page{/item}  from the file and pocket it."
     return
@@ -399,8 +399,10 @@ label city_hall_joaquin_page_action:
     "Arrested For: Instigating independence riots."
     "Interrogation Method: Electrocution."
     "Notes: (blahblah)"
-    "Confessed: {b}1938{/b}"
+    "Confessed: {b}[box_code]{/b}"
     "(scribbles)"
-    "The number {b}1938{/b} catches your eye. This seems important."
+    "The number {b}[box_code]{/b} catches your eye. This seems important."
     "You tear the {item}page{/item} from the file and pocket it."
+    # Record the randomized code in the journal entry so the player can recall it.
+    $ journal_set_item_description("city_hall.joaquin_page", "A page torn from the colonial interrogation files. Records Joaquin Gonzalez's arrest for instigating independence riots — a number is scrawled in the margin: {b}" + box_code + "{/b}.")
     return

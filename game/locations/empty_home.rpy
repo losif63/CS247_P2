@@ -201,7 +201,7 @@ init python:
                         '"So I hid in the basement and stayed there forever! Mommy never found me."',
                         '"I heard a lot of footsteps and shouting upstairs - it seems like mommy invited neighbors to play as well."',
                         '"After a few hours I became hungry, so I came out of the basement. Mommy was missing - and there were policemen around my house."',
-                        '"I asked the policemen where mommy and daddy is. He told me that daddy is at the {color=#ffff00}{b}city hall{/b}{/color}, and mommy went to the {color=#ffff00}{b}hospital{/b}{/color} because she was sick."',
+                        '"I asked the policemen where mommy and daddy is. He told me that daddy is at the {place}city hall{/place}, and mommy went to the {place}hospital{/place} because she was sick."',
                         '"I am starving. I hope she comes back soon."',
                         "You close the book."
                     ],
@@ -239,7 +239,7 @@ init python:
         "empty_home.basement.diary": {
             "name": "Sonia's Diary",
             "location": "Empty Home - Basement",
-            "description": "Diary of a girl named Sonia. It states that her dad is at the {color=#ffff00}{b}city hall{/b}{/color}, and her mom is at the {color=#ffff00}{b}hospital{/b}{/color}."
+            "description": "Diary of a girl named Sonia. It states that her dad is at the {place}city hall{/place}, and her mom is at the {place}hospital{/place}."
         },
 
         "empty_home.backyard.swing.photo": {
@@ -387,14 +387,28 @@ label empty_home_bookshelf_action:
     play atmosphere2 "audio/home/home-basement-footsteps-2.wav"
     "\"I heard a lot of footsteps and shouting upstairs - it seems like mommy invited neighbors to play as well.\""
     "\"After a few hours I became hungry, so I came out of the basement. Mommy was missing - and there were policemen around my house.\""
-    "\"I asked the policemen where mommy and daddy is. He told me that daddy is at the {color=#ffff00}{b}city hall{/b}{/color}, and mommy went to the {color=#ffff00}{b}hospital{/b}{/color} because she was sick.\""
+    "\"I asked the policemen where mommy and daddy is. He told me that daddy is at the {place}city hall{/place}, and mommy went to the {place}hospital{/place} because she was sick.\""
     "\"I am starving. I hope she comes back soon.\""
     stop music fadeout 2.0
     stop ambience fadeout 2.0
     stop atmosphere fadeout 2.0
     stop atmosphere2 fadeout 2.0
     "You close the book."
+
+    # If the player has already investigated the locations the diary points to,
+    # acknowledge it so they aren't sent back to a place they've already cleared.
+    $ visited_cityhall = "city_hall.joaquin_page" in collected_items and "city_hall.execution_page" in collected_items
+    $ visited_hospital = "hospital.basement.morgue.emilia.photo" in collected_items
+    if visited_cityhall and not visited_hospital:
+        m "I already visited the city hall and collected the interrogation files and the execution records."
+        m "There might be something left to uncover in the {place}hospital{/place}. Maybe I should go there."
+    elif not visited_cityhall and visited_hospital:
+        m "I already visited the hospital. I've found the photo piece in the morgue."
+        m "There might be something left to uncover in the {place}city hall{/place}. Maybe I should go there."
+    elif visited_cityhall and visited_hospital:
+        m "I already finished exploring both the city hall and the hospital. I shouldn't need to revisit them."
     return
+
 
 
 # ── Drawer action labels ──────────────────────────────────────────────────────

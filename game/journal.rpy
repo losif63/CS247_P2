@@ -56,6 +56,14 @@ init python:
                 "description": description,
             })
 
+    def journal_set_item_description(id, description):
+        # Update the description of an already-collected item (e.g. to record a
+        # value that is randomized at runtime). No-op if the item isn't present.
+        for it in inventory_items:
+            if it["id"] == id:
+                it["description"] = description
+                break
+
     def journal_remove_item(id):
         # Soft-delete: hide the item from the Inventory tab without erasing it.
         # Safe to call even if the item was never collected.
@@ -192,7 +200,7 @@ screen journal_screen():
                 ysize 46
                 spacing 2
 
-                textbutton "Inventory":
+                textbutton "{item}Inventory{/item}":
                     style ("jnl_tab_active" if tab == "inventory" else "jnl_tab_idle")
                     action SetScreenVariable("tab", "inventory")
 

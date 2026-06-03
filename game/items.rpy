@@ -20,3 +20,20 @@ init python:
         )
 
     config.custom_text_tags["item"] = _item_text_tag
+
+
+# ── Location-hint text tag ────────────────────────────────────────────────────
+# Use {place}...{/place} in any dialogue/narration to highlight a location the
+# player is being pointed toward. To recolor every hint in the game, change
+# PLACE_COLOR in one place here.
+
+    PLACE_COLOR = "#ffa733"
+
+    def _place_text_tag(tag, argument, contents):
+        return (
+            [(renpy.TEXT_TAG, "color=" + PLACE_COLOR), (renpy.TEXT_TAG, "b")]
+            + contents
+            + [(renpy.TEXT_TAG, "/b"), (renpy.TEXT_TAG, "/color")]
+        )
+
+    config.custom_text_tags["place"] = _place_text_tag
