@@ -112,7 +112,9 @@ label start:
     play music "audio/intro/frogs-intro.wav" loop fadein 1.5
     play sound "audio/intro/insects-intro.wav" loop fadein 1.5
 
-    "The doctors couldn't identify what's wrong with them. Something tells me that the secret lies in this village..."
+    "The doctors couldn't identify what's wrong with them. However, they said that if this goes on they won't last more than {b}five days{/b}."
+    
+    "I must do something. Something tells me that the secret lies in this village..."
 
     $ journal_available = True
 
@@ -147,12 +149,6 @@ label friends_flashback:
     "He can't stop working. He shows up to work hours early and leaves late at night."
     "At home, he can't sit down. He types up documents, scribbles notes furiously, paces, cleans, organizes, anything to keep being productive."
 
-    # scene theo
-    # with Dissolve(1.0)
-    # "Theo."
-    # "He can't get rid of anything. The things he throws away appears on his bed."
-    # "Receipts pile up in his pockets, food wrappers show up on his bed."
-
     scene bg black
     show yuna at friend_flashback
     with Dissolve(1.0)
@@ -162,12 +158,6 @@ label friends_flashback:
     "She is plagued by recurring dreams she can't escape."
     "In them, her father is dragged away and tortured to death. Her mother is taken and used as a subject of illegal human experimentation."
     "The dreams come every night. She wakes up screaming. Her sanity is slowly eroding."
-
-    # scene aanya
-    # with Dissolve(1.0)
-    # "Aanya."
-    # "She can't speak her first language, Tamil, anymore."
-    # "She can feel the words on her tongue, but they won't come out."
 
     stop music fadeout 1.0
     stop sound fadeout 1.0
@@ -203,7 +193,7 @@ screen map_onboarding_screen():
                 size 34
                 xalign 0.5
 
-            text "Use the {b}Journal{/b} button in the quick menu at the bottom right of the screen to open your investigation notes at any time.\n\n• {item}Inventory{/item} — clues and items you've collected\n• {color=#0000ff}{b}Friends{/b}{/color} — your friends' current status":
+            text "Use the {b}Journal{/b} icon at the bottom right of the screen to open your investigation notes at any time.\n\n• {item}Inventory{/item} — clues and items you've collected\n• {b}Friends{/b} — your friends' current status":
                 font "fonts/SpecialElite.ttf"
                 color "#c4b090"
                 size 20
@@ -246,7 +236,7 @@ screen map_time_limit_screen():
                 size 34
                 xalign 0.5
 
-            text "You have {b}5 days{/b} before you must leave Pelau Siring.\n\nEach day, you may explore {b}3 locations{/b}. Once you visit a third location, night falls and the day ends.\n\nUse your time wisely.":
+            text "You have {b}5 days{/b} to save your friends.\n\nEach day, you may explore {b}3 locations{/b}. Once you visit a third location, night falls and the day ends.\n\nUse your time wisely.":
                 font "fonts/SpecialElite.ttf"
                 color "#c4b090"
                 size 20
@@ -500,10 +490,11 @@ label game_ending:
     with Dissolve(2.0)
 
     if ended_early:
-        "You don't wait for the fifth day."
+        "You saved everyone before the five days have passed."
         "There is nothing left undone here. With all three friends safe, you board the boat back to the mainland."
     else:
-        "Five days have passed. You board the boat back to the mainland."
+        "Five days have passed. Whether or not you saved your friends, it's too late to change things now." 
+        "Your phone rings. Your mother has called. She tells you what happened to your friends."
 
     # ── Thia ──────────────────────────────────
     "Thia."
@@ -543,18 +534,19 @@ label game_ending:
 
     # ── Ending branch ─────────────────────────
     $ friends_saved = sum(1 for f in friend_notes.values() if f["solved"])
+    "You board the boat back to the mainland."
 
     if friends_saved < 2:
         "You stare at the water as the island disappears behind you."
-        "The village gave nothing back. You took nothing home."
-        "You wonder if you ever really saw any of them at all."
+        "The village gave nothing back. You made amends for nothing."
+        "Somewhere back there are the things you never went looking for."
         "{b}Bad Ending — The Village Remembers{/b}"
 
     elif friends_saved == 2:
         "Two of your friends will wake up tomorrow as themselves again."
-        "The third you don't let yourself think about."
+        "The third, you don't let yourself think about."
         "The village gave up some of what it took. Not all of it."
-        "You wonder what it would have cost you to stay one more day."
+        "One more day, you think. If only you'd had one more day."
         "{b}Normal Ending — Partial Restitution{/b}"
 
     else:
