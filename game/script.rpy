@@ -8,6 +8,7 @@ default museumTradeMapFound = False
 default museumMasksFound = False
 default museumPlantationRecordsFound = False
 default ended_early = False
+default museum_intro_done = False  # True once the player has made their forced first visit to the museum
 image intro = "Enter.png"
 image village_map = "images/Map.jpg"
 image townhall = "images/newtownhall.png"
@@ -289,6 +290,12 @@ style return_map_button_text:
 screen village_map_screen():
     modal True
 
+    # On the very first move of day 1, only the museum is selectable — it grounds
+    # the player in the village's history before they explore anywhere else.
+    $ _first_day_lock = (not museum_intro_done) and current_day == 1
+    $ _locked_tint = "#aa2a2a66"   # reddish veil over the locations locked on day 1
+    $ _museum_tint = "#ffffff44"   # soft white highlight on the museum — the only place to go
+
     # Day / location counter HUD
     frame:
         xpos 20
@@ -312,8 +319,9 @@ screen village_map_screen():
         ypos 619
         xsize 267
         ysize 270
-        background None
+        background (_locked_tint if _first_day_lock else None)
         hover_background "#ffffff22"
+        sensitive (not _first_day_lock)
         action [Play("sound", "audio/map/map-click.wav"), Confirm("Do you want to move to the Rubber Plantation?", yes=Return("rubber_plantation"))]
 
     # Town Hall — upper-left building
@@ -322,8 +330,9 @@ screen village_map_screen():
         ypos 286
         xsize 178
         ysize 183
-        background None
+        background (_locked_tint if _first_day_lock else None)
         hover_background "#ffffff22"
+        sensitive (not _first_day_lock)
         action [Play("sound", "audio/map/map-click.wav"), Confirm("Do you want to move to the Town Hall?", yes=Return("town_hall"))]
 
     # Museum — upper-center columned building
@@ -332,7 +341,7 @@ screen village_map_screen():
         ypos 250
         xsize 151
         ysize 139
-        background None
+        background (_museum_tint if _first_day_lock else None)
         hover_background "#ffffff22"
         action [Play("sound", "audio/map/map-click.wav"), Confirm("Do you want to move to the Museum?", yes=Return("museum"))]
 
@@ -342,8 +351,9 @@ screen village_map_screen():
         ypos 244
         xsize 224
         ysize 193
-        background None
+        background (_locked_tint if _first_day_lock else None)
         hover_background "#ffffff22"
+        sensitive (not _first_day_lock)
         action [Play("sound", "audio/map/map-click.wav"), Confirm("Do you want to move to the Graveyard?", yes=Return("graveyard"))]
 
     # Church — far-right steeple
@@ -352,8 +362,9 @@ screen village_map_screen():
         ypos 243
         xsize 165
         ysize 274
-        background None
+        background (_locked_tint if _first_day_lock else None)
         hover_background "#ffffff22"
+        sensitive (not _first_day_lock)
         action [Play("sound", "audio/map/map-click.wav"), Confirm("Do you want to move to the Church?", yes=Return("church"))]
 
     # Empty Home — center small house
@@ -362,8 +373,9 @@ screen village_map_screen():
         ypos 657
         xsize 161
         ysize 128
-        background None
+        background (_locked_tint if _first_day_lock else None)
         hover_background "#ffffff22"
+        sensitive (not _first_day_lock)
         action [Play("sound", "audio/map/map-click.wav"), Confirm("Do you want to move to the Empty Home?", yes=Return("empty_home"))]
 
     # Hospital — right-lower cross building
@@ -372,8 +384,9 @@ screen village_map_screen():
         ypos 634
         xsize 183
         ysize 229
-        background None
+        background (_locked_tint if _first_day_lock else None)
         hover_background "#ffffff22"
+        sensitive (not _first_day_lock)
         action [Play("sound", "audio/map/map-click.wav"), Confirm("Do you want to move to the Hospital?", yes=Return("hospital"))]
 
     # Mangrove Spring — far right tourist stop
@@ -382,8 +395,9 @@ screen village_map_screen():
         ypos 250
         xsize 223
         ysize 455
-        background None
+        background (_locked_tint if _first_day_lock else None)
         hover_background "#ffffff22"
+        sensitive (not _first_day_lock)
         action Confirm("Do you want to move to the Mangrove Spring?", yes=Return("mirror_pool"))
 
 
@@ -404,6 +418,11 @@ label village_map:
         call screen map_onboarding_screen
         call screen map_time_limit_screen
 
+    # First move of day 1: steer the player to the museum for context.
+    if not museum_intro_done and current_day == 1:
+        m "I should first find out what's going on in this village."
+        m "The museum seems like a good place to get some context. I'll start there."
+
     call screen village_map_screen
     $ map_choice = _return
 
@@ -416,6 +435,7 @@ label village_map:
         call town_hall_scene from _call_town_hall_scene
     elif map_choice == "museum":
         call museum_scene from _call_museum_scene
+        $ museum_intro_done = True
     elif map_choice == "graveyard":
         call graveyard_scene from _call_graveyard_scene
     elif map_choice == "church":
