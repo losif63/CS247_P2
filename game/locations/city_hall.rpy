@@ -1,3 +1,6 @@
+image townhall_2f = "images/townhall2ndfloor.png"
+image townhall_3f = "images/townhall3rdfloor.png"
+
 ################################################################################
 ## City Hall — Exploration Tree
 ##
@@ -87,6 +90,7 @@ init python:
             "name":       "2F",
             "parent":     "city_hall",
             "intro":      "city_hall_2f_intro",
+            "on_enter":   "city_hall_2f_on_enter",
             "children":   [],
             "objects":    [
                 {
@@ -140,6 +144,7 @@ init python:
             "name":       "3F",
             "parent":     "city_hall",
             "intro":      "city_hall_3f_intro",
+            "on_enter":   "city_hall_3f_on_enter",
             "children":   ["city_hall.3f.archive_room"],
             "objects":    [],
             "puzzle":     None,
@@ -152,6 +157,7 @@ init python:
             "name":       "Archive Room",
             "parent":     "city_hall.3f",
             "intro":      "city_hall_3f_archiveroom_intro",
+            "on_enter":   "city_hall_3f_archive_on_enter",
             "children":   [
                 "city_hall.3f.archive_room.annual_financial_report",
                 "city_hall.3f.archive_room.annual_rubber_production",
@@ -340,11 +346,15 @@ label city_hall_ground_floor_intro:
     return
 
 label city_hall_2f_intro:
+    scene townhall_2f at fit_screen
+    with Dissolve(0.5)
     "The second floor is quieter — private offices and meeting rooms."
     "A long table dominates the central room, chairs still arranged as though a meeting was just interrupted."
     return
 
 label city_hall_3f_intro:
+    scene bg black
+    with Dissolve(0.5)
     "The third floor is restricted access, according to the sign at the stairwell."
     "The sign has been torn halfway off. No one is here to stop you."
     return
@@ -365,6 +375,8 @@ label city_hall_bayani_note_action:
     return
 
 label city_hall_3f_archiveroom_intro:
+    scene townhall_3f at fit_screen
+    with Dissolve(0.5)
     "You enter the archive room located at a corner."
     "You are greeted by a pile of documents. It seems the place keeps records for almost all colonial activities."
     "Now, where to look..."
@@ -403,4 +415,23 @@ label city_hall_joaquin_page_action:
     "(scribbles)"
     "The number {b}1938{/b} catches your eye. This seems important."
     "You tear the {color=#ff0000}{b}page{/b}{/color} from the file and pocket it."
+    return
+
+
+# ── On-enter labels (fire every visit to restore the correct floor background) ──
+
+label city_hall_2f_on_enter:
+    scene townhall_2f at fit_screen
+    with Dissolve(0.3)
+    return
+
+label city_hall_3f_on_enter:
+    scene bg black
+    with Dissolve(0.3)
+    return
+
+label city_hall_3f_archive_on_enter:
+    scene townhall_3f at fit_screen
+    with Dissolve(0.3)
+    return
     return
