@@ -390,7 +390,7 @@ label city_hall_execution_page_action:
     "All targets were executed on 19__/__/__."
     "Joaquin Gonzalez was buried at the {color=#ffff00}{b}church backyard{/b}{/color}."
     "..."
-    "You tear the {color=#ff0000}{b}page{/b}{/color}  from the file and pocket it."
+    "You tear the {item}page{/item}  from the file and pocket it."
     return
 
 
@@ -402,5 +402,5 @@ label city_hall_joaquin_page_action:
     "Confessed: {b}1938{/b}"
     "(scribbles)"
     "The number {b}1938{/b} catches your eye. This seems important."
-    "You tear the {color=#ff0000}{b}page{/b}{/color} from the file and pocket it."
+    "You tear the {item}page{/item} from the file and pocket it."
     return

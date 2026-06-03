@@ -222,7 +222,7 @@ label church_backyard_box_puzzle:
             $ collected_items.add("church.backyard.lawn.photo_piece")
             $ journal_add_item("church.backyard.lawn.photo_piece", _photo["name"], _photo["location"], _photo["description"])
             "The lock clicks open."
-            "Inside the box is a torn {color=#ff0000}{b}piece of a photo{/b}{/color} — it shows a man smiling."
+            "Inside the box is a torn {item}piece of a photo{/item} — it shows a man smiling."
             $ _box_solved = True
             $ journal_remove_item("city_hall.joaquin_page")
             $ journal_remove_item("city_hall.execution_page")

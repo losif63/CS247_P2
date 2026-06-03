@@ -197,7 +197,7 @@ label museum_spring_display_intro:
 label museum_spring_fragments_action:
     "A glass case near the back wall holds three pieces of carved wood."
     "The label reads: {i}Fragments from an Unidentified Spring Marker.{/i}"
-    "{color=#ff0000}{b}Three fragments{/b}{/color} sit under glass."
+    "{item}Three fragments{/item} sit under glass."
     "The museum label calls them decorative remnants from an unidentified spring structure."
     "Each one has been cataloged by fragment number."
     "Spring Fragment 03"

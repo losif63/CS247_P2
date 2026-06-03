@@ -12,6 +12,12 @@
 ## to a label name and define that label below.
 ################################################################################
 
+
+image emptyhome_livingroom = "images/emptyhome_livingroom.png"
+image emptyhome_backyard = "images/emptyhome_backyard.png"
+image emptyhome_basement = "images/emptyhome_basement.png"
+
+
 init python:
     renpy.music.register_channel("atmosphere", "sfx", loop=False)
     renpy.music.register_channel("atmosphere2", "sfx", loop=False)
@@ -22,6 +28,7 @@ init python:
             "name":       "Empty Home",
             "parent":     None,
             "intro":      "empty_home_intro",
+            "on_enter":   "empty_home_on_enter",
             "children":   [
                 "empty_home.living_room",
                 "empty_home.backyard",
@@ -38,6 +45,7 @@ init python:
             "name":       "Living Room",
             "parent":     "empty_home",
             "intro":      "empty_home_living_room_intro",
+            "on_enter":   "empty_home_living_room_on_enter",
             "children":   ["empty_home.living_room.drawer", "empty_home.living_room.couch", "empty_home.living_room.table"],
             "objects":    [],
             "puzzle":     None,
@@ -65,7 +73,7 @@ init python:
                     "name":      "Middle Drawer",
                     "item":      "empty_home.basement_door.key",
                     "action":    "empty_home_drawer_middle_action",
-                    "msg_first": "You find a {color=#ff0000}{b}small key{/b}{/color} taped to the back of the drawer.",
+                    "msg_first": "You find a {item}small key{/item} taped to the back of the drawer.",
                     "msg_done":  "The middle drawer is empty.",
                 },
                 {
@@ -120,6 +128,7 @@ init python:
             "name":       "Backyard",
             "parent":     "empty_home",
             "intro":      "empty_home_backyard_intro",
+            "on_enter":   "empty_home_backyard_on_enter",
             "children":   ["empty_home.backyard.swing", "empty_home.backyard.garden"],
             "objects":    [],
             "puzzle":     None,
@@ -139,7 +148,7 @@ init python:
                     "name":      "Left Swing",
                     "item":      "empty_home.backyard.swing.photo",
                     "action":    None,
-                    "msg_first": "There seems to be a {color=#ff0000}{b}piece of a photo{/b}{/color} lying on top of the seat. The piece shows a young girl smiling.",
+                    "msg_first": "There seems to be a {item}piece of a photo{/item} lying on top of the seat. The piece shows a young girl smiling.",
                     "msg_done":  "There is nothing on the swing.",
                 },
                 {
@@ -173,6 +182,7 @@ init python:
             "name":       "Basement",
             "parent":     "empty_home",
             "intro":      "empty_home_basement_door_intro",
+            "on_enter":   "empty_home_basement_on_enter",
             "children":   [],
             "objects":    [
                 {
@@ -182,7 +192,7 @@ init python:
                     "action":    "empty_home_bookshelf_action",
                     "msg_first": [
                         "There seems to be a bookshelf alongside the back wall of the basement.",
-                        "An uncanny book immediately catches your eye - it says {color=#ff0000}{b}Sonia's Diary{/b}{/color} on the front cover.",
+                        "An uncanny book immediately catches your eye - it says {item}Sonia's Diary{/item} on the front cover.",
                         "You reach out your hand and turn the pages. It seems like this belonged to a girl a long time ago.",
                         '"April 15th, 1925."',
                         '"It was rainy today. Mommy also looked really sad. Maybe she doesn\'t like rain."',
@@ -265,6 +275,8 @@ label empty_home_intro:
     return
 
 label empty_home_living_room_intro:
+    scene emptyhome_livingroom at fit_screen
+    with Dissolve(0.5)
     "You step into the living room."
     "A sofa, a low table, a radio on the shelf — all arranged with a care that makes the emptiness worse."
     "A child's drawing is pinned to the wall. You don't want to look at it too long."
@@ -284,6 +296,8 @@ label empty_home_living_room_table_intro:
     return
 
 label empty_home_backyard_intro:
+    scene emptyhome_backyard at fit_screen
+    with Dissolve(0.5)
     "The backyard is overgrown, weeds swallowing what was once a tended vegetable garden."
     "A rusted watering can lies on its side by the door. The soil around it is dry and cracked."
     return
@@ -298,7 +312,32 @@ label empty_home_backyard_garden_intro:
     return
 
 label empty_home_basement_door_intro:
+    scene emptyhome_basement at fit_screen
+    with Dissolve(0.5)
     "The basement is eerie and cold."
+    return
+
+
+# ── on_enter labels (background, called every visit) ──────────────────────────
+
+label empty_home_on_enter:
+    scene emptyhome at fit_screen
+    with Dissolve(0.5)
+    return
+
+label empty_home_living_room_on_enter:
+    scene emptyhome_livingroom at fit_screen
+    with Dissolve(0.5)
+    return
+
+label empty_home_backyard_on_enter:
+    scene emptyhome_backyard at fit_screen
+    with Dissolve(0.5)
+    return
+
+label empty_home_basement_on_enter:
+    scene emptyhome_basement at fit_screen
+    with Dissolve(0.5)
     return
 
 label empty_home_basement_unlock:
@@ -317,7 +356,7 @@ label empty_home_crumpled_code_note_action:
     $ waterNoteFound = True
     play sound "audio/home/home-paper-crumple.wav"
     "Behind the rack, something brittle catches against the wood."
-    "You pull out a {color=#ff0000}{b}crumpled paper{/b}{/color}, damp at the edges but still readable."
+    "You pull out a {item}crumpled paper{/item}, damp at the edges but still readable."
     "The paper only has one sentence:"
     "\"Water reveals hidden writing.\""
     # $ journal_add_item(
@@ -333,7 +372,7 @@ label empty_home_crumpled_code_note_action:
 
 label empty_home_bookshelf_action:
     "There seems to be a bookshelf alongside the back wall of the basement."
-    "An uncanny book immediately catches your eye - it says {color=#ff0000}{b}Sonia's Diary{/b}{/color} on the front cover."
+    "An uncanny book immediately catches your eye - it says {item}Sonia's Diary{/item} on the front cover."
     play sound "audio/home/home-basement-turn-pages.wav"
     "You reach out your hand and turn the pages. It seems like this belonged to a girl a long time ago."
     "\"April 15th, 1925.\""
@@ -367,7 +406,7 @@ label empty_home_drawer_top_action:
 
 label empty_home_drawer_middle_action:
     play sound "audio/home/home-drawer-open.wav"
-    "You find a {color=#ff0000}{b}small key{/b}{/color} taped to the back of the drawer."
+    "You find a {item}small key{/item} taped to the back of the drawer."
     play sound "audio/home/home-key-found.wav"
     return
 

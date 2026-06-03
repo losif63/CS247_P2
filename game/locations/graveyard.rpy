@@ -110,7 +110,7 @@ init python:
                     "name":      "Tool Rack",
                     "item":      "graveyard.shovel",
                     "action":    None,
-                    "msg_first": "A wooden rack leans against the back wall, holding a few old tools caked with dried earth. A {color=#ff0000}{b}shovel{/b}{/color} hangs from one of the pegs — you take it.",
+                    "msg_first": "A wooden rack leans against the back wall, holding a few old tools caked with dried earth. A {item}shovel{/item} hangs from one of the pegs — you take it.",
                     "msg_done":  "The rack is empty now.",
                 },
                 {
