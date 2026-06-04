@@ -68,6 +68,19 @@ style epigraph_attribution:
     text_align 0.5
     italic True
 
+style content_warning_header:
+    color "#b89050"
+    size 40
+    text_align 0.5
+    bold True
+
+style content_warning_body:
+    color "#ffffff"
+    size 28
+    text_align 0.5
+    layout "subtitle"
+    line_spacing 10
+
 screen epigraph(body, source=""):
     add "#000000"
     vbox:
@@ -79,10 +92,25 @@ screen epigraph(body, source=""):
         if source:
             text source style "epigraph_attribution"
 
+screen content_warning():
+    add "#000000"
+    vbox:
+        xalign 0.5
+        yalign 0.45
+        xmaximum 1100
+        spacing 40
+        text "Content Warning" style "content_warning_header"
+        text "This game contains descriptions of violence and torture.\n\nViewer discretion is advised." style "content_warning_body"
+
 label start:
     ################ Starting Sequence #################
     $ quick_menu = True
     scene black
+
+    show screen content_warning
+    with Dissolve(2.0)
+    $ renpy.pause(5.0, hard=False)
+    hide screen content_warning with Dissolve(2.0)
 
     show screen epigraph(FANON_BODY, FANON_SOURCE)
     with Dissolve(2.0)
