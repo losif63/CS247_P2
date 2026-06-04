@@ -509,12 +509,8 @@ label empty_home_photo_present:
     m "But I wonder if somewhere, underneath all of that — she already knew what it felt like to lose them."
     m "She just hadn't admitted it yet."
 
-    "Your phone buzzes."
-    "A message from Yuna's roommate: {i}I don't know what happened, but she slept through the night. No screaming. She says the dreams are gone.{/i}"
-    m "..."
-    m "She's going to be okay."
-
     $ journal_update_friend("yuna", note="Her recurring dreams mirrored the fate of the Gonzalez family exactly — a father dragged away and killed, a mother taken for illegal experimentation. The village made her live through what she had refused to see in the children on the road.", solved=True)
+    $ friends_saved_today.append("yuna")
     $ journal_remove_item("church.backyard.lawn.photo_piece")
     $ journal_remove_item("hospital.basement.morgue.emilia.photo")
     $ journal_remove_item("empty_home.backyard.swing.photo")

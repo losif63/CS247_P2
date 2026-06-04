@@ -644,6 +644,7 @@ label rubber_plantation_solved:
         description="A residential survey of Pelau Siring inhabitants. Eight names with ages and family notes. Someone had begun annotating it in a different ink, trying to match names to ledger numbers."
     )
     $ journal_update_friend("marcus", note="His compulsion to work mirrors the colonial extraction of labor — the same erasure of rest and personhood recorded in the plantation ledger.", solved=True)
+    $ friends_saved_today.append("marcus")
 
     # ── Flashback ──────────────────────────────────────────────────────────────
     scene marcus_haggling at fullscreen
@@ -683,12 +684,6 @@ label rubber_plantation_solved:
     "You photograph both documents and slip them into your bag."
     hide screen plantation_puzzle
     with Dissolve(1.0)
-
-    scene bg black
-    show marcus_sitting 
-    with Dissolve(1.0)
-
-    "Back home, Marcus sits down for the first time in days."
 
     menu:
         "Leave the plantation":
