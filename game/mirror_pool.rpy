@@ -230,7 +230,7 @@ label mirror_pool_sign:
                     "They do not look like part of the original carving. They look added later — like museum labels, or catalog numbers."
                     "Maybe these numbers are not the message itself."
                     "Maybe they point to pieces of something that was taken apart."
-                    "I should check the museum again."
+                    "I should check the {color=#ffff00}{b}museum{/color{/b} again."
                 "Look closer":
                     "The words are painted over older wood."
                     "Something is underneath, but the tourist sign is covering most of it."

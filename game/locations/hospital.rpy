@@ -1,3 +1,7 @@
+image hospital_2f_nurses_station = "images/hospital2Fnursestation.png"
+
+image hospital_basement_lostnfound = "images/hospitalbasementlostandfound.png"
+
 ################################################################################
 ## Hospital — Exploration Tree
 ##
@@ -48,7 +52,7 @@ init python:
                     "id":        "hospital.basement.lostnfound",
                     "name":      "Lost & Found box",
                     "item":      None,
-                    "action":    None,
+                    "action":    "hospital_basement_lostnfound_action",
                     "msg_first": ["There is a lost and found box.", "You notice there are three pairs of shoes - but overall nothing interesting."],
                     "msg_done":  "There is nothing interesting in the lost & found box.",
                 },
@@ -182,7 +186,7 @@ init python:
                     "id":        "hospital.2f.nurses_station",
                     "name":      "Nurses' Station",
                     "item":      None,
-                    "action":    None,
+                    "action":    "hospital_nurses_station_action",
                     "msg_first": [
                         "The nurses' station is tidy, the duty roster still chalked on the board.",
                         "A nurse's notebook lies open beneath it. The early entries are careful, professional.",
@@ -332,3 +336,25 @@ label hospital_3f_enter:
     scene hospital_3f at fit_screen
     with Dissolve(0.3)
     return
+
+label hospital_nurses_station_action:
+    show hospital_2f_nurses_station at fit_screen
+    with Dissolve(0.5)
+    "The nurses' station is tidy, the duty roster still chalked on the board."
+    "A nurse's notebook lies open beneath it. The early entries are careful, professional."
+    "Then the tone changes: 'Told again not to record certain admissions. Told not to ask where they go.'"
+    "The final entry stops mid-sentence: 'I don't think I can keep pretending that I—'"
+    hide hospital_2f_nurses_station
+    with Dissolve(0.3)
+    return
+
+label hospital_basement_lostnfound_action:
+    scene hospital_basement_lostnfound at fit_screen
+    with Dissolve(0.5)
+
+    "There is a lost and found box."
+    "You notice there are three pairs of shoes - but overall nothing interesting."
+
+    scene hospital_basement at fit_screen
+    with Dissolve(0.3)
+    return 

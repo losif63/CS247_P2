@@ -1,5 +1,9 @@
-image townhall_2f = "images/townhall2ndfloor.png"
-image townhall_3f = "images/townhall3rdfloor.png"
+image townhall_2f             = "images/townhall2ndfloor.png"
+image townhall_3f             = "images/townhall3rdfloor.png"
+image townhall_cabinet        = "images/townhallcabinet.png"
+image townhall_clerks_desk    = "images/townhallclerksdesk.png"
+image townhall_council_table  = "images/townhall2fcounciltable.png"
+image townhall_private_office = "images/townhall2Fprivateoffice.png"
 
 ################################################################################
 ## City Hall — Exploration Tree
@@ -39,13 +43,14 @@ init python:
             "name":       "Ground Floor",
             "parent":     "city_hall",
             "intro":      "city_hall_ground_floor_intro",
+            "on_enter":   "city_hall_ground_floor_on_enter",
             "children":   [],
             "objects":    [
                 {
                     "id":        "city_hall.ground_floor.cabinets",
                     "name":      "Filing Cabinets",
                     "item":      None,
-                    "action":    None,
+                    "action":    "city_hall_cabinets_action",
                     "msg_first": [
                         "The cabinets are stuffed with permits — thousands of them, all stamped and counter-stamped.",
                         "A permit to travel to the next village. A permit to hold a wedding. A permit to gather more than five people after dark.",
@@ -71,7 +76,7 @@ init python:
                     "id":        "city_hall.ground_floor.clerks_desk",
                     "name":      "Clerk's Desk",
                     "item":      None,
-                    "action":    None,
+                    "action":    "city_hall_clerks_desk_action",
                     "msg_first": [
                         "A clerk's desk, abandoned mid-task. An official seal lies on its side beside a dried-out ink pad.",
                         "A half-finished form rejects a family's petition to recover a relative 'taken for questioning.'",
@@ -97,7 +102,7 @@ init python:
                     "id":        "city_hall.2f.council_table",
                     "name":      "Council Table",
                     "item":      None,
-                    "action":    None,
+                    "action":    "city_hall_council_table_action",
                     "msg_first": [
                         "The long table is still set for a meeting that never resumed. Bound minutes lie at each place.",
                         "You leaf through one. The language is calm, procedural — agenda items and motions carried.",
@@ -111,7 +116,7 @@ init python:
                     "id":        "city_hall.2f.private_office",
                     "name":      "Private Office",
                     "item":      None,
-                    "action":    None,
+                    "action":    "city_hall_private_office_action",
                     "msg_first": [
                         "An administrator's private office, grander than the rest. A half-written letter sits on the blotter.",
                         "It is addressed home, across the sea. He complains of the heat, of the food, of 'these people and their endless grievances.'",
@@ -434,4 +439,52 @@ label city_hall_3f_archive_on_enter:
     scene townhall_3f at fit_screen
     with Dissolve(0.3)
     return
+
+label city_hall_ground_floor_on_enter:
+    scene townhall at fit_screen
+    with Dissolve(0.3)
+    return
+
+label city_hall_cabinets_action:
+    scene townhall_cabinet at fit_screen
+    with Dissolve(0.5)
+    "The cabinets are stuffed with permits — thousands of them, all stamped and counter-stamped."
+    "A permit to travel to the next village. A permit to hold a wedding. A permit to gather more than five people after dark."
+    "Under the colonial administration, it seems, simply living required someone's signature."
+    "Most of the applications are marked with the same word: {i}Denied.{/i}"
+    scene townhall at fit_screen
+    with Dissolve(0.3)
+    return
+
+label city_hall_clerks_desk_action:
+    scene townhall_clerks_desk at fit_screen
+    with Dissolve(0.5)
+    "A clerk's desk, abandoned mid-task. An official seal lies on its side beside a dried-out ink pad."
+    "A half-finished form rejects a family's petition to recover a relative 'taken for questioning.'"
+    "The reason for denial is pre-printed. The clerk only had to sign."
+    scene townhall at fit_screen
+    with Dissolve(0.3)
+    return
+
+label city_hall_council_table_action:
+    scene townhall_council_table at fit_screen
+    with Dissolve(0.5)
+    "The long table is still set for a meeting that never resumed. Bound minutes lie at each place."
+    "You leaf through one. The language is calm, procedural — agenda items and motions carried."
+    "Item four: a 'labour shortfall' in the groves, resolved by 'reassigning' two neighbouring villages."
+    "Item seven: a complaint about the smell from the river, tabled for next session."
+    "Whole communities and a bad smell, weighed on the same page in the same flat hand."
+    scene townhall_2f at fit_screen
+    with Dissolve(0.3)
+    return
+
+label city_hall_private_office_action:
+    scene townhall_private_office at fit_screen
+    with Dissolve(0.5)
+    "An administrator's private office, grander than the rest. A half-written letter sits on the blotter."
+    "It is addressed home, across the sea. He complains of the heat, of the food, of 'these people and their endless grievances.'"
+    "He misses his children. He has framed their portrait on the desk, facing his chair."
+    "He signs off promising to be home by spring. You wonder if he ever was."
+    scene townhall_2f at fit_screen
+    with Dissolve(0.3)
     return
