@@ -496,7 +496,6 @@ label night_scene:
         "[_days_left] day(s) remain."
     else:
         "Night falls over Pelau Siring for the last time."
-        "Five days. That was all you had."
         "Tomorrow you leave — with whatever answers you've found."
 
     return
@@ -515,7 +514,7 @@ transform ending_image_fade:
 label show_ending_image(image_path):
     scene black
     show expression image_path as ending_card at ending_image_fade
-    $ renpy.pause(12.0, hard=False)
+    $ renpy.pause(15.0, hard=False)
     hide ending_card with Dissolve(1.5)
     return
 
