@@ -56,10 +56,10 @@ screen mirror_pool_screen():
 
     # Drainage pipe/grate hotspot
     button:
-        xpos 525
+        xpos 440
         ypos 650
-        xsize 303
-        ysize 147
+        xsize 388
+        ysize 190
         background None
         hover_background Solid("#ffffff22")
         action Return("drain")
@@ -230,7 +230,7 @@ label mirror_pool_sign:
                     "They do not look like part of the original carving. They look added later — like museum labels, or catalog numbers."
                     "Maybe these numbers are not the message itself."
                     "Maybe they point to pieces of something that was taken apart."
-                    "I should check the museum again."
+                    "I should check the {place}museum{\place} again."
                 "Look closer":
                     "The words are painted over older wood."
                     "Something is underneath, but the tourist sign is covering most of it."

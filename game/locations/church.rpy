@@ -19,6 +19,10 @@ image church_statue_img    = "images/church-statue.png"
 image church_lawn_fresh    = "images/church/lawn-fresh-dirt.png"
 image church_lawn_dug      = "images/church/lawn-dug-up.png"
 
+# The wooden box combination is randomized each new playthrough. The matching
+# number is revealed on Joaquin Gonzalez's interrogation record in the city hall.
+default box_code = "%04d" % renpy.random.randint(0, 9999)
+
 
 init python:
     EXPLORE_NODES.update({
@@ -219,13 +223,13 @@ label church_backyard_box_puzzle:
             $ interacted_objects = set(x for x in interacted_objects if x != "church.backyard.lawn.box")
             return
         $ _d1, _d2, _d3, _d4 = _asdf
-        if (_d1, _d2, _d3, _d4) == (1, 9, 3, 8):
+        if "%d%d%d%d" % (_d1, _d2, _d3, _d4) == box_code:
             $ _photo = ITEM_CATALOG["church.backyard.lawn.photo_piece"]
             $ collected_items.add("church.backyard.lawn.photo_piece")
             $ journal_add_item("church.backyard.lawn.photo_piece", _photo["name"], _photo["location"], _photo["description"])
             play sound "audio/church/box-unlock.mp3"
             "The lock clicks open."
-            "Inside the box is a torn {color=#ff0000}{b}piece of a photo{/b}{/color} — it shows a man smiling."
+            "Inside the box is a torn {item}piece of a photo{/item} — it shows a man smiling."
             $ _box_solved = True
             $ journal_remove_item("city_hall.joaquin_page")
             $ journal_remove_item("city_hall.execution_page")
