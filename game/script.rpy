@@ -9,6 +9,7 @@ default museumMasksFound = False
 default museumPlantationRecordsFound = False
 default ended_early = False
 default museum_intro_done = False  # True once the player has made their forced first visit to the museum
+default friends_saved_today = []  # Friends solved during the current day; drained each night
 image intro = "Enter.png"
 image village_map = "images/Map.jpg"
 image townhall = "images/newtownhall.png"
@@ -483,6 +484,9 @@ label village_map:
     # the game ends the moment the player returns to the map.
     if friend_notes and all(f["solved"] for f in friend_notes.values()):
         $ ended_early = True
+        scene black
+        with Dissolve(1.0)
+        call show_friend_save_notifications from _call_show_friend_save_notifications_ending
         jump game_ending
 
     $ locations_today += 1
@@ -522,6 +526,43 @@ label play_night_ambience:
     play sound "audio/intro/insects-intro.wav" loop fadein 1.5
     return
 
+
+# Plays each pending friend's "they're okay" notification, then drains the list.
+# Called from night_scene and from the early-ending branch in village_map.
+label show_friend_save_notifications:
+    if "thia" in friends_saved_today:
+        "You received a message from Thia:"
+        show thia at friend_flashback
+        "Something changed."
+        "I threw something away today and it stayed gone."
+        "But I don't think it was because I finally got rid of it."
+        "I think it was because I stopped asking the wrong place to hold it."
+        "Thia's affliction has eased."
+        hide thia
+        with Dissolve(0.5)
+
+    if "marcus" in friends_saved_today:
+        show marcus at friend_flashback
+        with Dissolve(1.0)
+        "You received a message from Marcus's parents."
+        "Back home, Marcus sits down for the first time in days."
+        "It seems his afflictions have eased."
+        hide marcus
+        with Dissolve(0.5)
+
+    if "yuna" in friends_saved_today:
+        "Your phone buzzes."
+        show yuna at friend_flashback
+        with Dissolve(1.0)
+        "You received a message from Yuna's roommate: {i}I don't know what happened, but she slept through the night. No screaming. She says the dreams are gone.{/i}"
+        "It seems her afflictions have eased. She's going to be okay."
+        hide yuna
+        with Dissolve(0.5)
+
+    $ friends_saved_today = []
+    return
+
+
 label night_scene:
     scene black
     with Dissolve(1.5)
@@ -530,10 +571,15 @@ label night_scene:
     if current_day < 5:
         "Night falls over Pelau Siring."
         "Day [current_day] has ended."
+    else:
+        "Night falls over Pelau Siring for the last time."
+
+    call show_friend_save_notifications from _call_show_friend_save_notifications_night
+
+    if current_day < 5:
         $ _days_left = 5 - current_day
         "[_days_left] day(s) remain."
     else:
-        "Night falls over Pelau Siring for the last time."
         "Tomorrow you leave — with whatever answers you've found."
 
     return
@@ -588,7 +634,6 @@ label game_ending:
 
     # ── Ending branch ─────────────────────────
     $ friends_saved = sum(1 for f in friend_notes.values() if f["solved"])
-    "You board the boat back to the mainland."
 
     if friends_saved < 2:
         call show_ending_image("images/lessthantwo_1.jpg") from _call_ending_lessthantwo_1
