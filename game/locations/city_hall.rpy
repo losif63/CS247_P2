@@ -39,6 +39,7 @@ init python:
             "name":       "Ground Floor",
             "parent":     "city_hall",
             "intro":      "city_hall_ground_floor_intro",
+            "on_enter":   "city_hall_ground_floor_on_enter",
             "children":   [],
             "objects":    [
                 {
@@ -174,6 +175,7 @@ init python:
             "name":       "Annual Financial Reports",
             "parent":     "city_hall.3f.archive_room",
             "intro":      "city_hall_3f_archiveroom_financial_intro",
+            "on_enter":   "city_hall_3f_archiveroom_financial_on_enter",
             "children":   [],
             "objects":    [
                 {
@@ -211,6 +213,7 @@ init python:
             "name":       "Annual Rubber Production Status",
             "parent":     "city_hall.3f.archive_room",
             "intro":      "city_hall_3f_archiveroom_interrogation_intro",
+            "on_enter":   "city_hall_3f_archiveroom_rubber_on_enter",
             "children":   [],
             "objects":    [
                 {
@@ -256,6 +259,7 @@ init python:
             "name":       "Terrorist Interrogation",
             "parent":     "city_hall.3f.archive_room",
             "intro":      "city_hall_3f_archiveroom_interrogation_intro",
+            "on_enter":   "city_hall_3f_archiveroom_interrogation_on_enter",
             "children":   [],
             "objects":    [
                 {
@@ -333,6 +337,8 @@ label town_hall_scene:
 # ── Intro labels (called once per node on first visit) ────────────────────────
 
 label city_hall_intro:
+    play sound "audio/town-hall/town-hall-door.mp3"
+    play music "audio/town-hall/town-hall-ambient.mp3" loop fadein 1.0
     scene townhall at fit_screen
     with Dissolve(0.5)
     "You push open the heavy doors of the city hall."
@@ -341,11 +347,15 @@ label city_hall_intro:
     return
 
 label city_hall_ground_floor_intro:
+    play sound "audio/museum/footsteps.mp3"
+    $ renpy.invoke_in_thread(_stop_footsteps_after_4s)
     "The ground floor holds the main hall and public offices."
     "Filing cabinets line the walls, most left open. Papers are scattered across every desk."
     return
 
 label city_hall_2f_intro:
+    play sound "audio/museum/footsteps.mp3"
+    $ renpy.invoke_in_thread(_stop_footsteps_after_4s)
     scene townhall_2f at fit_screen
     with Dissolve(0.5)
     "The second floor is quieter — private offices and meeting rooms."
@@ -353,6 +363,8 @@ label city_hall_2f_intro:
     return
 
 label city_hall_3f_intro:
+    play sound "audio/museum/footsteps.mp3"
+    $ renpy.invoke_in_thread(_stop_footsteps_after_4s)
     scene bg black
     with Dissolve(0.5)
     "The third floor is restricted access, according to the sign at the stairwell."
@@ -375,6 +387,8 @@ label city_hall_bayani_note_action:
     return
 
 label city_hall_3f_archiveroom_intro:
+    play sound "audio/museum/footsteps.mp3"
+    $ renpy.invoke_in_thread(_stop_footsteps_after_4s)
     scene townhall_3f at fit_screen
     with Dissolve(0.5)
     "You enter the archive room located at a corner."
@@ -383,14 +397,20 @@ label city_hall_3f_archiveroom_intro:
     return
 
 label city_hall_3f_archiveroom_financial_intro:
+    play sound "audio/museum/footsteps.mp3"
+    $ renpy.invoke_in_thread(_stop_footsteps_after_4s)
     "This book seems to have archived the city's financial status during the colonial era."
     return
 
 label city_hall_3f_archiveroom_rubber_intro:
+    play sound "audio/museum/footsteps.mp3"
+    $ renpy.invoke_in_thread(_stop_footsteps_after_4s)
     "This book seems to have archived the city's rubber production status during the colonial era."
     return
 
 label city_hall_3f_archiveroom_interrogation_intro:
+    play sound "audio/museum/footsteps.mp3"
+    $ renpy.invoke_in_thread(_stop_footsteps_after_4s)
     "This book seems to have archived the city's rubber production status during the colonial era."
     return
 
@@ -422,18 +442,43 @@ label city_hall_joaquin_page_action:
 
 # ── On-enter labels (fire every visit to restore the correct floor background) ──
 
+label city_hall_ground_floor_on_enter:
+    play sound "audio/museum/footsteps.mp3"
+    $ renpy.invoke_in_thread(_stop_footsteps_after_4s)
+    return
+
 label city_hall_2f_on_enter:
+    play sound "audio/museum/footsteps.mp3"
+    $ renpy.invoke_in_thread(_stop_footsteps_after_4s)
     scene townhall_2f at fit_screen
     with Dissolve(0.3)
     return
 
 label city_hall_3f_on_enter:
+    play sound "audio/museum/footsteps.mp3"
+    $ renpy.invoke_in_thread(_stop_footsteps_after_4s)
     scene bg black
     with Dissolve(0.3)
     return
 
 label city_hall_3f_archive_on_enter:
+    play sound "audio/museum/footsteps.mp3"
+    $ renpy.invoke_in_thread(_stop_footsteps_after_4s)
     scene townhall_3f at fit_screen
     with Dissolve(0.3)
     return
+
+label city_hall_3f_archiveroom_financial_on_enter:
+    play sound "audio/museum/footsteps.mp3"
+    $ renpy.invoke_in_thread(_stop_footsteps_after_4s)
+    return
+
+label city_hall_3f_archiveroom_rubber_on_enter:
+    play sound "audio/museum/footsteps.mp3"
+    $ renpy.invoke_in_thread(_stop_footsteps_after_4s)
+    return
+
+label city_hall_3f_archiveroom_interrogation_on_enter:
+    play sound "audio/museum/footsteps.mp3"
+    $ renpy.invoke_in_thread(_stop_footsteps_after_4s)
     return
