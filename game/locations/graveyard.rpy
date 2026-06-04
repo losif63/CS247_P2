@@ -125,7 +125,7 @@ init python:
                     "name":      "Tool Rack",
                     "item":      "graveyard.shovel",
                     "action":    "graveyard_rack_action",
-                    "msg_first": "A wooden rack leans against the back wall, holding a few old tools caked with dried earth. A {color=#ff0000}{b}shovel{/b}{/color} hangs from one of the pegs — you take it.",
+                    "msg_first": "A wooden rack leans against the back wall, holding a few old tools caked with dried earth. A {item}shovel{/iterm} hangs from one of the pegs — you take it.",
                     "msg_done":  "The rack is empty now.",
                 },
                 {
@@ -284,7 +284,7 @@ label graveyard_rack_action:
     play sound "audio/graveyard/graveyard-footsteps.mp3"
     scene graveyard_shed_shovel at fit_screen
     with Dissolve(0.5)
-    "A wooden rack leans against the back wall, holding a few old tools caked with dried earth. A {color=#ff0000}{b}shovel{/b}{/color} hangs from one of the pegs — you take it."
+    "A wooden rack leans against the back wall, holding a few old tools caked with dried earth. A {item}shovel{/item} hangs from one of the pegs — you take it."
     play sound "audio/graveyard/graveyard-shovel.mp3"
     return
 

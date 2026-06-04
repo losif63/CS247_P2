@@ -179,6 +179,7 @@ init python:
             "name":       "Annual Financial Reports",
             "parent":     "city_hall.3f.archive_room",
             "intro":      "city_hall_3f_archiveroom_financial_intro",
+            "on_enter":   "city_hall_3f_archiveroom_financial_on_enter",
             "children":   [],
             "objects":    [
                 {
@@ -216,6 +217,7 @@ init python:
             "name":       "Annual Rubber Production Status",
             "parent":     "city_hall.3f.archive_room",
             "intro":      "city_hall_3f_archiveroom_interrogation_intro",
+            "on_enter":   "city_hall_3f_archiveroom_rubber_on_enter",
             "children":   [],
             "objects":    [
                 {
@@ -261,6 +263,7 @@ init python:
             "name":       "Terrorist Interrogation",
             "parent":     "city_hall.3f.archive_room",
             "intro":      "city_hall_3f_archiveroom_interrogation_intro",
+            "on_enter":   "city_hall_3f_archiveroom_interrogation_on_enter",
             "children":   [],
             "objects":    [
                 {
@@ -318,12 +321,12 @@ init python:
         "city_hall.joaquin_page": {
             "name":        "Torn Interrogation Record",
             "location":    "City Hall - Archive Room",
-            "description": "A page torn from the colonial interrogation files. Records Joaquin Gonzalez's arrest for instigating independence riots — A number is scrawled in the margin: {b}1938{/b}.",
+            "description": "A page torn from the colonial interrogation files. Records Joaquin Gonzalez's arrest for instigating independence riots — a number is scrawled in the margin.",
         },
         "city_hall.execution_page": {
             "name":        "Torn Execution Record",
             "location":    "City Hall - Archive Room",
-            "description": "A classified page torn from the execution records. All targets executed on a redacted date. States that Joaquin Gonzalez was buried at the {color=#ffff00}{b}church backyard{/b}{/color}.",
+            "description": "A classified page torn from the execution records. All targets executed on a redacted date. States that Joaquin Gonzalez was buried at the {place}church backyard{/place}.",
         },
     })
 
@@ -338,6 +341,8 @@ label town_hall_scene:
 # ── Intro labels (called once per node on first visit) ────────────────────────
 
 label city_hall_intro:
+    play sound "audio/town-hall/town-hall-door.mp3"
+    play music "audio/town-hall/town-hall-ambient.mp3" loop fadein 1.0
     scene townhall at fit_screen
     with Dissolve(0.5)
     "You push open the heavy doors of the city hall."
@@ -346,11 +351,15 @@ label city_hall_intro:
     return
 
 label city_hall_ground_floor_intro:
+    play sound "audio/museum/footsteps.mp3"
+    $ renpy.invoke_in_thread(_stop_footsteps_after_4s)
     "The ground floor holds the main hall and public offices."
     "Filing cabinets line the walls, most left open. Papers are scattered across every desk."
     return
 
 label city_hall_2f_intro:
+    play sound "audio/museum/footsteps.mp3"
+    $ renpy.invoke_in_thread(_stop_footsteps_after_4s)
     scene townhall_2f at fit_screen
     with Dissolve(0.5)
     "The second floor is quieter — private offices and meeting rooms."
@@ -358,6 +367,8 @@ label city_hall_2f_intro:
     return
 
 label city_hall_3f_intro:
+    play sound "audio/museum/footsteps.mp3"
+    $ renpy.invoke_in_thread(_stop_footsteps_after_4s)
     scene bg black
     with Dissolve(0.5)
     "The third floor is restricted access, according to the sign at the stairwell."
@@ -380,6 +391,8 @@ label city_hall_bayani_note_action:
     return
 
 label city_hall_3f_archiveroom_intro:
+    play sound "audio/museum/footsteps.mp3"
+    $ renpy.invoke_in_thread(_stop_footsteps_after_4s)
     scene townhall_3f at fit_screen
     with Dissolve(0.5)
     "You enter the archive room located at a corner."
@@ -388,14 +401,20 @@ label city_hall_3f_archiveroom_intro:
     return
 
 label city_hall_3f_archiveroom_financial_intro:
+    play sound "audio/museum/footsteps.mp3"
+    $ renpy.invoke_in_thread(_stop_footsteps_after_4s)
     "This book seems to have archived the city's financial status during the colonial era."
     return
 
 label city_hall_3f_archiveroom_rubber_intro:
+    play sound "audio/museum/footsteps.mp3"
+    $ renpy.invoke_in_thread(_stop_footsteps_after_4s)
     "This book seems to have archived the city's rubber production status during the colonial era."
     return
 
 label city_hall_3f_archiveroom_interrogation_intro:
+    play sound "audio/museum/footsteps.mp3"
+    $ renpy.invoke_in_thread(_stop_footsteps_after_4s)
     "This book seems to have archived the city's rubber production status during the colonial era."
     return
 
@@ -405,9 +424,9 @@ label city_hall_3f_archiveroom_interrogation_intro:
 label city_hall_execution_page_action:
     "CLASSIFIED INFORMATION"
     "All targets were executed on 19__/__/__."
-    "Joaquin Gonzalez was buried at the {color=#ffff00}{b}church backyard{/b}{/color}."
+    "Joaquin Gonzalez was buried at the {place}church backyard{/place}."
     "..."
-    "You tear the {color=#ff0000}{b}page{/b}{/color}  from the file and pocket it."
+    "You tear the {item}page{/item}  from the file and pocket it."
     return
 
 
@@ -416,32 +435,40 @@ label city_hall_joaquin_page_action:
     "Arrested For: Instigating independence riots."
     "Interrogation Method: Electrocution."
     "Notes: (blahblah)"
-    "Confessed: {b}1938{/b}"
+    "Confessed: {b}[box_code]{/b}"
     "(scribbles)"
-    "The number {b}1938{/b} catches your eye. This seems important."
-    "You tear the {color=#ff0000}{b}page{/b}{/color} from the file and pocket it."
+    "The number {b}[box_code]{/b} catches your eye. This seems important."
+    "You tear the {item}page{/item} from the file and pocket it."
+    # Record the randomized code in the journal entry so the player can recall it.
+    $ journal_set_item_description("city_hall.joaquin_page", "A page torn from the colonial interrogation files. Records Joaquin Gonzalez's arrest for instigating independence riots — a number is scrawled in the margin: {b}" + box_code + "{/b}.")
     return
 
 
 # ── On-enter labels (fire every visit to restore the correct floor background) ──
 
+label city_hall_ground_floor_on_enter:
+    play sound "audio/museum/footsteps.mp3"
+    $ renpy.invoke_in_thread(_stop_footsteps_after_4s)
+    return
+
 label city_hall_2f_on_enter:
+    play sound "audio/museum/footsteps.mp3"
+    $ renpy.invoke_in_thread(_stop_footsteps_after_4s)
     scene townhall_2f at fit_screen
     with Dissolve(0.3)
     return
 
 label city_hall_3f_on_enter:
+    play sound "audio/museum/footsteps.mp3"
+    $ renpy.invoke_in_thread(_stop_footsteps_after_4s)
     scene bg black
     with Dissolve(0.3)
     return
 
 label city_hall_3f_archive_on_enter:
+    play sound "audio/museum/footsteps.mp3"
+    $ renpy.invoke_in_thread(_stop_footsteps_after_4s)
     scene townhall_3f at fit_screen
-    with Dissolve(0.3)
-    return
-
-label city_hall_ground_floor_on_enter:
-    scene townhall at fit_screen
     with Dissolve(0.3)
     return
 
@@ -487,4 +514,17 @@ label city_hall_private_office_action:
     "He signs off promising to be home by spring. You wonder if he ever was."
     scene townhall_2f at fit_screen
     with Dissolve(0.3)
+label city_hall_3f_archiveroom_financial_on_enter:
+    play sound "audio/museum/footsteps.mp3"
+    $ renpy.invoke_in_thread(_stop_footsteps_after_4s)
+    return
+
+label city_hall_3f_archiveroom_rubber_on_enter:
+    play sound "audio/museum/footsteps.mp3"
+    $ renpy.invoke_in_thread(_stop_footsteps_after_4s)
+    return
+
+label city_hall_3f_archiveroom_interrogation_on_enter:
+    play sound "audio/museum/footsteps.mp3"
+    $ renpy.invoke_in_thread(_stop_footsteps_after_4s)
     return

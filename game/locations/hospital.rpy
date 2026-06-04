@@ -19,6 +19,12 @@ image hospital_basement_lostnfound = "images/hospitalbasementlostandfound.png"
 
 
 init python:
+    import time as _time
+
+    def _stop_footsteps_after_4s():
+        _time.sleep(4.0)
+        renpy.music.stop(channel="sound", fadeout=0.3)
+
     EXPLORE_NODES.update({
 
         "hospital": {
@@ -67,6 +73,7 @@ init python:
             "name":       "Morgue",
             "parent":     "hospital.basement",
             "intro":      "hospital_basement_morgue_intro",
+            "on_enter":   "hospital_basement_morgue_enter",
             "children":   [],
             "objects":    [
                 {
@@ -90,7 +97,7 @@ init python:
                     "name":      "Emilia Gonzalez",
                     "item":      "hospital.basement.morgue.emilia.photo",
                     "action":    None,
-                    "msg_first": ["You approach a unit named Emlia Gonzalez.", "There seems to be a {color=#ff0000}{b}piece of a photo{/b}{/color} inside the unit.", "The piece shows a woman smiling."],
+                    "msg_first": ["You approach a unit named Emlia Gonzalez.", "There seems to be a {item}piece of a photo{/item} inside the unit.", "The piece shows a woman smiling."],
                     "msg_done":  "There is nothing in the unit.",
                 },
             ],
@@ -104,6 +111,7 @@ init python:
             "name":       "Ground Floor",
             "parent":     "hospital",
             "intro":      "hospital_ground_floor_intro",
+            "on_enter":   "hospital_ground_floor_enter",
             "children":   [],
             "objects":    [
                 {
@@ -275,6 +283,7 @@ label hospital_scene:
 # ── Intro labels (called once per node on first visit) ────────────────────────
 
 label hospital_intro:
+    play music "audio/hospital/hospital-flickering-lights.mp3" loop fadein 1.0
     scene hospital at fit_screen
     with Dissolve(0.5)
     "The hospital is the newest building in the village, though that's not saying much."
@@ -283,6 +292,8 @@ label hospital_intro:
     return
 
 label hospital_basement_intro:
+    play sound "audio/hospital/hospital-footsteps.mp3"
+    $ renpy.invoke_in_thread(_stop_footsteps_after_4s)
     scene hospital_basement at fit_screen
     with Dissolve(0.5)
     "You descend the stairs into the basement."
@@ -290,17 +301,23 @@ label hospital_basement_intro:
     return
 
 label hospital_basement_morgue_intro:
+    play sound "audio/hospital/hospital-footsteps.mp3"
+    $ renpy.invoke_in_thread(_stop_footsteps_after_4s)
     "You enter the morgue located at a corner of the basement."
     "The morgue is overall empty. However there are three units that have name tags on them."
     "The bodies aren't stored in the morgue - it seems they removed the bodies but forgot to remove the name tags."
     return
 
 label hospital_ground_floor_intro:
+    play sound "audio/hospital/hospital-footsteps.mp3"
+    $ renpy.invoke_in_thread(_stop_footsteps_after_4s)
     "The ground floor holds the reception desk and examination rooms."
     "Everything has been left mid-use — a half-filled intake form, an overturned cup."
     return
 
 label hospital_2f_intro:
+    play sound "audio/hospital/hospital-footsteps.mp3"
+    $ renpy.invoke_in_thread(_stop_footsteps_after_4s)
     scene hospital_2f at fit_screen
     with Dissolve(0.5)
     "The second floor is lined with patient rooms."
@@ -308,6 +325,8 @@ label hospital_2f_intro:
     return
 
 label hospital_3f_intro:
+    play sound "audio/hospital/hospital-footsteps.mp3"
+    $ renpy.invoke_in_thread(_stop_footsteps_after_4s)
     scene hospital_3f at fit_screen
     with Dissolve(0.5)
     "The third floor is quieter than the rest."
@@ -318,21 +337,38 @@ label hospital_3f_intro:
 # ── On-enter labels (fire every visit to restore the correct floor background) ──
 
 label hospital_enter:
+    play music "audio/hospital/hospital-flickering-lights.mp3" loop fadein 1.0
     scene hospital at fit_screen
     with Dissolve(0.3)
     return
 
 label hospital_basement_enter:
+    play sound "audio/hospital/hospital-footsteps.mp3"
+    $ renpy.invoke_in_thread(_stop_footsteps_after_4s)
     scene hospital_basement at fit_screen
     with Dissolve(0.3)
     return
 
+label hospital_basement_morgue_enter:
+    play sound "audio/hospital/hospital-footsteps.mp3"
+    $ renpy.invoke_in_thread(_stop_footsteps_after_4s)
+    return
+
+label hospital_ground_floor_enter:
+    play sound "audio/hospital/hospital-footsteps.mp3"
+    $ renpy.invoke_in_thread(_stop_footsteps_after_4s)
+    return
+
 label hospital_2f_enter:
+    play sound "audio/hospital/hospital-footsteps.mp3"
+    $ renpy.invoke_in_thread(_stop_footsteps_after_4s)
     scene hospital_2f at fit_screen
     with Dissolve(0.3)
     return
 
 label hospital_3f_enter:
+    play sound "audio/hospital/hospital-footsteps.mp3"
+    $ renpy.invoke_in_thread(_stop_footsteps_after_4s)
     scene hospital_3f at fit_screen
     with Dissolve(0.3)
     return
