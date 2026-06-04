@@ -323,7 +323,7 @@ screen village_map_screen():
         ypos 619
         xsize 267
         ysize 270
-        background (_locked_tint if _first_day_lock else None)
+        background None
         hover_background "#ffffff22"
         sensitive (not _first_day_lock)
         action [Play("sound", "audio/map/map-click.wav"), Confirm("Do you want to move to the Rubber Plantation?", yes=Return("rubber_plantation"))]
@@ -334,7 +334,7 @@ screen village_map_screen():
         ypos 286
         xsize 178
         ysize 183
-        background (_locked_tint if _first_day_lock else None)
+        background None
         hover_background "#ffffff22"
         sensitive (not _first_day_lock)
         action [Play("sound", "audio/map/map-click.wav"), Confirm("Do you want to move to the Town Hall?", yes=Return("town_hall"))]
@@ -355,7 +355,7 @@ screen village_map_screen():
         ypos 244
         xsize 224
         ysize 193
-        background (_locked_tint if _first_day_lock else None)
+        background None
         hover_background "#ffffff22"
         sensitive (not _first_day_lock)
         action [Play("sound", "audio/map/map-click.wav"), Confirm("Do you want to move to the Graveyard?", yes=Return("graveyard"))]
@@ -366,7 +366,7 @@ screen village_map_screen():
         ypos 243
         xsize 165
         ysize 274
-        background (_locked_tint if _first_day_lock else None)
+        background None
         hover_background "#ffffff22"
         sensitive (not _first_day_lock)
         action [Play("sound", "audio/map/map-click.wav"), Confirm("Do you want to move to the Church?", yes=Return("church"))]
@@ -377,7 +377,7 @@ screen village_map_screen():
         ypos 657
         xsize 161
         ysize 128
-        background (_locked_tint if _first_day_lock else None)
+        background None
         hover_background "#ffffff22"
         sensitive (not _first_day_lock)
         action [Play("sound", "audio/map/map-click.wav"), Confirm("Do you want to move to the Empty Home?", yes=Return("empty_home"))]
@@ -388,7 +388,7 @@ screen village_map_screen():
         ypos 634
         xsize 183
         ysize 229
-        background (_locked_tint if _first_day_lock else None)
+        background None
         hover_background "#ffffff22"
         sensitive (not _first_day_lock)
         action [Play("sound", "audio/map/map-click.wav"), Confirm("Do you want to move to the Hospital?", yes=Return("hospital"))]
@@ -399,7 +399,7 @@ screen village_map_screen():
         ypos 250
         xsize 223
         ysize 455
-        background (_locked_tint if _first_day_lock else None)
+        background None
         hover_background "#ffffff22"
         sensitive (not _first_day_lock)
         action Confirm("Do you want to move to the Mangrove Spring?", yes=Return("mirror_pool"))
