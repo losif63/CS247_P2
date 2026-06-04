@@ -189,7 +189,7 @@ init python:
                     "name":      "1921",
                     "item":      None,
                     "action":    None,
-                    "msg_first": "The files in this report seems to be missing for some reason.",
+                    "msg_first": "The files in this report seem to be missing for some reason.",
                     "msg_done": "You've already viewed this report."
                 },
                 {
@@ -274,9 +274,9 @@ init python:
                     "msg_first": [
                         "Name: Teodora Salvacion.",
                         "Arrested For: Treason. Acted as a spy for independence rebels.",
-                        "Interrogation Method: Physical force. Suspect was bound to a chair and was struck multiple times in the head with a blunt instrument."
+                        "Interrogation Method: Physical force. Suspect was bound to a chair and was struck multiple times in the head with a blunt instrument.",
                         "Fingernails were extracted using scissors...",
-                        "Notes: ... Interrogation unsuccesful. Suspect perished before revealing any info.",
+                        "Notes: ... Interrogation unsuccessful. Suspect perished before revealing any info.",
                     ],
                     "msg_done": "You already viewed this entry."
                 },
@@ -287,8 +287,8 @@ init python:
                     "action":    None,
                     "msg_first": [
                         "Name: Bayani Magtanggol.",
-                        "Arrested For: Assasination of military general.",
-                        "Interrogation Method: Water torture. Hang susepct upside down and pour water into his nose while stamping his abdomen.",
+                        "Arrested For: Assassination of military general.",
+                        "Interrogation Method: Water torture. Hang suspect upside down and pour water into his nose while stamping his abdomen.",
                         "Notes: (scribbles)",
                     ],
                     "msg_done": "You already viewed this entry."
