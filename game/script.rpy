@@ -503,76 +503,65 @@ label night_scene:
 
 
 # ─────────────────────────────────────────────
-# ENDING
+# ENDING IMAGE CARDS
 # ─────────────────────────────────────────────
 
+transform ending_image_fade:
+    xalign 0.5
+    yalign 0.5
+    alpha 0.0
+    linear 2.5 alpha 1.0
+
+label show_ending_image(image_path):
+    scene black
+    show expression image_path as ending_card at ending_image_fade
+    $ renpy.pause(12.0, hard=False)
+    hide ending_card with Dissolve(1.5)
+    return
+
+
 label game_ending:
+    window hide
     scene black
     with Dissolve(2.0)
 
     if ended_early:
-        "You don't wait for the fifth day."
-        "There is nothing left undone here. With all three friends safe, you board the boat back to the mainland."
+        call show_ending_image("images/if_ended_early1.jpg") from _call_ending_if_ended_early1
+        call show_ending_image("images/if_ended_early2.jpg") from _call_ending_if_ended_early2
     else:
-        "Five days have passed. You board the boat back to the mainland."
+        call show_ending_image("images/else_ended_early.jpg") from _call_ending_else_ended_early
 
     # ── Thia ──────────────────────────────────
-    "Thia."
-
     if friend_notes["thia"]["solved"]:
-        "Her skin no longer smells of the spring."
-        "The things she throws away stay gone now."
-        "She texted you once to say she thinks about where she leaves things. That was all she said."
+        call show_ending_image("images/if_thia_solved.jpg") from _call_ending_if_thia_solved
     else:
-        "She was found in her apartment three days after you returned. Her throat had closed."
-        "The doctors couldn't explain the brackish water in her lungs."
-        "Everything she had ever thrown away was piled neatly around her bed."
+        call show_ending_image("images/else_thia_solved.jpg") from _call_ending_else_thia_solved
 
     # ── Marcus ────────────────────────────────
-    "Marcus."
-
     if friend_notes["marcus"]["solved"]:
-        "He took a day off for the first time in months."
-        "He said it felt strange, sitting still. But he managed it."
-        "He's learning to let the work wait."
+        call show_ending_image("images/if_marcus_solved.jpg") from _call_ending_if_marcus_solved
     else:
-        "He collapsed at his desk six days after you returned."
-        "His coworkers said he hadn't left the building in four days."
-        "He died doing exactly what the curse demanded, until there was nothing left of him."
+        call show_ending_image("images/else_marcus_solved.jpg") from _call_ending_else_marcus_solved
 
     # ── Yuna ──────────────────────────────────
-    "Yuna."
-
     if friend_notes["yuna"]["solved"]:
-        "She slept through the night. Then the next. Then the next."
-        "She doesn't remember the dreams anymore."
-        "She called you once to say she was okay. That was enough."
+        call show_ending_image("images/if_yuna_solved.jpg") from _call_ending_if_yuna_solved
     else:
-        "Yuna's parents were found murdered in their home two weeks after you returned."
-        "Three days later, Yuna was found dead as well. She had taken her own life."
-        "The dreams had shown her what she could not live with."
+        call show_ending_image("images/else_yuna_solved.jpg") from _call_ending_else_yuna_solved
 
     # ── Ending branch ─────────────────────────
     $ friends_saved = sum(1 for f in friend_notes.values() if f["solved"])
 
     if friends_saved < 2:
-        "You stare at the water as the island disappears behind you."
-        "The village gave nothing back. You took nothing home."
-        "You wonder if you ever really saw any of them at all."
-        "{b}Bad Ending — The Village Remembers{/b}"
+        call show_ending_image("images/lessthantwo_1.jpg") from _call_ending_lessthantwo_1
+        call show_ending_image("images/lessthantwo_2.jpg") from _call_ending_lessthantwo_2
 
     elif friends_saved == 2:
-        "Two of your friends will wake up tomorrow as themselves again."
-        "The third you don't let yourself think about."
-        "The village gave up some of what it took. Not all of it."
-        "You wonder what it would have cost you to stay one more day."
-        "{b}Normal Ending — Partial Restitution{/b}"
+        call show_ending_image("images/equaltotwo_1.jpg") from _call_ending_equaltotwo_1
+        call show_ending_image("images/equaltotwo_2.jpg") from _call_ending_equaltotwo_2
 
     else:
-        "You don't feel like a hero. You feel like someone who finally paid attention."
-        "The village is still standing behind you. Its history remains."
-        "But something has been returned — something the colony tried to erase."
-        "That, at least, was yours to give back."
-        "{b}Good Ending — What Was Taken{/b}"
+        call show_ending_image("images/allsolved_1.jpg") from _call_ending_allsolved_1
+        call show_ending_image("images/allsolved_2.jpg") from _call_ending_allsolved_2
 
     return
