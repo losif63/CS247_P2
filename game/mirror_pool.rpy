@@ -38,6 +38,11 @@ transform sign_full_view:
     yalign 0.20
     zoom 2.0
 
+transform sign_revealed_view:
+    xalign 0.5
+    yalign 0.20
+    zoom 0.489
+
 screen mirror_pool_screen():
     modal True
     tag mirror_pool
@@ -51,10 +56,10 @@ screen mirror_pool_screen():
 
     # Drainage pipe/grate hotspot
     button:
-        xpos 525
+        xpos 440
         ypos 650
-        xsize 303
-        ysize 147
+        xsize 388
+        ysize 190
         background None
         hover_background Solid("#ffffff22")
         action Return("drain")
@@ -143,7 +148,7 @@ label mirror_pool_bottle:
                 "You pick up the bottle and throw it into the trash bin near the trail."
                 "For a moment, the spring is quiet."
                 play sound "audio/mangrove/mangrove-bottle-reappear.mp3"
-                "Something thuds inthe mud."
+                "Something thuds in the mud."
                 "The bottle is back at the water’s edge, wet with brackish water."
                 "Hmm... that did not fix it."
                 $ bottleReturned = True
@@ -202,17 +207,15 @@ label mirror_pool_sign:
     "But the wood underneath looks older than the words painted on top."
 
     if not signMarksRevealed:
-        if bottleFilled and waterNoteFound:
+        if bottleFilled:
             menu:
                 "Pour spring water over the sign.":
                     play sound "audio/mangrove/mangrove-water-on-sign.wav"
-                    "You pour the spring water over the painted wood."
-                    "At first, nothing happens."
-                    "Then the tourist paint darkens."
+                    "The spring water runs down the tourist sign."
+                    "For a moment, nothing happens."
+                    "Then the paint begins to darken."
                     play sound "audio/mangrove/mangrove-rumble-words-appear.wav"
-                    "Three small marks surface beneath the tourist name."
-                    "They do not look like words."
-                    "They look like labels someone expected to be overlooked."
+                    "Thin marks appear beneath the words Mirror Pool, like something older is pressing through."
                     $ signMarksRevealed = True
                     $ journal_add_item(
                         "mirror_pool.hidden_sign_marks",
@@ -221,23 +224,16 @@ label mirror_pool_sign:
                         "After spring water touched the sign, three marks appeared beneath the tourist paint: S-03, S-08, and S-14."
                     )
                     scene sign_view_bg at fit_screen
-                    show sign_with_marks_revealed at sign_full_view
+                    show sign_with_marks_revealed at sign_revealed_view
                     with Dissolve(0.5)
-                    "The sign now shows three hidden marks:"
-                    "S-03"
-                    "S-08"
-                    "S-14"
+                    "You see three stamped codes: S-03, S-08, and S-14."
+                    "They do not look like part of the original carving. They look added later — like museum labels, or catalog numbers."
+                    "Maybe these numbers are not the message itself."
+                    "Maybe they point to pieces of something that was taken apart."
+                    "I should check the {place}museum{\place} again."
                 "Look closer":
                     "The words are painted over older wood."
                     "Something is underneath, but the tourist sign is covering most of it."
-                    $ signInvestigated = True
-                "Return to Spring":
-                    pass
-        elif bottleFilled and not waterNoteFound:
-            menu:
-                "Look closer":
-                    "The bottle is full of spring water, but you are not sure what to do with it yet."
-                    "The sign remains silent beneath its tourist name."
                     $ signInvestigated = True
                 "Return to Spring":
                     pass
@@ -251,15 +247,13 @@ label mirror_pool_sign:
                     pass
     else:
         scene sign_view_bg at fit_screen
-        show sign_with_marks_revealed at sign_full_view
+        show sign_with_marks_revealed at sign_revealed_view
         with Dissolve(0.5)
 
         if not museumFragmentsFound:
-            "The sign shows three hidden marks:"
-            "S-03"
-            "S-08"
-            "S-14"
-            "They look important, but you do not have enough to read them yet."
+            "The codes remain on the sign: S-03, S-08, and S-14."
+            "They are too precise to be natural marks."
+            "They look like the kind of labels used to organize artifacts after they have been removed from where they belonged."
             menu:
                 "Return to Spring":
                     pass
@@ -289,20 +283,21 @@ label mirror_pool_drain:
 
 label mirror_pool_decode_marks:
     scene sign_view_bg at fit_screen
-    show sign_with_marks_revealed at sign_full_view
+    show sign_with_marks_revealed at sign_revealed_view
     with Dissolve(0.5)
 
-    "The sign shows three hidden marks:"
-    "S-03"
-    "S-08"
-    "S-14"
+    "You line up the fragments in your mind."
+    "S-03. S-08. S-14."
 
-    while True:
+    $ _decoded = False
+    while not _decoded:
         menu:
             "MOTHER SPRING REMEMBERS":
-                "The words settle into place."
+                "The words return in order."
                 "MOTHER SPRING REMEMBERS."
-                "The message was never rewritten. It was waiting beneath the tourist name."
+                "The revealed marks pulse faintly beneath the tourist name."
+                "For the first time, the sign does not feel blank."
+                "It feels like it has been waiting to be read correctly."
                 $ messageDecoded = True
                 $ journal_add_item(
                     "mirror_pool.decoded_message",
@@ -310,7 +305,7 @@ label mirror_pool_decode_marks:
                     "Mirror Pool Sign",
                     "The hidden marks on the sign were decoded as: MOTHER SPRING REMEMBERS."
                 )
-                return
+                $ _decoded = True
 
             "SPRING MOTHER REMEMBERS":
                 "Hmm... that does not feel right."
@@ -322,9 +317,17 @@ label mirror_pool_decode_marks:
                 "The words are there, but the order still hides the beginning."
                 "Check what you recorded from the museum."
 
+    "The tourist name still sits on the surface."
+    "But beneath it, the older words remain."
+    "This place was not always Mirror Pool."
+    "It was Mother Spring."
+    "And someone tried to make that memory look like a collection of fragments."
+    call mirror_pool_remove_sign_choice from _call_mirror_pool_decode_to_remove
+    return
+
 label mirror_pool_remove_sign_choice:
     scene sign_view_bg at fit_screen
-    show sign_with_marks_revealed at sign_full_view
+    show sign_with_marks_revealed at sign_revealed_view
     with Dissolve(0.5)
 
     "The decoded message is clear now."
@@ -403,7 +406,6 @@ label mirror_pool_final_bottle_resolution:
                 $ journal_remove_item("museum.spring_fragments")
                 $ journal_remove_item("mirror_pool.hidden_sign_marks")
                 $ journal_remove_item("mirror_pool.decoded_message")
-                $ journal_remove_item("city_hall.bayani_margin_note") 
                 $ journal_remove_item("empty_home.basement.crumpled_code_note")
                 jump mirror_pool_thia_message
 

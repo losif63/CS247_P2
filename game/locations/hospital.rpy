@@ -21,6 +21,7 @@ init python:
             "name":       "Hospital",
             "parent":     None,
             "intro":      "hospital_intro",
+            "on_enter":   "hospital_enter",
             "children":   [
                 "hospital.basement",
                 "hospital.ground_floor",
@@ -38,6 +39,7 @@ init python:
             "name":       "Basement",
             "parent":     "hospital",
             "intro":      "hospital_basement_intro",
+            "on_enter":   "hospital_basement_enter",
             "children":   [
                 "hospital.basement.morgue"
             ],
@@ -148,6 +150,7 @@ init python:
             "name":       "2F",
             "parent":     "hospital",
             "intro":      "hospital_2f_intro",
+            "on_enter":   "hospital_2f_enter",
             "children":   [],
             "objects":    [
                 {
@@ -199,6 +202,7 @@ init python:
             "name":       "3F",
             "parent":     "hospital",
             "intro":      "hospital_3f_intro",
+            "on_enter":   "hospital_3f_enter",
             "children":   [],
             "objects":    [
                 {
@@ -267,7 +271,7 @@ label hospital_scene:
 # ── Intro labels (called once per node on first visit) ────────────────────────
 
 label hospital_intro:
-    scene black
+    scene hospital at fit_screen
     with Dissolve(0.5)
     "The hospital is the newest building in the village, though that's not saying much."
     "The corridors are empty and the lights flicker. Supply cabinets hang open, half-emptied."
@@ -275,6 +279,8 @@ label hospital_intro:
     return
 
 label hospital_basement_intro:
+    scene hospital_basement at fit_screen
+    with Dissolve(0.5)
     "You descend the stairs into the basement."
     "The air is cold and damp. Pipes run along the ceiling, some wrapped in old cloth."
     return
@@ -291,11 +297,38 @@ label hospital_ground_floor_intro:
     return
 
 label hospital_2f_intro:
+    scene hospital_2f at fit_screen
+    with Dissolve(0.5)
     "The second floor is lined with patient rooms."
     "Most doors are open. Beds still made, as though the patients simply walked away."
     return
 
 label hospital_3f_intro:
+    scene hospital_3f at fit_screen
+    with Dissolve(0.5)
     "The third floor is quieter than the rest."
     "A locked room at the end of the hall has light bleeding under the door."
+    return
+
+
+# ── On-enter labels (fire every visit to restore the correct floor background) ──
+
+label hospital_enter:
+    scene hospital at fit_screen
+    with Dissolve(0.3)
+    return
+
+label hospital_basement_enter:
+    scene hospital_basement at fit_screen
+    with Dissolve(0.3)
+    return
+
+label hospital_2f_enter:
+    scene hospital_2f at fit_screen
+    with Dissolve(0.3)
+    return
+
+label hospital_3f_enter:
+    scene hospital_3f at fit_screen
+    with Dissolve(0.3)
     return

@@ -452,7 +452,8 @@ label empty_home_photo_assemble:
 label empty_home_photo_flashback:
     $ Yuna = Character("Yuna", color="#aad4f5")
 
-    scene yuna
+    scene bg black
+    show yuna
     with Dissolve(1.0)
 
     "A memory surfaces — early in the trip, before anything felt wrong."

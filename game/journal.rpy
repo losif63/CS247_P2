@@ -158,20 +158,20 @@ screen journal_screen():
         background "#161412"
         padding (0, 0, 0, 0)
 
-        vbox:
+        fixed:
             xfill True
             yfill True
 
-            # ── Header bar ───────────────────────────────────────────────────
-            frame:
+            vbox:
                 xfill True
-                ysize 52
-                background "#0e0c0a"
-                padding (24, 0, 0, 0)
+                yfill True
 
-                hbox:
+                # ── Header bar ───────────────────────────────────────────────────
+                frame:
                     xfill True
-                    yfill True
+                    ysize 52
+                    background "#0e0c0a"
+                    padding (24, 0, 24, 0)
 
                     text "Investigation Journal":
                         font "fonts/SpecialElite.ttf"
@@ -179,48 +179,48 @@ screen journal_screen():
                         size 30
                         yalign 0.5
 
+                # ── Tab row ───────────────────────────────────────────────────────
+                hbox:
+                    xfill True
+                    ysize 46
+                    spacing 2
+
+                    textbutton "{item}Inventory{/item}":
+                        style ("jnl_tab_active" if tab == "inventory" else "jnl_tab_idle")
+                        action SetScreenVariable("tab", "inventory")
+
+                    textbutton "Friends":
+                        style ("jnl_tab_active" if tab == "friends" else "jnl_tab_idle")
+                        action SetScreenVariable("tab", "friends")
+
                     null xfill True
 
-                    textbutton "Close":
-                        xsize 90
-                        yfill True
-                        background "#00000000"
-                        hover_background "#3a2010"
-                        action Function(renpy.hide_screen, "journal_screen")
-                        text_color "#7a6a50"
-                        text_hover_color "#e8d5a0"
-                        text_font "fonts/SpecialElite.ttf"
-                        text_size 24
-                        text_xalign 0.5
-                        text_yalign 0.5
+                # ── Content area ─────────────────────────────────────────────────
+                frame:
+                    xfill True
+                    yfill True
+                    background "#1e1b17"
+                    padding (20, 16, 20, 16)
 
-            # ── Tab row ───────────────────────────────────────────────────────
-            hbox:
-                xfill True
-                ysize 46
-                spacing 2
+                    if tab == "inventory":
+                        use journal_tab_inventory
+                    elif tab == "friends":
+                        use journal_tab_friends
 
-                textbutton "{item}Inventory{/item}":
-                    style ("jnl_tab_active" if tab == "inventory" else "jnl_tab_idle")
-                    action SetScreenVariable("tab", "inventory")
-
-                textbutton "Friends":
-                    style ("jnl_tab_active" if tab == "friends" else "jnl_tab_idle")
-                    action SetScreenVariable("tab", "friends")
-
-                null xfill True
-
-            # ── Content area ─────────────────────────────────────────────────
-            frame:
-                xfill True
-                yfill True
-                background "#1e1b17"
-                padding (20, 16, 20, 16)
-
-                if tab == "inventory":
-                    use journal_tab_inventory
-                elif tab == "friends":
-                    use journal_tab_friends
+            # ── Close button — true top-right corner ─────────────────────────
+            textbutton "✕":
+                xalign 1.0
+                yalign 0.0
+                xsize 44
+                ysize 44
+                background "#00000000"
+                hover_background "#5a0a0a"
+                action Function(renpy.hide_screen, "journal_screen")
+                text_color "#cc2222"
+                text_hover_color "#ff4444"
+                text_size 24
+                text_xalign 0.5
+                text_yalign 0.5
 
 
 # ─── Evidence tab ─────────────────────────────────────────────────────────────

@@ -13,9 +13,11 @@
 ################################################################################
 
 
-image church_backyard = "images/church-backyard.png"
-image church_main_hall = "images/church-main-hall-2.png"
-image church_statue_img = "images/church-statue.png"
+image church_backyard      = "images/church-backyard.png"
+image church_main_hall     = "images/church-main-hall-2.png"
+image church_statue_img    = "images/church-statue.png"
+image church_lawn_fresh    = "images/church/lawn-fresh-dirt.png"
+image church_lawn_dug      = "images/church/lawn-dug-up.png"
 
 # The wooden box combination is randomized each new playthrough. The matching
 # number is revealed on Joaquin Gonzalez's interrogation record in the city hall.
@@ -154,7 +156,7 @@ screen church_box_lock_screen():
                             background "#2d2720"
                             hover_background "#4a3c28"
                             padding (16, 8)
-                            action SetScreenVariable(_digit_name, (_digit_var + 1) % 10)
+                            action [SetScreenVariable(_digit_name, (_digit_var + 1) % 10), Play("sound", "audio/church/lock-click.mp3")]
                             text_color "#e8d5a0"
                             text_hover_color "#ffffff"
                             text_xalign 0.5
@@ -170,7 +172,7 @@ screen church_box_lock_screen():
                             background "#2d2720"
                             hover_background "#4a3c28"
                             padding (16, 8)
-                            action SetScreenVariable(_digit_name, (_digit_var - 1) % 10)
+                            action [SetScreenVariable(_digit_name, (_digit_var - 1) % 10), Play("sound", "audio/church/lock-click.mp3")]
                             text_color "#e8d5a0"
                             text_hover_color "#ffffff"
                             text_xalign 0.5
@@ -225,6 +227,7 @@ label church_backyard_box_puzzle:
             $ _photo = ITEM_CATALOG["church.backyard.lawn.photo_piece"]
             $ collected_items.add("church.backyard.lawn.photo_piece")
             $ journal_add_item("church.backyard.lawn.photo_piece", _photo["name"], _photo["location"], _photo["description"])
+            play sound "audio/church/box-unlock.mp3"
             "The lock clicks open."
             "Inside the box is a torn {item}piece of a photo{/item} — it shows a man smiling."
             $ _box_solved = True
@@ -261,14 +264,19 @@ label church_backyard_intro:
     return
 
 label church_backyard_lawn_unlock:
+    play sound "audio/church/shoveling.mp3"
     "You drive the shovel into the soil. The ground here is softer than it looks."
+    scene church_lawn_dug at fit_screen
+    with Dissolve(0.5)
+    play sound "audio/church/shovel-hits-something.mp3"
     "After a few scoops, the blade strikes something solid."
     "You leave the shovel stuck in the upturned earth — you won't be needing it again."
-    # The shovel has served its purpose — drop it from the inventory.
     $ journal_remove_item("graveyard.shovel")
     return
 
 label church_backyard_lawn_intro:
+    scene church_lawn_fresh at fit_screen
+    with Dissolve(0.5)
     "A patch of freshly turned soil. Half-buried in the dirt is a small wooden box."
     return
 
@@ -290,7 +298,7 @@ label church_main_hall_on_enter:
     return
 
 label church_backyard_on_enter:
-    $ renpy.notify("DEBUG: backyard_on_enter fired")
+
     $ renpy.music.stop("ambience", fadeout=1.0)
     play music "audio/church/church-backyard.wav" fadein 1.0
     return
