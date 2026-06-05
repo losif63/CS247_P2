@@ -143,7 +143,7 @@ label mirror_pool_bottle:
         "It looks ordinary. That almost makes it worse."
 
         menu:
-            "Throw it away":
+            "Throw it in a nearby trash bin":
                 play sound "<from 0 to 2>audio/mangrove/mangrove-throw-away-bottle.wav"
                 "You pick up the bottle and throw it into the trash bin near the trail."
                 "For a moment, the spring is quiet."
