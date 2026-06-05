@@ -402,6 +402,7 @@ label mirror_pool_final_bottle_resolution:
                     note="Thia’s affliction was tied to the Mirror Pool, a mourning site renamed for tourists after being used as Waste Channel 3. The hidden marks beneath the tourist sign decoded to: MOTHER SPRING REMEMBERS.",
                     solved=True
                 )
+                $ friends_saved_today.append("thia")
                 $ journal_remove_item("mirror_pool.bottle_of_spring_water")
                 $ journal_remove_item("museum.spring_fragments")
                 $ journal_remove_item("mirror_pool.hidden_sign_marks")
@@ -411,22 +412,6 @@ label mirror_pool_final_bottle_resolution:
 
 
 label mirror_pool_thia_message:
+    # Notification text moved to show_friend_save_notifications (fires at night).
     stop ambience fadeout 1.0
-    play music "audio/mangrove/mangrove-solve.mp3" fadein 1.0
-    "Message from Thia:"
-    show thia_sprite onlayer master at thia_left_speaker zorder 2000
-    "Something changed."
-    "I threw something away today and it stayed gone."
-    "But I don’t think it was because I finally got rid of it."
-    "I think it was because I stopped asking the wrong place to hold it."
-    "Thia’s affliction has eased."
-    $ journal_update_friend("thia", note="Thia's affliction has eased.", solved=True)
-    hide thia_sprite onlayer master
-
-    menu:
-        "Return to Map":
-            return
-        "Stay at the Spring":
-            pass
-
     return

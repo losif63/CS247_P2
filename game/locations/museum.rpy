@@ -106,7 +106,7 @@ init python:
                     "action":    "museum_ledger_action",
                     "msg_first": [
                         "A thick ledger lies open under glass, every line a worker reduced to a number and a column of figures.",
-                        "It seems like documents used for keeping track of local workers who were exploited at the {place}Rubber Plantation{/place}."
+                        "It seems like documents used for keeping track of local workers who were exploited at the {place}Rubber Plantation{/place}.",
                         "The placard praises it as {i}a model of modern plantation efficiency.{/i}",
                         "There are no names. Only IDs, daily outputs, and curt notes: {i}Quotas unmet. Unfit for labor. Deceased.{/i}",
                         "People, kept like inventory. The plantation itself still stands at the edge of the village — and ledgers like this one would still be out there.",
@@ -306,7 +306,7 @@ label museum_exhibit_action:
     play sound "audio/museum/footsteps.mp3"
     scene museum_closeup at fit_screen
     with Dissolve(0.5)
-    "A small exhibit describes the {place}Mangrove Spring{place} at the village's edge — the place the tour brochures call the Mirror Pool."
+    "A small exhibit describes the {place}Mangrove Spring{/place} at the village's edge — the place the tour brochures call the Mirror Pool."
     "The placard frames it as {i}a scenic curiosity, popular with visitors.{/i}"
     "But the older photographs show villagers leaving offerings there, and a carved marker standing at the water's edge."
     "Whatever that marker once said, it clearly mattered to the people here. The spring itself is still out there, waiting."
