@@ -15,6 +15,7 @@ default signRestorationUnlocked = False
 default signChanged = False
 default puzzleSolved = False
 default mirror_pool_intro_seen = False
+default bottleFillHintShown = False
 image spring_bg_without_bottle = "images/SpringBackgroundWithoutBottle.png"
 image spring_bg_with_bottle = "images/SpringBackgroundWithBottle.png"
 image spring_bg_without_sign = "images/SignAfterRemoved.png"
@@ -108,9 +109,14 @@ label mirror_pool_scene:
         if not mirror_pool_intro_seen:
             "Mangrove roots twist into the dark water. The air smells faintly of salt and rust."
             "This is the place tourists called the Mirror Pool."
-            "This is where Thia left the bottle behind."
+            "This is where Thia tossed her bottle into the dirt."
             $ mirror_pool_intro_seen = True
-
+        if bottleReturned and signInvestigated and drainInvestigated and not bottleFilled and not bottleResolved and not bottleFillHintShown:
+            "The bottle shifts slightly at the waterline."
+            "After seeing the older wood beneath the sign and the waste channel marker, it no longer feels like ordinary trash."
+            "Maybe the spring is not asking me to throw it away."
+            "Maybe it needs me to carry something from here."
+            $ bottleFillHintShown = True
         call screen mirror_pool_screen
         $ choice = _return
 
@@ -375,7 +381,10 @@ label mirror_pool_final_bottle_resolution:
     with Dissolve(0.5)
 
     "The bottle is still in your hand, heavy with spring water."
-    "The spring has returned what it needed to return."
+    "The spring has returned Thia's bottle again and again."
+    "Each time it came back, it reminded you of Thia had left behind."
+    "She treated this place like a backdrop, a place that could hold her discard without consequence."
+    "Now that the spring's origin has been pieced back together, the last thing left is to carry away what she abandoned."
 
     "What do you do with Thia’s bottle now?"
 
@@ -394,7 +403,7 @@ label mirror_pool_final_bottle_resolution:
             "Carry it away.":
                 "You cap the bottle and carry it away from the spring."
                 "This time, it does not pull back toward the water."
-                "It is only a bottle now."
+                "You're not erasing what happened here. You're refusing to leave the harm for Mother Spring to hold alone."
                 $ bottleResolved = True
                 $ puzzleSolved = True
                 $ journal_update_friend(

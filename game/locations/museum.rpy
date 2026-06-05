@@ -149,8 +149,9 @@ init python:
                     "msg_first": [
                         "A small exhibit describes the {place}Mangrove Spring{/place} at the village's edge — the place the tour brochures call the Mirror Pool.",
                         "The placard frames it as {i}a scenic curiosity, popular with visitors.{/i}",
-                        "But the older photographs show villagers leaving offerings there, and a carved marker standing at the water's edge.",
-                        "Whatever that marker once said, it clearly mattered to the people here. The spring itself is still out there, waiting.",
+                        "But the older photographs tell a different story. Villagers once gathered there, left offerings, and cared for an old wooden sign at the water's edge.",
+                        "The sign's words are hard to make out in the photographs, but it seems to have named the spring as something more than scenery.",
+                        "Whatever that name was, it mattered to the people here.",
                     ],
                     "msg_done":  "The mangrove spring — a place of memory, sold to tourists as a postcard.",
                 },
@@ -306,10 +307,11 @@ label museum_exhibit_action:
     play sound "audio/museum/footsteps.mp3"
     scene museum_closeup at fit_screen
     with Dissolve(0.5)
-    "A small exhibit describes the {place}Mangrove Spring{/place} at the village's edge — the place the tour brochures call the Mirror Pool."
-    "The placard frames it as {i}a scenic curiosity, popular with visitors.{/i}"
-    "But the older photographs show villagers leaving offerings there, and a carved marker standing at the water's edge."
-    "Whatever that marker once said, it clearly mattered to the people here. The spring itself is still out there, waiting."
+    "A small exhibit describes the {place}Mangrove Spring{/place} at the village's edge — the place tour brochures now call the Mirror Pool."
+    "The placard presents it as {i}a scenic curiosity, popular with visitors{/i}, as if it has always been only a place to look at."
+    "But the older photographs tell a different story. Villagers once gathered there, left offerings, and cared for an old wooden sign at the water's edge."
+    "The sign's words are hard to make out in the photographs, but it seems to have named the spring as something more than scenery."
+    "Whatever that name was, it mattered to the people here."
     return
 
 label museum_spring_fragments_action:
@@ -336,7 +338,7 @@ label museum_spring_fragments_action:
     "The museum label says the pieces were recovered during redevelopment and later archived as historical material."
     "But the way they are displayed makes them feel disconnected from the spring itself."
     "Something about this feels wrong."
-    "These fragments were not just artifacts. They were part of the spring's original name."
+    "These fragments were part of the spring's original name."
 
     "Spring Fragment 03."
     "A carved piece of wood. One word remains visible: {b}MOTHER{/b}."
